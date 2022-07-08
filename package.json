@@ -4,6 +4,7 @@
     "description": "treme app",
     "main": "app.js",
     "dependencies": {
+        "axios": "^0.27.2",
         "body-parser": "^1.19.0",
         "cors": "^2.8.5",
         "express": "^4.17.1"
@@ -13,7 +14,6 @@
     },
     "author": "",
     "license": "ISC",
-    "devDependencies": {},
     "repository": {
         "type": "git",
         "url": "git+https://github.com/CodeMeen/surreal_api.git"
