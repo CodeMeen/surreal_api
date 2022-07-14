@@ -17,18 +17,20 @@ app.use(bodyParser.json());
 
 app.use(express.static('public'));
 
-app.get('/getTokenData/:data/:type', function(req, res){
+app.get('/getTokenData/:type/:data',(req, res)=>{
    let data=req.params.data;
    let type=req.params.type;
 
+  let mapurl="";
+
    if(type=='id'){
-   const mapurl="https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?id="+data;
+  mapurl="https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?id="+data;
    }else if(type=="name"){
-      const mapurl="https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?name="+data;
+   mapurl="https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?name="+data;
    }else if(type=="symbol"){
-      const mapurl="https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol="+data;
+   mapurl="https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol="+data;
    }else if(type=="token_address"){
-      const mapurl="https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?token_address="+data;
+   mapurl="https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?token_address="+data;
    }
 
    let response = null;
@@ -51,7 +53,7 @@ app.get('/getTokenData/:data/:type', function(req, res){
 
      if (response) {
        // success
-       const json = response.data;
+       const json = response.data; 
       res.send(json);
        resolve(json);
      }
