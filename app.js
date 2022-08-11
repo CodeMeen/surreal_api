@@ -1,9 +1,9 @@
-var express = require('express');
+const express = require('express');
 const bodyParser = require("body-parser");
 const cors= require('cors');
-const axios = require('axios');
 
-
+//routes modules
+const handler=require('./routes/handler')
 
 var app = express();
 app.set('port', process.env.PORT || 3000);
@@ -17,53 +17,8 @@ app.use(bodyParser.json());
 
 app.use(express.static('public'));
 
-app.get('/getTokenData/:type/:data',(req, res)=>{
-   let data=req.params.data;
-   let type=req.params.type;
-
-  let mapurl="";
-
-   if(type=='id'){
-  mapurl="https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?id="+data;
-   }else if(type=="name"){
-   mapurl="https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?name="+data;
-   }else if(type=="symbol"){
-   mapurl="https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol="+data;
-   }else if(type=="token_address"){
-   mapurl="https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?token_address="+data;
-   }
-
-   let response = null;
-
-   new Promise(async (resolve, reject) => {
-     try {
-       response = await axios.get(mapurl, {
-         headers: {
-            'Content-Type':  'application/json',
-            'Accept-Encoding': 'deflate, gzip',
-            'X-CMC_PRO_API_KEY': 'd57d613e-51ed-4fea-a83d-8a977d2cae3a',
-         },
-       });
-     } catch(ex) {
-       response = null;
-       // error
-       console.log(ex);
-       reject(ex);
-     }
-
-     if (response) {
-       // success
-       const json = response.data; 
-      res.send(json);
-       resolve(json);
-     }
-
-   });
- 
-  
-});
-
-
+//routes
+app.use('/app',handler)
 
 app.use(function(req, res){
     res.type('text/plain');
