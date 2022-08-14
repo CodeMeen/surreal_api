@@ -2,7 +2,7 @@ const express=require('express');
 const ethereum=require('../modules/ethereum')
 const router=express.Router();
 router.post('/:reqtype',async (req,res)=>{
-    
+
    let network=req.body.network
     let chain=req.body.chain
 
@@ -18,8 +18,9 @@ router.post('/:reqtype',async (req,res)=>{
                 if(reqtype=='getTokenPrice'){
                     let response= await ethereum.tokenPrice(data);
                     res.send(response)
-                }else if(reqtype=='getMetadata'){
-        
+                }else if(reqtype=='getAllMetadata'){
+                   let response=await ethereum.allMetadata(data)
+                   res.send(response)
                 }
                 
                 break;

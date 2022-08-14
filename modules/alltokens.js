@@ -2124,37 +2124,6 @@ function load(network,chain){
              "pairs": []
            },
            {
-             "name": "EOS",
-             "img": "../../assets/images/tokens/eos.png",
-             "website": "https://eos.io",
-             "description": "EOS is a cryptocurrency token and blockchain that operates as a smart contract platform for the deployment of decentralized applications and decentralized autonomous corporations.",
-             "explorer": "https://bloks.io/",
-             "research": "https://research.binance.com/en/projects/eos",
-             "symbol": "EOS",
-             "type": "ERC20",
-             "decimals": 4,
-             "status": "active",
-             "tag": "",
-             "links": [
-               {
-                 "name": "github",
-                 "url": "https://github.com/eosio"
-               },
-               {
-                 "name": "twitter",
-                 "url": "https://twitter.com/block_one_"
-               },
-               {
-                 "name": "reddit",
-                 "url": "https://reddit.com/r/EOS"
-               },
-               {
-                 "name": "whitepaper",
-                 "url": "https://github.com/EOSIO/Documentation/blob/master/TechnicalWhitePaper.md"
-               }
-             ]
-           },
-           {
              "asset": "c60_t0x00a8b738E453fFd858a7edf03bcCfe20412f0Eb0",
              "type": "ERC20",
              "address": "0x00a8b738E453fFd858a7edf03bcCfe20412f0Eb0",
