@@ -53,6 +53,19 @@ if(inapp==true){
           
       }
 
+
+     function numberize(x,num) {
+        let rx;
+        if(num){
+         rx=x.toFixed(num);
+        }else{
+        rx=x.toFixed(2);
+        }
+
+        return rx
+         
+     }
+      
       
 
  async function allMetadata(input){
@@ -71,8 +84,6 @@ for (let index = 0; index < tokens.length; index++) {
     const eachtoken = tokens[index];
     const contractaddr=eachtoken.address
 
-    console.log(contractaddr)
-
     if(!contractaddr){
 
         try {
@@ -87,7 +98,10 @@ for (let index = 0; index < tokens.length; index++) {
             let usdbal=await (bal * usdprice)
         
             let newobj={
+                'type':'chain',
                 'chain':chain,
+                'symbol':eachtoken.symbol,
+                'name':eachtoken.name,
                 'balance':bal,
                 'usdbalance':usdbal,
                 'status':true
@@ -98,7 +112,10 @@ for (let index = 0; index < tokens.length; index++) {
         } catch (error) {
            
             let newobj={
+                'type':'chain',
                 'chain':chain,
+                'symbol':eachtoken.symbol,
+                'name':eachtoken.name,
                 'status':false,
                 'error':error
             }
@@ -122,7 +139,10 @@ for (let index = 0; index < tokens.length; index++) {
             let usdbal=await (bal*subusdprice)
     
             let newobj={
+                'type':'contract',
                 'contractaddr':contractaddr,
+                'symbol':eachtoken.symbol,
+                'name':eachtoken.name,
                 'balance':bal,
                 'usdbalance':usdbal,
                 'status':true
@@ -133,7 +153,10 @@ for (let index = 0; index < tokens.length; index++) {
         } catch (error) {
     
             let newobj={
+                'type':'contract',
                 'contractaddr':contractaddr,
+                'symbol':eachtoken.symbol,
+                'name':eachtoken.name,
                 'status':false,
                 'error':error
             }
