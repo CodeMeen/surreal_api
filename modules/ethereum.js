@@ -70,31 +70,17 @@ async function tokenPrice(input, inapp) {
 }
 */
 
-async function reducenumber(num, totallength) {
+async function reducenumber(num) {
 
-    let string = num.toString()
+    let string = await num.toString()
 
 
-    if (totallength != '') {
-        if (string.length >= totallength) {
-            return string
-        } else {
-            let trimmedString = await string.substring(0, totallength);
-            console.log(trimmedString)
-
-            return trimmedString
-        }
-
+    if (string.length <= 11) {
+        return string
     } else {
-        if (string.length >= 11) {
-            return string
-        } else {
-            let trimmedString = await string.substring(0, 11);
-            return trimmedString
-        }
-
+        let trimmedString = await string.slice(0, 11);
+        return trimmedString
     }
-
 
 }
 
@@ -115,7 +101,66 @@ async function reducenumber(num, totallength) {
 
 
 
+async function nativeTxs(input) {
 
+    let privatekey = input.privatekey
+    let publickey = input.publickey
+    let chain = input.chain
+    let network = input.network
+
+    let response = null
+
+    let url = "https://api.etherscan.io/api?module=account&action=txlist&address=" + publickey + "&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=C2MM841C66BQREI5VAQWVWC58Q9Z8XHB48"
+
+    try {
+
+        response = await axios.get(url)
+
+    } catch (error) {
+        response = null
+    }
+
+    console.log(response)
+
+}
+
+async function erc20Txs(input) {
+
+    let privatekey = input.privatekey
+    let publickey = input.publickey
+    let chain = input.chain
+    let network = input.network
+
+    let contractaddr = input.data.contractaddr
+
+    let response = null
+
+    let url = "https://api.etherscan.io/api?module=account&action=tokentx&contractaddress=" + contractaddr + "&address=" + publickey + "&page=1&offset=100&startblock=0&endblock=99999999&sort=desc&apikey=C2MM841C66BQREI5VAQWVWC58Q9Z8XHB48"
+
+    try {
+        response = await axios.get(url)
+    } catch (error) {
+        response = null
+    }
+
+    console.log(response)
+}
+
+async function erc721Txs(url) {
+    try {
+
+    } catch (error) {
+
+    }
+}
+
+async function erc1155Txs(url) {
+    try {
+
+    } catch (error) {
+
+    }
+}
 
 async function allMetadata(input) {
 
@@ -151,8 +196,8 @@ async function allMetadata(input) {
                     'chain': chain,
                     'symbol': eachtoken.symbol,
                     'name': eachtoken.name,
-                    'balance': bal,
-                    'usdbalance': usdbal,
+                    'balance': await reducenumber(bal),
+                    'usdbalance': await reducenumber(usdbal),
                     'status': true
                 }
 
@@ -192,8 +237,8 @@ async function allMetadata(input) {
                     'contractaddr': contractaddr,
                     'symbol': eachtoken.symbol,
                     'name': eachtoken.name,
-                    'balance': bal,
-                    'usdbalance': usdbal,
+                    'balance': await reducenumber(bal),
+                    'usdbalance': await reducenumber(usdbal),
                     'status': true
                 }
 
@@ -230,7 +275,7 @@ async function allMetadata(input) {
 
 
 
-async function walletMetadata(input) {
+/* async function walletMetadata(input) {
     let privatekey = input.privatekey
     let publickey = input.publickey
     let chain = input.chain
@@ -339,9 +384,13 @@ async function walletMetadata(input) {
 
 }
 
+*/
+
 
 
 
 
 module.exports.tokenPrice = tokenPrice
 module.exports.allMetadata = allMetadata
+module.exports.nativeTxs = nativeTxs
+module.exports.erc20Txs = erc20Txs
