@@ -120,30 +120,30 @@ async function nativeTxs(input) {
         response = null
     }
 
-    if(response.data.status=='0'){
-     return []
-    }else{
+    if (response.data.status == '0') {
+        return []
+    } else {
 
-        let result=response.data.result
+        let result = response.data.result
 
         for (let index = 0; index < result.length; index++) {
             const eachresult = result[index];
-            if(eachresult.to==publickey){
-                eachresult['type']='receiving'
-            }else{
-                eachresult['type']='sending'
+            if (eachresult.to == publickey) {
+                eachresult['type'] = 'receiving'
+            } else {
+                eachresult['type'] = 'sending'
             }
-            
+
         }
 
-       
-   
+
+
         return result
 
 
     }
 
-  
+
 
 }
 
@@ -166,26 +166,26 @@ async function erc20Txs(input) {
         response = null
     }
 
-   
-    if(response.data.status=='0'){
+
+    if (response.data.status == '0') {
         return []
-       }else{
-        let result=response.data.result
+    } else {
+        let result = response.data.result
 
         for (let index = 0; index < result.length; index++) {
             const eachresult = result[index];
-            if(eachresult.to==publickey){
-                eachresult['type']='receiving'
-            }else{
-                eachresult['type']='sending'
+            if (eachresult.to == publickey) {
+                eachresult['type'] = 'receiving'
+            } else {
+                eachresult['type'] = 'sending'
             }
-            
+
         }
 
-       
-   
+
+
         return result
-       }
+    }
 }
 
 async function erc721Txs(url) {
@@ -247,7 +247,7 @@ async function allMetadata(input) {
 
             } catch (error) {
 
-               
+
 
                 let newobj = {
                     'type': 'chain',
@@ -273,7 +273,7 @@ async function allMetadata(input) {
 
                 let subpricedata = await tokenPrice((eachtoken.symbol).toUpperCase(), true)
 
-               
+
 
                 let subusdprice = subpricedata.price
 
@@ -293,7 +293,7 @@ async function allMetadata(input) {
 
             } catch (error) {
 
-               
+
 
                 let newobj = {
                     'type': 'contract',
