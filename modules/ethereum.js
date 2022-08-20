@@ -35,7 +35,7 @@ async function tokenPrice(input, inapp) {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept-Encoding': 'deflate, gzip',
-                'X-CMC_PRO_API_KEY': 'd57d613e-51ed-4fea-a83d-8a977d2cae3a',
+                'X-CMC_PRO_API_KEY': 'de4be442-9232-4375-b9a7-18ada0e0bcb3',
             },
         });
     } catch (ex) {
@@ -104,7 +104,7 @@ async function reducenumber(num) {
 async function nativeTxs(input) {
 
     let privatekey = input.privatekey
-    let publickey = input.publickey
+    let publickey = (input.publickey).toLowerCase()
     let chain = input.chain
     let network = input.network
 
@@ -120,14 +120,37 @@ async function nativeTxs(input) {
         response = null
     }
 
-    console.log(response)
+    if(response.data.status=='0'){
+     return []
+    }else{
+
+        let result=response.data.result
+
+        for (let index = 0; index < result.length; index++) {
+            const eachresult = result[index];
+            if(eachresult.to==publickey){
+                eachresult['type']='receiving'
+            }else{
+                eachresult['type']='sending'
+            }
+            
+        }
+
+       
+   
+        return result
+
+
+    }
+
+  
 
 }
 
 async function erc20Txs(input) {
 
     let privatekey = input.privatekey
-    let publickey = input.publickey
+    let publickey = (input.publickey).toLowerCase()
     let chain = input.chain
     let network = input.network
 
@@ -143,7 +166,26 @@ async function erc20Txs(input) {
         response = null
     }
 
-    console.log(response)
+   
+    if(response.data.status=='0'){
+        return []
+       }else{
+        let result=response.data.result
+
+        for (let index = 0; index < result.length; index++) {
+            const eachresult = result[index];
+            if(eachresult.to==publickey){
+                eachresult['type']='receiving'
+            }else{
+                eachresult['type']='sending'
+            }
+            
+        }
+
+       
+   
+        return result
+       }
 }
 
 async function erc721Txs(url) {
@@ -205,6 +247,8 @@ async function allMetadata(input) {
 
             } catch (error) {
 
+               
+
                 let newobj = {
                     'type': 'chain',
                     'chain': chain,
@@ -228,6 +272,9 @@ async function allMetadata(input) {
                 const bal = ethers.utils.formatEther(rawbal)
 
                 let subpricedata = await tokenPrice((eachtoken.symbol).toUpperCase(), true)
+
+               
+
                 let subusdprice = subpricedata.price
 
                 let usdbal = await (bal * subusdprice)
@@ -245,6 +292,8 @@ async function allMetadata(input) {
                 resdata.push(newobj)
 
             } catch (error) {
+
+               
 
                 let newobj = {
                     'type': 'contract',
