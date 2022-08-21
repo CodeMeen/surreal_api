@@ -70,16 +70,26 @@ async function tokenPrice(input, inapp) {
 }
 */
 
-async function reducenumber(num) {
+async function reducenumber(num, fixed) {
 
     let string = await num.toString()
 
+    if (!fixed) {
 
-    if (string.length <= 11) {
-        return string
+        if (string.length <= 11) {
+            return string
+        } else {
+            let trimmedString = await string.slice(0, 11);
+            return trimmedString
+        }
+
     } else {
-        let trimmedString = await string.slice(0, 11);
-        return trimmedString
+        if (string.length <= fixed) {
+            return string
+        } else {
+            let trimmedString = await string.slice(0, fixed);
+            return trimmedString
+        }
     }
 
 }
@@ -134,6 +144,14 @@ async function nativeTxs(input) {
                 eachresult['type'] = 'sending'
             }
 
+            let txvalue = ethers.utils.formatEther(eachresult.value)
+
+            eachresult['tokenvalue'] = await reducenumber(txvalue, 7)
+
+
+            eachresult['shortTo'] = shortPublicKey(eachresult.to)
+            eachresult['shortFrom'] = shortPublicKey(eachresult.from)
+
         }
 
 
@@ -180,6 +198,12 @@ async function erc20Txs(input) {
                 eachresult['type'] = 'sending'
             }
 
+            let txvalue = ethers.utils.formatEther(eachresult.value)
+
+            eachresult['tokenvalue'] = await reducenumber(txvalue, 7)
+            eachresult['shortTo'] = shortPublicKey(eachresult.to)
+            eachresult['shortFrom'] = shortPublicKey(eachresult.from)
+
         }
 
 
@@ -219,14 +243,22 @@ async function allMetadata(input) {
     for (let index = 0; index < tokens.length; index++) {
         const eachtoken = tokens[index];
         const contractaddr = eachtoken.address
+        let clientusdprice = eachtoken.usdprice
 
         if (!contractaddr) {
 
             try {
                 const getbal = await provider.getBalance(publickey)
                 let bal = ethers.utils.formatEther(getbal)
+                let pricedata = {}
 
-                let pricedata = await tokenPrice('ETH', true)
+                if (!clientusdprice) {
+                    let newpricedata = await tokenPrice('ETH', true)
+                    pricedata['price'] = newpricedata.price
+                } else {
+                    pricedata['price'] = clientusdprice
+                }
+
 
 
                 let usdprice = pricedata.price
@@ -240,7 +272,8 @@ async function allMetadata(input) {
                     'name': eachtoken.name,
                     'balance': await reducenumber(bal),
                     'usdbalance': await reducenumber(usdbal),
-                    'status': true
+                    'status': true,
+                    'usdprice': usdprice
                 }
 
                 resdata.push(newobj)
@@ -265,14 +298,21 @@ async function allMetadata(input) {
         } else {
             try {
 
+                let clientusdprice = eachtoken.usdprice
 
                 const contract = new ethers.Contract(contractaddr, ERC20_ABI, provider)
 
                 const rawbal = await contract.balanceOf(publickey)
                 const bal = ethers.utils.formatEther(rawbal)
 
-                let subpricedata = await tokenPrice((eachtoken.symbol).toUpperCase(), true)
+                let subpricedata = {}
 
+                if (!clientusdprice) {
+                    let newpricedata = await tokenPrice((eachtoken.symbol).toUpperCase(), true)
+                    subpricedata['price'] = newpricedata.price
+                } else {
+                    subpricedata['price'] = clientusdprice
+                }
 
 
                 let subusdprice = subpricedata.price
@@ -286,7 +326,8 @@ async function allMetadata(input) {
                     'name': eachtoken.name,
                     'balance': await reducenumber(bal),
                     'usdbalance': await reducenumber(usdbal),
-                    'status': true
+                    'status': true,
+                    'usdprice': subusdprice
                 }
 
                 resdata.push(newobj)
@@ -318,6 +359,17 @@ async function allMetadata(input) {
 
 }
 
+
+function shortPublicKey(string) {
+
+    let firstpart = string.slice(0, 7)
+    let lastpart = string.slice(-7)
+
+    let newstring = firstpart + '...' + lastpart
+
+    return newstring
+
+}
 
 
 
