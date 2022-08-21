@@ -130,7 +130,7 @@ async function nativeTxs(input) {
         response = null
     }
 
-    if (response.data.status == '0') {
+    if (!response || response.data.status == '0') {
         return []
     } else {
 
