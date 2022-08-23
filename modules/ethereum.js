@@ -109,7 +109,54 @@ async function reducenumber(num, fixed) {
 
 */
 
+async function AllPrices(input) {
 
+    let privatekey = input.privatekey
+    let publickey = input.publickey
+    let chain = input.chain
+    let network = input.network
+    let tokens = input.data.tokens
+
+
+    let resdata = []
+
+
+    for (let index = 0; index < tokens.length; index++) {
+        const eachtoken = tokens[index];
+
+        try {
+            let newpricedata = await tokenPrice((eachtoken.symbol).toUpperCase(), true)
+            let usdprice = newpricedata.price
+
+            let newobj = {
+                'symbol': eachtoken.symbol,
+                'name': eachtoken.name,
+                'status': true,
+                'usdprice': usdprice
+            }
+
+            resdata.push(newobj)
+        } catch (error) {
+
+            let newobj = {
+                'symbol': eachtoken.symbol,
+                'name': eachtoken.name,
+                'status': false
+            }
+
+            resdata.push(newobj)
+
+        }
+
+
+
+    }
+
+
+    return resdata
+
+
+}
 
 async function nativeTxs(input) {
 
@@ -495,3 +542,4 @@ module.exports.tokenPrice = tokenPrice
 module.exports.allMetadata = allMetadata
 module.exports.nativeTxs = nativeTxs
 module.exports.erc20Txs = erc20Txs
+module.exports.AllPrices = AllPrices
