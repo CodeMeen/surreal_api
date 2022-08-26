@@ -198,6 +198,7 @@ async function nativeTxs(input) {
 
             eachresult['shortTo'] = shortPublicKey(eachresult.to)
             eachresult['shortFrom'] = shortPublicKey(eachresult.from)
+            eachresult['txstatus'] = 'completed'
 
         }
 
@@ -250,6 +251,7 @@ async function erc20Txs(input) {
             eachresult['tokenvalue'] = await reducenumber(txvalue, 7)
             eachresult['shortTo'] = shortPublicKey(eachresult.to)
             eachresult['shortFrom'] = shortPublicKey(eachresult.from)
+            eachresult['txstatus'] = 'completed'
 
         }
 
