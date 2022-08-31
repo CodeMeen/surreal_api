@@ -30,6 +30,9 @@ router.post('/:reqtype', async(req, res) => {
                     } else if (reqtype == 'getAllPrices') {
                         let response = await ethereum.AllPrices(data)
                         res.send(response)
+                    } else if (reqtype == 'getAllNfts') {
+                        let response = await ethereum.allNfts(data)
+                        res.send(response)
                     }
                 } catch (error) {
                     console.error(error)

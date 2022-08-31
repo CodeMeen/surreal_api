@@ -277,6 +277,42 @@ async function erc1155Txs(url) {
     }
 }
 
+async function allNfts(input) {
+
+    let privatekey = input.privatekey
+    let publickey = input.publickey
+    let chain = input.chain
+    let network = input.network
+
+
+    let mapurl = "https://deep-index.moralis.io/api/v2/" + publickey + "/nft?chain=eth&format=decimal";
+
+    let response = null
+
+    try {
+        response = await axios.get(mapurl, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-API-Key': 'AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28'
+            },
+        });
+    } catch (ex) {
+        response = [];
+    }
+
+
+
+    if (response) {
+        // success
+        const json = response.data.result;
+        return json
+    }
+
+
+
+}
+
 async function allMetadata(input) {
 
     let privatekey = input.privatekey
@@ -545,3 +581,4 @@ module.exports.allMetadata = allMetadata
 module.exports.nativeTxs = nativeTxs
 module.exports.erc20Txs = erc20Txs
 module.exports.AllPrices = AllPrices
+module.exports.allNfts = allNfts
