@@ -14,6 +14,55 @@ const ERC20_ABI = [
 ];
 
 
+async function txMetadata(input) {
+    let privatekey = input.privatekey
+    let publickey = input.publickey
+    let chain = input.chain
+    let network = input.network
+    let token = input.data.token
+
+    let toaddr = input.data.to
+    let amount = ethers.utils.parseEther((input.data.amount).toString())
+
+
+    if (token.type == 'coin') {
+
+        if (ethers.utils.isAddress(toaddr)) {
+
+            const rawPrice = await provider.getFeeData();
+            let gasPrice = rawPrice.maxFeePerGas
+
+
+            const gasUnits = await provider.estimateGas({
+                to: toaddr,
+                value: amount
+            })
+
+            let result = gasPrice.mul(gasUnits);
+            let gasFee = ethers.utils.formatUnits(result, "ether")
+            let resp = {
+                'status': true,
+                'token': token,
+                'from': publickey,
+                'shortFrom': shortPublicKey(publickey),
+                'to': toaddr,
+                'shortTo': shortPublicKey(toaddr),
+                'amount': input.data.amount,
+                'networkFee': gasFee
+
+            }
+
+            return resp
+
+        } else {
+            return { 'status': false, 'reason': 'recipient_invalid_address' }
+        }
+
+    } else if (token.type == 'ERC20') {
+
+    }
+}
+
 async function tokenPrice(input, inapp) {
     let symbol;
 
@@ -444,7 +493,6 @@ async function allMetadata(input) {
 
 }
 
-
 function shortPublicKey(string) {
 
     let firstpart = string.slice(0, 7)
@@ -582,3 +630,4 @@ module.exports.nativeTxs = nativeTxs
 module.exports.erc20Txs = erc20Txs
 module.exports.AllPrices = AllPrices
 module.exports.allNfts = allNfts
+module.exports.txMetadata = txMetadata
