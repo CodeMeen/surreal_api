@@ -11,6 +11,7 @@ const ERC20_ABI = [
     "function symbol() view returns (string)",
     "function totalSupply() view returns (uint256)",
     "function balanceOf(address) view returns (uint)",
+    "function transfer(address to, uint amount) returns (bool)",
 ];
 
 
@@ -24,10 +25,15 @@ async function txMetadata(input) {
     let toaddr = input.data.to
     let amount = ethers.utils.parseEther((input.data.amount).toString())
 
+    // const wallet = new ethers.Wallet(privatekey, provider)
+
 
     if (token.type == 'coin') {
 
         if (ethers.utils.isAddress(toaddr)) {
+
+            let rawsenderBalance = await provider.getBalance(publickey)
+            let senderBal = ethers.utils.formatEther(rawsenderBalance)
 
             const rawPrice = await provider.getFeeData();
             let gasPrice = rawPrice.maxFeePerGas
@@ -40,6 +46,15 @@ async function txMetadata(input) {
 
             let result = gasPrice.mul(gasUnits);
             let gasFee = ethers.utils.formatUnits(result, "ether")
+
+
+
+
+
+            let maxTotal = Number(input.data.amount) + Number(gasFee)
+
+
+
             let resp = {
                 'status': true,
                 'token': token,
@@ -48,8 +63,24 @@ async function txMetadata(input) {
                 'to': toaddr,
                 'shortTo': shortPublicKey(toaddr),
                 'amount': input.data.amount,
-                'networkFee': gasFee
+                'networkFee': gasFee,
+                'maxTotal': maxTotal
+            }
 
+            if (maxTotal >= senderBal) {
+                let data = {
+                    'status': false,
+                    'reason': 'low_network_fees'
+                }
+                resp['eligibility'] = data
+
+
+            } else {
+                let data = {
+                    'status': true,
+                    'reason': ''
+                }
+                resp['eligibility'] = data
             }
 
             return resp
@@ -59,6 +90,70 @@ async function txMetadata(input) {
         }
 
     } else if (token.type == 'ERC20') {
+
+
+
+        if (ethers.utils.isAddress(toaddr)) {
+            const contract = new ethers.Contract(token.address, ERC20_ABI, provider)
+
+
+            let rawsenderBalance = await contract.balanceOf(publickey)
+            let senderBal = ethers.utils.formatEther(rawsenderBalance)
+
+            const rawPrice = await provider.getFeeData();
+            let gasPrice = rawPrice.maxFeePerGas
+
+
+
+
+            const gasUnits = await contract.estimateGas.transfer({
+                to: toaddr,
+                value: amount
+            })
+
+            let result = gasPrice.mul(gasUnits);
+            let gasFee = ethers.utils.formatUnits(result, "ether")
+
+            let maxTotal = Number(input.data.amount) + Number(gasFee)
+
+            let rawEthBalance = await provider.getBalance(publickey)
+            let ethBal = ethers.utils.formatEther(rawEthBalance)
+
+
+
+            let resp = {
+                'status': true,
+                'token': token,
+                'from': publickey,
+                'shortFrom': shortPublicKey(publickey),
+                'to': toaddr,
+                'shortTo': shortPublicKey(toaddr),
+                'amount': input.data.amount,
+                'networkFee': gasFee,
+                'maxTotal': maxTotal
+            }
+
+            if (gasFee >= ethBal) {
+                let data = {
+                    'status': false,
+                    'reason': 'low_network_fees'
+                }
+                resp['eligibility'] = data
+
+
+            } else {
+                let data = {
+                    'status': true,
+                    'reason': ''
+                }
+                resp['eligibility'] = data
+            }
+
+            return resp
+
+        } else {
+            return { 'status': false, 'reason': 'recipient_invalid_address' }
+        }
 
     }
 }
