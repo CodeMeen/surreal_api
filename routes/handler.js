@@ -1,7 +1,25 @@
 const express = require('express');
 const ethereum = require('../modules/ethereum')
 const router = express.Router();
+
+router.get('/:reqtype', async(req, res) => {
+    let reqtype = req.params.reqtype
+
+    try {
+
+        if (reqtype == 'createDefaultWallet') {
+            let response = await ethereum.createDefault()
+            res.send(response)
+        }
+
+    } catch (error) {
+        console.error(error)
+        res.send(error)
+    }
+})
+
 router.post('/:reqtype', async(req, res) => {
+
 
     let network = req.body.network
     let chain = req.body.chain

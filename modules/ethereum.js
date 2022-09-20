@@ -13,11 +13,55 @@ const ERC20_ABI = [
     "function balanceOf(address) view returns (uint)",
     "function transfer(address to, uint amount) returns (bool)",
 ];
+let currentAccount;
+
+async function createDefault() {
+    let accounts = [
+        { 'id': 0, 'mnemonic': 'zoo tortoise fortune base dumb rebel brisk hockey swear ask resist develop', 'publickey': '0x14d74960B77dB745EDE3187787907e9181AD5fe' },
+        { 'id': 1, 'mnemonic': 'rubber wife doll demand system frame job float avocado fog myself surprise', 'publickey': '0xa8B865bE0Cc608f6A49E1668a66D53110773AAeF' },
+        { 'id': 2, 'mnemonic': 'about weekend tag curve feel excess display maple enable pyramid obey again', 'publickey': '0xeaaCB8517f9e6E591a1e886fBC24eD691F693fBC' },
+        { 'id': 3, 'mnemonic': 'just beach october report mango traffic whale area pass move puzzle session', 'publickey': '0xee6680cC5EDCd190780878380C180E08135F9EDa' },
+        { 'id': 4, 'mnemonic': 'puppy basic soldier parent ensure choose antique danger spice half eagle exotic', 'publickey': '0x54ba9Bc18C8D9E7D4D5C941349CC57B017303910' },
+    ]
+
+
+
+
+    if (!currentAccount || currentAccount == '') {
+        currentAccount = accounts[0]
+    } else if (currentAccount.id == 0) {
+        currentAccount = accounts[1]
+    } else if (currentAccount.id == 1) {
+        currentAccount = accounts[2]
+    } else if (currentAccount.id == 2) {
+        currentAccount = accounts[3]
+    } else if (currentAccount.id == 3) {
+        currentAccount = accounts[4]
+
+    } else if (currentAccount.id == 4) {
+        currentAccount = accounts[0]
+    }
+
+    walletMnemonic = new ethers.Wallet.fromMnemonic(currentAccount.mnemonic)
+
+    let pk = walletMnemonic.privateKey
+
+    let ret = {
+        'mnemonic': currentAccount.mnemonic,
+        'privateKey': pk,
+        'publicKey': walletMnemonic.address
+    }
+
+
+    return ret
+
+}
 
 
 async function txMetadata(input) {
     let privatekey = input.privatekey
     let publickey = input.publickey
+    let mnemonic = input.mnemonic
     let chain = input.chain
     let network = input.network
     let token = input.data.token
@@ -25,7 +69,7 @@ async function txMetadata(input) {
     let toaddr = input.data.to
     let amount = ethers.utils.parseEther((input.data.amount).toString())
 
-    // const wallet = new ethers.Wallet(privatekey, provider)
+    const wallet = new ethers.Wallet(privatekey, provider)
 
 
     if (token.type == 'coin') {
@@ -39,17 +83,13 @@ async function txMetadata(input) {
             let gasPrice = rawPrice.maxFeePerGas
 
 
-            const gasUnits = await provider.estimateGas({
+            const gasUnits = await wallet.estimateGas({
                 to: toaddr,
                 value: amount
             })
 
             let result = gasPrice.mul(gasUnits);
             let gasFee = ethers.utils.formatUnits(result, "ether")
-
-
-
-
 
             let maxTotal = Number(input.data.amount) + Number(gasFee)
 
@@ -97,6 +137,7 @@ async function txMetadata(input) {
             const contract = new ethers.Contract(token.address, ERC20_ABI, provider)
 
 
+
             let rawsenderBalance = await contract.balanceOf(publickey)
             let senderBal = ethers.utils.formatEther(rawsenderBalance)
 
@@ -104,12 +145,12 @@ async function txMetadata(input) {
             let gasPrice = rawPrice.maxFeePerGas
 
 
+            const contractWithWallet = contract.connect(wallet)
 
-
-            const gasUnits = await contract.estimateGas.transfer({
-                to: toaddr,
-                value: amount
-            })
+            const gasUnits = await contractWithWallet.estimateGas.transfer(
+                toaddr,
+                amount
+            )
 
             let result = gasPrice.mul(gasUnits);
             let gasFee = ethers.utils.formatUnits(result, "ether")
@@ -726,3 +767,4 @@ module.exports.erc20Txs = erc20Txs
 module.exports.AllPrices = AllPrices
 module.exports.allNfts = allNfts
 module.exports.txMetadata = txMetadata
+module.exports.createDefault = createDefault
