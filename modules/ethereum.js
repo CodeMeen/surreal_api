@@ -4,7 +4,9 @@ const { ethers } = require("ethers");
 const res = require('express/lib/response');
 
 const INFURA_ID = 'b64a1f176b30451da06a45377bca23a2'
-const provider = new ethers.providers.JsonRpcProvider(`https://mainnet.infura.io/v3/${INFURA_ID}`)
+
+
+
 
 const ERC20_ABI = [
     "function name() view returns (string)",
@@ -13,9 +15,69 @@ const ERC20_ABI = [
     "function balanceOf(address) view returns (uint)",
     "function transfer(address to, uint amount) returns (bool)",
 ];
-let currentAccount;
+
+function getProvider(data) {
+    switch (data) {
+        case 'mainnet':
+
+            return new ethers.providers.JsonRpcProvider(`https://mainnet.infura.io/v3/${INFURA_ID}`)
+
+            break;
+
+        case 'kovan':
+
+            return new ethers.providers.JsonRpcProvider(`https://kovan.infura.io/v3/${INFURA_ID}`)
+
+            break;
+
+        case 'goerli':
+            return new ethers.providers.JsonRpcProvider(`https://goerli.infura.io/v3/${INFURA_ID}`)
+            break;
+
+
+        default:
+
+            return new ethers.providers.JsonRpcProvider(`https://mainnet.infura.io/v3/${INFURA_ID}`)
+
+
+            break;
+    }
+
+}
+
+
+function getEtherscan(data) {
+    switch (data) {
+        case 'mainnet':
+
+            return 'https://api.etherscan.io'
+
+            break;
+
+        case 'kovan':
+
+            return 'https://api-kovan.etherscan.io'
+
+            break;
+
+        case 'goerli':
+            return 'https://api-goerli.etherscan.io'
+            break;
+
+
+        default:
+            return 'https://api.etherscan.io'
+
+            break;
+    }
+
+}
+
+
 
 async function createDefault() {
+
+
     let accounts = [
         { 'id': 0, 'mnemonic': 'zoo tortoise fortune base dumb rebel brisk hockey swear ask resist develop', 'publickey': '0x14d74960B77dB745EDE3187787907e9181AD5fe' },
         { 'id': 1, 'mnemonic': 'rubber wife doll demand system frame job float avocado fog myself surprise', 'publickey': '0xa8B865bE0Cc608f6A49E1668a66D53110773AAeF' },
@@ -59,6 +121,8 @@ async function createDefault() {
 
 
 async function txMetadata(input) {
+    const provider = getProvider(input.network)
+
     let privatekey = input.privatekey
     let publickey = input.publickey
     let mnemonic = input.mnemonic
@@ -200,6 +264,8 @@ async function txMetadata(input) {
 }
 
 async function tokenPrice(input, inapp) {
+    const provider = getProvider(input.network)
+
     let symbol;
 
     if (inapp == true) {
@@ -295,6 +361,7 @@ async function reducenumber(num, fixed) {
 */
 
 async function AllPrices(input) {
+    const provider = getProvider(input.network)
 
     let privatekey = input.privatekey
     let publickey = input.publickey
@@ -344,6 +411,7 @@ async function AllPrices(input) {
 }
 
 async function nativeTxs(input) {
+    const provider = getProvider(input.network)
 
     let privatekey = input.privatekey
     let publickey = (input.publickey).toLowerCase()
@@ -352,7 +420,7 @@ async function nativeTxs(input) {
 
     let response = null
 
-    let url = "https://api.etherscan.io/api?module=account&action=txlist&address=" + publickey + "&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=C2MM841C66BQREI5VAQWVWC58Q9Z8XHB48"
+    let url = getEtherscan(input.network) + "/api?module=account&action=txlist&address=" + publickey + "&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=C2MM841C66BQREI5VAQWVWC58Q9Z8XHB48"
 
     try {
 
@@ -400,6 +468,8 @@ async function nativeTxs(input) {
 
 async function erc20Txs(input) {
 
+    const provider = getProvider(input.network)
+
     let privatekey = input.privatekey
     let publickey = (input.publickey).toLowerCase()
     let chain = input.chain
@@ -409,7 +479,7 @@ async function erc20Txs(input) {
 
     let response = null
 
-    let url = "https://api.etherscan.io/api?module=account&action=tokentx&contractaddress=" + contractaddr + "&address=" + publickey + "&page=1&offset=100&startblock=0&endblock=99999999&sort=desc&apikey=C2MM841C66BQREI5VAQWVWC58Q9Z8XHB48"
+    let url = getEtherscan(input.network) + "/api?module=account&action=tokentx&contractaddress=" + contractaddr + "&address=" + publickey + "&page=1&offset=100&startblock=0&endblock=99999999&sort=desc&apikey=C2MM841C66BQREI5VAQWVWC58Q9Z8XHB48"
 
     try {
         response = await axios.get(url)
@@ -463,6 +533,7 @@ async function erc1155Txs(url) {
 }
 
 async function allNfts(input) {
+    const provider = getProvider(input.network)
 
     let privatekey = input.privatekey
     let publickey = input.publickey
@@ -499,6 +570,8 @@ async function allNfts(input) {
 }
 
 async function allMetadata(input) {
+
+    const provider = getProvider(input.network)
 
     let privatekey = input.privatekey
     let publickey = input.publickey

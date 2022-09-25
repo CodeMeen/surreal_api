@@ -28,47 +28,45 @@ router.post('/:reqtype', async(req, res) => {
     let data = req.body
 
 
-    if (network == 'mainnet') {
-
-        switch (chain) {
-            case 'ethereum':
-                try {
-                    if (reqtype == 'getTokenPrice') {
-                        let response = await ethereum.tokenPrice(data);
-                        res.send(response)
-                    } else if (reqtype == 'getAllMetadata') {
-                        let response = await ethereum.allMetadata(data)
-                        res.send(response)
-                    } else if (reqtype == 'getTokenTxs') {
-                        let response = await ethereum.erc20Txs(data)
-                        res.send(response)
-                    } else if (reqtype == 'getNativeTxs') {
-                        let response = await ethereum.nativeTxs(data)
-                        res.send(response)
-                    } else if (reqtype == 'getAllPrices') {
-                        let response = await ethereum.AllPrices(data)
-                        res.send(response)
-                    } else if (reqtype == 'getAllNfts') {
-                        let response = await ethereum.allNfts(data)
-                        res.send(response)
-                    } else if (reqtype == 'getTxMetadata') {
-                        let response = await ethereum.txMetadata(data)
-                        res.send(response)
-                    }
-                } catch (error) {
-                    console.error(error)
-                    res.send(error)
+    switch (chain) {
+        case 'ethereum':
+            try {
+                if (reqtype == 'getTokenPrice') {
+                    let response = await ethereum.tokenPrice(data);
+                    res.send(response)
+                } else if (reqtype == 'getAllMetadata') {
+                    let response = await ethereum.allMetadata(data)
+                    res.send(response)
+                } else if (reqtype == 'getTokenTxs') {
+                    let response = await ethereum.erc20Txs(data)
+                    res.send(response)
+                } else if (reqtype == 'getNativeTxs') {
+                    let response = await ethereum.nativeTxs(data)
+                    res.send(response)
+                } else if (reqtype == 'getAllPrices') {
+                    let response = await ethereum.AllPrices(data)
+                    res.send(response)
+                } else if (reqtype == 'getAllNfts') {
+                    let response = await ethereum.allNfts(data)
+                    res.send(response)
+                } else if (reqtype == 'getTxMetadata') {
+                    let response = await ethereum.txMetadata(data)
+                    res.send(response)
                 }
+            } catch (error) {
+                console.error(error)
+                res.send(error)
+            }
 
 
-                break;
+            break;
 
-            default:
-                break;
-        }
-
-
+        default:
+            break;
     }
+
+
+
 
 
 })
