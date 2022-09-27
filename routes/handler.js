@@ -58,8 +58,8 @@ router.post('/:reqtype', async(req, res) => {
                     } else if (reqtype == 'sendNativeTx') {
                         let response = await ethereum.sendNativeTx(data)
                         res.send(response)
-                    } else if (reqtype == 'sendNativeTx') {
-                        let response = await ethereum.sendNativeTx(data)
+                    } else if (reqtype == 'sendErc20Tx') {
+                        let response = await ethereum.sendErc20Tx(data)
                         res.send(response)
                     }
                 } catch (error) {
