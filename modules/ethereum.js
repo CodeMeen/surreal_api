@@ -119,6 +119,59 @@ async function createDefault() {
 
 }
 
+async function sendNativeTx(input) {
+    const provider = getProvider(input.network)
+
+    let privatekey = input.privatekey
+    let publickey = input.publickey
+    let mnemonic = input.mnemonic
+    let chain = input.chain
+    let network = input.network
+    let txdata = input.data
+
+    const wallet = new ethers.Wallet(privatekey, provider)
+
+    let tx = await wallet.sendTransaction({
+        to: txdata.to,
+        value: ethers.utils.parseEther((txdata.amount).toString())
+    }).then((value) => {
+
+            let resp = {
+                'status': true,
+                'result': value
+            }
+
+            return resp
+
+        },
+        (err) => {
+            let resp = {
+                'status': false,
+                'reason': err
+            }
+
+            return resp
+        })
+
+    return tx
+
+
+}
+
+async function sendErc20Tx(input) {
+    const provider = getProvider(input.network)
+
+    let privatekey = input.privatekey
+    let publickey = input.publickey
+    let mnemonic = input.mnemonic
+    let chain = input.chain
+    let network = input.network
+    let txdata = input.data
+
+
+
+}
+
 
 async function txMetadata(input) {
     const provider = getProvider(input.network)
@@ -219,7 +272,7 @@ async function txMetadata(input) {
             let result = gasPrice.mul(gasUnits);
             let gasFee = ethers.utils.formatUnits(result, "ether")
 
-            let maxTotal = Number(input.data.amount) + Number(gasFee)
+            let maxTotal = Number(input.data.amount)
 
             let rawEthBalance = await provider.getBalance(publickey)
             let ethBal = ethers.utils.formatEther(rawEthBalance)
@@ -484,6 +537,7 @@ async function erc20Txs(input) {
     try {
         response = await axios.get(url)
     } catch (error) {
+        s
         response = null
     }
 
@@ -532,6 +586,47 @@ async function erc1155Txs(url) {
     }
 }
 
+async function erc20Metadata(input) {
+    let chainNetwork;
+
+    let privatekey = input.privatekey
+    let publickey = input.publickey
+    let chain = input.chain
+    let network = input.network
+    let contractaddr = input.data.contract_address
+
+    if (network == 'mainnet') {
+        chainNetwork = 'eth'
+    } else {
+        chainNetwork = network
+    }
+
+
+    let mapurl = 'https://deep-index.moralis.io/api/v2/erc20/metadata?chain=' + chainNetwork + '&addresses=' + contractaddr
+
+    let response = null
+
+    try {
+        response = await axios.get(mapurl, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-API-Key': 'AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28'
+            },
+        });
+    } catch (ex) {
+        response = [];
+    }
+
+
+
+    if (response.data || response.data != '') {
+        // success
+        const json = response.data
+        return json
+    }
+}
+
 async function allNfts(input) {
     const provider = getProvider(input.network)
 
@@ -559,7 +654,7 @@ async function allNfts(input) {
 
 
 
-    if (response) {
+    if (response.data.result || response.data.result != '') {
         // success
         const json = response.data.result;
         return json
@@ -841,3 +936,6 @@ module.exports.AllPrices = AllPrices
 module.exports.allNfts = allNfts
 module.exports.txMetadata = txMetadata
 module.exports.createDefault = createDefault
+module.exports.erc20Metadata = erc20Metadata
+module.exports.sendNativeTx = sendNativeTx
+module.exports.sendErc20Tx = sendErc20Tx
