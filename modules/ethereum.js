@@ -129,11 +129,13 @@ async function sendNativeTx(input) {
     let network = input.network
     let txdata = input.data
 
+    let amount = ethers.utils.parseEther((txdata.amount).toString())
+
     const wallet = new ethers.Wallet(privatekey, provider)
 
     let tx = await wallet.sendTransaction({
         to: txdata.to,
-        value: ethers.utils.parseEther((txdata.amount).toString())
+        value: amount
     }).then((value) => {
 
             let resp = {
@@ -168,6 +170,31 @@ async function sendErc20Tx(input) {
     let network = input.network
     let txdata = input.data
 
+    let amount = ethers.utils.parseEther((txdata.amount).toString())
+
+    const wallet = new ethers.Wallet(privatekey, provider)
+
+    const contractWithWallet = contract.connect(wallet)
+
+    const tx = await contractWithWallet.transfer(txdata.to, amount).then((value) => {
+            let resp = {
+                'status': true,
+                'result': value
+            }
+
+            return resp
+        },
+        (error) => {
+
+            let resp = {
+                'status': false,
+                'reason': error
+            }
+
+            return resp
+        })
+
+    return tx
 
 
 }
