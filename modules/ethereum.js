@@ -155,9 +155,13 @@ async function sendNativeTx(input) {
             resptx['gas'] = gasUsed
             resptx['gasPrice'] = gasPrice
             resptx['gasUsed'] = gasUsed
-            resptx['type'] = txtype
+            resptx['type'] = 'sending'
             resptx['txstatus'] = txtype
             resptx['tokenvalue'] = txvalue
+            resptx['shortFrom'] = shortPublicKey(txfrom)
+            resptx['shortTo'] = shortPublicKey(txto)
+
+
 
 
 
@@ -222,10 +226,12 @@ async function sendErc20Tx(input) {
             resptx['gas'] = gasUsed
             resptx['gasPrice'] = gasPrice
             resptx['gasUsed'] = gasUsed
-            resptx['type'] = txtype
+            resptx['type'] = 'sending'
             resptx['txstatus'] = txtype
             resptx['tokenvalue'] = txvalue
             resptx['contractAddress'] = txdata.token.address
+            resptx['shortFrom'] = shortPublicKey(txfrom)
+            resptx['shortTo'] = shortPublicKey(txto)
 
 
 
