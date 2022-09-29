@@ -143,7 +143,36 @@ async function sendNativeTx(input) {
                 'result': value
             }
 
-            return resp
+            let newtx = {
+                "blockNumber": "",
+                "timeStamp": "",
+                "hash": "",
+                "nonce": "",
+                "blockHash": "",
+                "transactionIndex": "",
+                "from": "",
+                "to": "",
+                "value": "",
+                "gas": "",
+                "gasPrice": "",
+                "isError": "",
+                "txreceipt_status": "",
+                "input": "0x",
+                "contractAddress": "",
+                "cumulativeGasUsed": "",
+                "gasUsed": "",
+                "confirmations": "",
+                "methodId": "0x",
+                "functionName": "",
+                "type": "",
+                "tokenvalue": "",
+                "shortTo": "",
+                "shortFrom": "",
+                "txstatus": "completed"
+            }
+
+            let rawgasprice = ethers.utils.formatEther(value.maxPriorityFeePerGas)
+            let rawgas = ethers.utils.formatEther(value.)
 
         },
         (err) => {
@@ -173,6 +202,8 @@ async function sendErc20Tx(input) {
     let amount = ethers.utils.parseEther((txdata.amount).toString())
 
     const wallet = new ethers.Wallet(privatekey, provider)
+
+    const contract = new ethers.Contract(txdata.token.address, ERC20_ABI, provider)
 
     const contractWithWallet = contract.connect(wallet)
 
