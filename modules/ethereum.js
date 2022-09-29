@@ -171,8 +171,11 @@ async function sendNativeTx(input) {
                 "txstatus": "completed"
             }
 
-            let rawgasprice = ethers.utils.formatEther(value.maxPriorityFeePerGas)
-            let rawgas = ethers.utils.formatEther(value.)
+            let gasUsed = ethers.utils.formatEther(value.gasLimit)
+            let gasPrice = ethers.utils.formatEther(value.maxPriorityFeePerGas)
+            let toaddr = txdata.to
+            let txtype = 'pending'
+            let txvalue = ethers.utils.formatEther(value.value)
 
         },
         (err) => {
