@@ -138,44 +138,38 @@ async function sendNativeTx(input) {
         value: amount
     }).then((value) => {
 
-            let resp = {
-                'status': true,
-                'result': value
-            }
+            let resptx = value
 
-            let newtx = {
-                "blockNumber": "",
-                "timeStamp": "",
-                "hash": "",
-                "nonce": "",
-                "blockHash": "",
-                "transactionIndex": "",
-                "from": "",
-                "to": "",
-                "value": "",
-                "gas": "",
-                "gasPrice": "",
-                "isError": "",
-                "txreceipt_status": "",
-                "input": "0x",
-                "contractAddress": "",
-                "cumulativeGasUsed": "",
-                "gasUsed": "",
-                "confirmations": "",
-                "methodId": "0x",
-                "functionName": "",
-                "type": "",
-                "tokenvalue": "",
-                "shortTo": "",
-                "shortFrom": "",
-                "txstatus": "completed"
-            }
-
-            let gasUsed = ethers.utils.formatEther(value.gasLimit)
-            let gasPrice = ethers.utils.formatEther(value.maxPriorityFeePerGas)
-            let toaddr = txdata.to
+            let gasUsed = value.gasLimit.toNumber();
+            let gasPrice = value.maxPriorityFeePerGas.toNumber();
+            let txto = txdata.to
+            let txfrom = txdata.from
             let txtype = 'pending'
             let txvalue = ethers.utils.formatEther(value.value)
+            let txtimestamp = Date.now()
+
+            resptx['timeStamp'] = txtimestamp
+            resptx['from'] = txfrom
+            resptx['to'] = txto
+            resptx['value'] = txvalue
+            resptx['gas'] = gasUsed
+            resptx['gasPrice'] = gasPrice
+            resptx['gasUsed'] = gasUsed
+            resptx['type'] = txtype
+            resptx['txstatus'] = txtype
+            resptx['tokenvalue'] = txvalue
+
+
+
+
+
+            let resp = {
+                'status': true,
+                'result': resptx
+            }
+
+            return resp
+
 
         },
         (err) => {
@@ -211,9 +205,34 @@ async function sendErc20Tx(input) {
     const contractWithWallet = contract.connect(wallet)
 
     const tx = await contractWithWallet.transfer(txdata.to, amount).then((value) => {
+            let resptx = value
+
+            let gasUsed = ethers.utils.formatEther(value.gasLimit)
+            let gasPrice = ethers.utils.formatEther(value.maxPriorityFeePerGas)
+            let txto = txdata.to
+            let txfrom = txdata.from
+            let txtype = 'pending'
+            let txvalue = ethers.utils.formatEther(value.value)
+            let txtimestamp = Date.now()
+
+            resptx['timeStamp'] = txtimestamp
+            resptx['from'] = txfrom
+            resptx['to'] = txto
+            resptx['value'] = txvalue
+            resptx['gas'] = gasUsed
+            resptx['gasPrice'] = gasPrice
+            resptx['gasUsed'] = gasUsed
+            resptx['type'] = txtype
+            resptx['txstatus'] = txtype
+            resptx['tokenvalue'] = txvalue
+            resptx['contractAddress'] = txdata.token.address
+
+
+
+
             let resp = {
                 'status': true,
-                'result': value
+                'result': resptx
             }
 
             return resp
@@ -245,7 +264,8 @@ async function txMetadata(input) {
     let token = input.data.token
 
     let toaddr = input.data.to
-    let amount = ethers.utils.parseEther((input.data.amount).toString())
+    let rawamount = await reducenumber(input.data.amount, 11)
+    let amount = ethers.utils.parseEther(rawamount.toString())
 
     const wallet = new ethers.Wallet(privatekey, provider)
 
