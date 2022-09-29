@@ -211,8 +211,8 @@ async function sendErc20Tx(input) {
     const tx = await contractWithWallet.transfer(txdata.to, amount).then((value) => {
             let resptx = value
 
-            let gasUsed = ethers.utils.formatEther(value.gasLimit)
-            let gasPrice = ethers.utils.formatEther(value.maxPriorityFeePerGas)
+            let gasUsed = value.gasLimit.toNumber();
+            let gasPrice = value.maxPriorityFeePerGas.toNumber();
             let txto = txdata.to
             let txfrom = txdata.from
             let txtype = 'pending'
