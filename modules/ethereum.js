@@ -264,7 +264,7 @@ async function txMetadata(input) {
     let token = input.data.token
 
     let toaddr = input.data.to
-    let rawamount = await reducenumber(input.data.amount, 11)
+    let rawamount = await reducenumber(input.data.amount, 14)
     let amount = ethers.utils.parseEther(rawamount.toString())
 
     const wallet = new ethers.Wallet(privatekey, provider)
@@ -300,7 +300,7 @@ async function txMetadata(input) {
                 'shortFrom': shortPublicKey(publickey),
                 'to': toaddr,
                 'shortTo': shortPublicKey(toaddr),
-                'amount': input.data.amount,
+                'amount': rawamount,
                 'networkFee': gasFee,
                 'maxTotal': maxTotal
             }
@@ -367,7 +367,7 @@ async function txMetadata(input) {
                 'shortFrom': shortPublicKey(publickey),
                 'to': toaddr,
                 'shortTo': shortPublicKey(toaddr),
-                'amount': input.data.amount,
+                'amount': rawamount,
                 'networkFee': gasFee,
                 'maxTotal': maxTotal
             }
