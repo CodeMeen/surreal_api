@@ -6,7 +6,7 @@ const res = require('express/lib/response');
 const INFURA_ID = 'b64a1f176b30451da06a45377bca23a2'
 
 
-
+let currentAccount;
 
 const ERC20_ABI = [
     "function name() view returns (string)",
