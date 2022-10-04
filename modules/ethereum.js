@@ -617,15 +617,15 @@ async function erc20Txs(input) {
 
     let contractaddr = input.data.contractaddr
 
-    let response = null
+    let response = []
 
     let url = getEtherscan(input.network) + "/api?module=account&action=tokentx&contractaddress=" + contractaddr + "&address=" + publickey + "&page=1&offset=100&startblock=0&endblock=99999999&sort=desc&apikey=C2MM841C66BQREI5VAQWVWC58Q9Z8XHB48"
 
     try {
         response = await axios.get(url)
     } catch (error) {
-        s
-        response = null
+
+        response = []
     }
 
 
