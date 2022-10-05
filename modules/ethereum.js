@@ -147,7 +147,7 @@ async function sendNativeTx(input) {
             let txto = txdata.to
             let txfrom = txdata.from
             let txtype = 'pending'
-            let txvalue = value.value.toNumber()
+            let txvalue = ethers.utils.formatEther(value.value)
             let txtimestamp = Date.now()
 
             resptx['timeStamp'] = txtimestamp
@@ -222,7 +222,7 @@ async function sendErc20Tx(input) {
             let txto = txdata.to
             let txfrom = txdata.from
             let txtype = 'pending'
-            let txvalue = value.value.toNumber()
+            let txvalue = ethers.utils.formatEther(value.value)
             let txtimestamp = Date.now()
 
             resptx['timeStamp'] = txtimestamp
