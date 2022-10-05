@@ -153,13 +153,13 @@ async function sendNativeTx(input) {
             resptx['timeStamp'] = txtimestamp
             resptx['from'] = txfrom
             resptx['to'] = txto
-            resptx['value'] = txvalue
+            resptx['value'] = txdata.amount
             resptx['gas'] = gasUsed
             resptx['gasPrice'] = gasPrice
             resptx['gasUsed'] = gasUsed
             resptx['type'] = 'sending'
             resptx['txstatus'] = txtype
-            resptx['tokenvalue'] = txvalue
+            resptx['tokenvalue'] = txdata.amount
             resptx['shortFrom'] = shortPublicKey(txfrom)
             resptx['shortTo'] = shortPublicKey(txto)
 
@@ -212,9 +212,6 @@ async function sendErc20Tx(input) {
 
     const tx = await contractWithWallet.transfer(txdata.to, amount).then((value) => {
 
-            console.log(value)
-
-
             let resptx = value
 
             let gasUsed = value.gasLimit.toNumber();
@@ -228,13 +225,13 @@ async function sendErc20Tx(input) {
             resptx['timeStamp'] = txtimestamp
             resptx['from'] = txfrom
             resptx['to'] = txto
-            resptx['value'] = txvalue
+            resptx['value'] = txdata.amount
             resptx['gas'] = gasUsed
             resptx['gasPrice'] = gasPrice
             resptx['gasUsed'] = gasUsed
             resptx['type'] = 'sending'
             resptx['txstatus'] = txtype
-            resptx['tokenvalue'] = txvalue
+            resptx['tokenvalue'] = txdata.amount
             resptx['contractAddress'] = txdata.token.address
             resptx['shortFrom'] = shortPublicKey(txfrom)
             resptx['shortTo'] = shortPublicKey(txto)
