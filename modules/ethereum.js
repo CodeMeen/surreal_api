@@ -138,8 +138,6 @@ async function sendNativeTx(input) {
         value: amount
     }).then((value) => {
 
-            console.log(value)
-
             let resptx = value
 
             let gasUsed = value.gasLimit.toNumber();
