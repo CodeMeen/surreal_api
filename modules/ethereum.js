@@ -138,6 +138,8 @@ async function sendNativeTx(input) {
         value: amount
     }).then((value) => {
 
+            console.log(value)
+
             let resptx = value
 
             let gasUsed = value.gasLimit.toNumber();
@@ -145,7 +147,7 @@ async function sendNativeTx(input) {
             let txto = txdata.to
             let txfrom = txdata.from
             let txtype = 'pending'
-            let txvalue = ethers.utils.formatEther(value.value)
+            let txvalue = value.value.toNumber()
             let txtimestamp = Date.now()
 
             resptx['timeStamp'] = txtimestamp
@@ -209,6 +211,10 @@ async function sendErc20Tx(input) {
     const contractWithWallet = contract.connect(wallet)
 
     const tx = await contractWithWallet.transfer(txdata.to, amount).then((value) => {
+
+            console.log(value)
+
+
             let resptx = value
 
             let gasUsed = value.gasLimit.toNumber();
@@ -216,7 +222,7 @@ async function sendErc20Tx(input) {
             let txto = txdata.to
             let txfrom = txdata.from
             let txtype = 'pending'
-            let txvalue = ethers.utils.formatEther(value.value)
+            let txvalue = value.value.toNumber()
             let txtimestamp = Date.now()
 
             resptx['timeStamp'] = txtimestamp
@@ -625,11 +631,11 @@ async function erc20Txs(input) {
         response = await axios.get(url)
     } catch (error) {
 
-        response = []
+        response = null
     }
 
 
-    if (response.data.status == '0') {
+    if (!response || response.data.status == '0') {
         return []
     } else {
         let result = response.data.result
@@ -736,18 +742,17 @@ async function allNfts(input) {
             },
         });
     } catch (ex) {
-        response = [];
+        response = null;
     }
 
 
-
-    if (response.data.result || response.data.result != '') {
+    if (!response) {
+        return []
+    } else if (response.data.result || response.data.result != '') {
         // success
         const json = response.data.result;
         return json
     }
-
-
 
 }
 
