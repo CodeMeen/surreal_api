@@ -10,6 +10,10 @@ router.get('/:reqtype', async(req, res) => {
         if (reqtype == 'createDefaultWallet') {
             let response = await ethereum.createDefault()
             res.send(response)
+        } else {
+            res.type('text/plain');
+            res.status(404);
+            res.send('404 - Not Found');
         }
 
     } catch (error) {
@@ -27,7 +31,9 @@ router.post('/:reqtype', async(req, res) => {
     let reqtype = req.params.reqtype
     let data = req.body
 
-    if (data) {
+
+
+    if (data.chain) {
         switch (chain) {
             case 'ethereum':
                 try {
@@ -61,6 +67,13 @@ router.post('/:reqtype', async(req, res) => {
                     } else if (reqtype == 'sendErc20Tx') {
                         let response = await ethereum.sendErc20Tx(data)
                         res.send(response)
+                    } else if (reqtype == 'getErc20TokensInWallet') {
+                        let response = await ethereum.erc20TokensInWallet(data)
+                        res.send(response)
+                    } else {
+                        res.type('text/plain');
+                        res.status(404);
+                        res.send('404 - Not Found');
                     }
                 } catch (error) {
                     console.error(error)
@@ -73,6 +86,8 @@ router.post('/:reqtype', async(req, res) => {
             default:
                 break;
         }
+    } else {
+        res.send({ 'status': 'error', 'reason': 'Not Authorized' })
     }
 
 

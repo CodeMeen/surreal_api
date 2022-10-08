@@ -75,6 +75,7 @@ function getEtherscan(data) {
 
 
 
+
 async function createDefault() {
 
 
@@ -703,28 +704,35 @@ async function erc20Metadata(input) {
             },
         });
     } catch (ex) {
-        response = [];
+        response = null;
     }
 
-
-
-    if (response.data || response.data != '') {
+    if (!response) {
+        return []
+    } else if (response.data || response.data != '') {
         // success
         const json = response.data
         return json
+    } else {
+        return []
     }
 }
 
 async function allNfts(input) {
-    const provider = getProvider(input.network)
+    let chainNetwork;
 
     let privatekey = input.privatekey
     let publickey = input.publickey
     let chain = input.chain
     let network = input.network
 
+    if (network == 'mainnet') {
+        chainNetwork = 'eth'
+    } else {
+        chainNetwork = network
+    }
 
-    let mapurl = "https://deep-index.moralis.io/api/v2/" + publickey + "/nft?chain=eth&format=decimal";
+    let mapurl = "https://deep-index.moralis.io/api/v2/" + publickey + "/nft?chain=" + chainNetwork + "&format=decimal";
 
     let response = null
 
@@ -747,7 +755,53 @@ async function allNfts(input) {
         // success
         const json = response.data.result;
         return json
+    } else {
+        return []
     }
+
+}
+
+async function erc20TokensInWallet(input) {
+    let chainNetwork;
+
+    let privatekey = input.privatekey
+    let publickey = input.publickey
+    let chain = input.chain
+    let network = input.network
+
+    if (network == 'mainnet') {
+        chainNetwork = 'eth'
+    } else {
+        chainNetwork = network
+    }
+
+    let mapurl = "https://deep-index.moralis.io/api/v2/" + publickey + "/erc20?chain=" + chainNetwork;
+
+    let response = null
+
+    try {
+        response = await axios.get(mapurl, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-API-Key': 'AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28'
+            },
+        });
+    } catch (ex) {
+        response = null;
+    }
+
+    if (!response) {
+        return []
+    } else if (response.data.result || response.data.result != '') {
+        // success
+        const json = response.data;
+        return json
+    } else {
+        return []
+    }
+
+
 
 }
 
@@ -900,120 +954,6 @@ function shortPublicKey(string) {
 
 
 
-/* async function walletMetadata(input) {
-    let privatekey = input.privatekey
-    let publickey = input.publickey
-    let chain = input.chain
-    let network = input.network
-
-    let chaindata = alltokens.load(network, chain);
-
-    let chainsymbol = chaindata.symbol
-    let coinbalance = ''
-    let resdata = {}
-
-    try {
-        const getbal = await provider.getBalance(publickey)
-        coinbalance = ethers.utils.formatEther(getbal)
-    } catch (error) {
-        coinbalance = ''
-        return error
-    }
-
-
-    if (coinbalance != '') {
-
-        try {
-            let pricedata = await tokenPrice('ETH', true)
-
-            let usdprice = pricedata.price
-
-            let usdbalance = coinbalance * usdprice
-
-            resdata = {
-                'chain': chain,
-                'network': network,
-                'balance': coinbalance,
-                'usdbalance': usdbalance,
-                'tokens': [],
-                'status': true
-            }
-
-        } catch (error) {
-
-            resdata = {
-                'chain': chain,
-                'network': network,
-                'tokens': [],
-                'status': false,
-                'error': error
-            }
-
-        }
-
-
-
-        let tokens = chaindata.tokens
-        let subtokens = []
-
-        for (let index = 0; index < tokens.length; index++) {
-            const eachtoken = tokens[index];
-            const contractaddr = eachtoken.address
-
-            try {
-
-                console.log(contractaddr)
-
-                const contract = new ethers.Contract(contractaddr, ERC20_ABI, provider)
-
-                const rawbal = await contract.balanceOf(publickey)
-                const bal = ethers.utils.formatEther(rawbal)
-
-                let subpricedata = await tokenPrice((eachtoken.symbol).toUpperCase(), true)
-                let subusdprice = subpricedata.price
-
-                let usdbal = bal * subusdprice
-
-                let newobj = {
-                    'contractaddr': contractaddr,
-                    'balance': bal,
-                    'usdbalance': usdbal,
-                    'status': true
-                }
-
-                subtokens.push(newobj)
-
-            } catch (error) {
-
-                let newobj = {
-                    'contractaddr': contractaddr,
-                    'status': false,
-                    'error': error
-                }
-
-                subtokens.push(newobj)
-
-            }
-
-        }
-
-
-        resdata.tokens = subtokens
-
-        return resdata
-
-
-    }
-
-
-
-}
-
-*/
-
-
-
-
 
 module.exports.tokenPrice = tokenPrice
 module.exports.allMetadata = allMetadata
@@ -1026,3 +966,4 @@ module.exports.createDefault = createDefault
 module.exports.erc20Metadata = erc20Metadata
 module.exports.sendNativeTx = sendNativeTx
 module.exports.sendErc20Tx = sendErc20Tx
+module.exports.erc20TokensInWallet = erc20TokensInWallet
