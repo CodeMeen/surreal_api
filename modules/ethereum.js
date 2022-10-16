@@ -16,6 +16,11 @@ const ERC20_ABI = [
     "function transfer(address to, uint amount) returns (bool)",
 ];
 
+const ERC721_ABI=[
+    "function balanceOf(address _owner) external view returns (uint256)",
+    "function transferFrom(address _from, address _to, uint256 _tokenId) external payable"
+]
+
 function getProvider(data) {
     switch (data) {
         case 'mainnet':
@@ -181,6 +186,77 @@ async function sendNativeTx(input) {
             let resp = {
                 'status': false,
                 'reason': err
+            }
+
+            return resp
+        })
+
+    return tx
+
+
+}
+
+
+async function sendErc721Tx(input) {
+    const provider = getProvider(input.network)
+
+    let privatekey = input.privatekey
+    let publickey = input.publickey
+    let mnemonic = input.mnemonic
+    let chain = input.chain
+    let network = input.network
+    let txdata = input.data
+
+
+    // "function transferFrom(address _from, address _to, uint256 _tokenId) external payable"
+
+    const wallet = new ethers.Wallet(privatekey, provider)
+
+    const contract = new ethers.Contract(txdata.token.address, ERC721_ABI, provider)
+
+    const contractWithWallet = contract.connect(wallet)
+
+    const tx = await contractWithWallet.transferFrom(txdata.from,txdata.to,txdata.token.token_id).then((value) => {
+
+            let resptx = value
+
+            let gasUsed = value.gasLimit.toNumber();
+            let gasPrice = value.maxPriorityFeePerGas.toNumber();
+            let txto = txdata.to
+            let txfrom = txdata.from
+            let txtype = 'pending'
+            let txtimestamp = Date.now()
+
+            resptx['timeStamp'] = txtimestamp
+            resptx['from'] = txfrom
+            resptx['to'] = txto
+            resptx['gas'] = gasUsed
+            resptx['gasPrice'] = gasPrice
+            resptx['gasUsed'] = gasUsed
+            resptx['type'] = 'sending'
+            resptx['txstatus'] = txtype
+            resptx['contractAddress'] = txdata.token.address
+            resptx['tokentype']='erc721'
+            resptx['tokenid']=txdata.token.token_id
+            resptx['tokenaddr']=txdata.token.token_id
+            resptx['shortFrom'] = shortPublicKey(txfrom)
+            resptx['shortTo'] = shortPublicKey(txto)
+
+
+
+
+            let resp = {
+                'status': true,
+                'result': resptx
+            }
+
+            return resp
+        },
+        (error) => {
+
+            let resp = {
+                'status': false,
+                'reason': error
             }
 
             return resp
@@ -966,4 +1042,5 @@ module.exports.createDefault = createDefault
 module.exports.erc20Metadata = erc20Metadata
 module.exports.sendNativeTx = sendNativeTx
 module.exports.sendErc20Tx = sendErc20Tx
+module.exports.sendErc721Tx= sendErc721Tx
 module.exports.erc20TokensInWallet = erc20TokensInWallet
