@@ -210,6 +210,8 @@ async function sendErc721Tx(input) {
 
     // "function transferFrom(address _from, address _to, uint256 _tokenId) external payable"
 
+    if (ethers.utils.isAddress(txdata.to)) {
+
     const wallet = new ethers.Wallet(privatekey, provider)
 
     const contract = new ethers.Contract(txdata.token.token_address, ERC721_ABI, provider)
@@ -262,8 +264,11 @@ async function sendErc721Tx(input) {
             return resp
         })
 
-    return tx
+        return tx
 
+    }else{
+        return { 'status': false, 'reason': 'recipient_invalid_address' }
+    }
 
 }
 
