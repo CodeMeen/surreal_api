@@ -923,7 +923,20 @@ async function allMetadata(input) {
 
                 let usdprice = pricedata.price
 
+                //if(bal)
+
+               // let string = await bal.toString()
+
+                //if (string.length <= 11) {
+               // }
+            
+                   
+
                 let usdbal = await (bal * usdprice)
+
+                console.log('Bal'+bal)
+                console.log('Usd Price'+usdprice)
+                console.log('Usd Bal'+usdbal)
 
                 let newobj = {
                     'type': 'chain',
