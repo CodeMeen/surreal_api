@@ -212,7 +212,7 @@ async function sendErc721Tx(input) {
 
     const wallet = new ethers.Wallet(privatekey, provider)
 
-    const contract = new ethers.Contract(txdata.token.address, ERC721_ABI, provider)
+    const contract = new ethers.Contract(txdata.token.token_address, ERC721_ABI, provider)
 
     const contractWithWallet = contract.connect(wallet)
 
@@ -235,10 +235,10 @@ async function sendErc721Tx(input) {
             resptx['gasUsed'] = gasUsed
             resptx['type'] = 'sending'
             resptx['txstatus'] = txtype
-            resptx['contractAddress'] = txdata.token.address
+            resptx['contractAddress'] = txdata.token.token_address
             resptx['tokentype']='erc721'
-            resptx['tokenid']=txdata.token.token_id
-            resptx['tokenaddr']=txdata.token.token_id
+            resptx['token_id']=txdata.token.token_id
+            resptx['token_address']=txdata.token.token_address
             resptx['shortFrom'] = shortPublicKey(txfrom)
             resptx['shortTo'] = shortPublicKey(txto)
 
