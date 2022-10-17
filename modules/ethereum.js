@@ -923,12 +923,9 @@ async function allMetadata(input) {
 
                 let usdprice = pricedata.price
 
-                //if(bal)
-
-               // let string = await bal.toString()
-
-                //if (string.length <= 11) {
-               // }
+              if(bal <= 0.000001){
+                  bal =0.0
+              }
             
                    
 
@@ -989,6 +986,10 @@ async function allMetadata(input) {
 
 
                 let subusdprice = subpricedata.price
+
+                if(bal <= 0.000001){
+                    bal =0.0
+                }
 
                 let usdbal = await (bal * subusdprice)
 
