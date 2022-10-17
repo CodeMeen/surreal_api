@@ -272,6 +272,82 @@ async function sendErc721Tx(input) {
 
 }
 
+
+async function sendErc1155Tx(input) {
+    const provider = getProvider(input.network)
+
+    let privatekey = input.privatekey
+    let publickey = input.publickey
+    let mnemonic = input.mnemonic
+    let chain = input.chain
+    let network = input.network
+    let txdata = input.data
+
+
+    // "function transferFrom(address _from, address _to, uint256 _tokenId) external payable"
+
+    if (ethers.utils.isAddress(txdata.to)) {
+
+    const wallet = new ethers.Wallet(privatekey, provider)
+
+    const contract = new ethers.Contract(txdata.token.token_address, ERC721_ABI, provider)
+
+    const contractWithWallet = contract.connect(wallet)
+
+    const tx = await contractWithWallet.transferFrom(txdata.from,txdata.to,txdata.token.token_id).then((value) => {
+
+            let resptx = value
+
+            let gasUsed = value.gasLimit.toNumber();
+            let gasPrice = value.maxPriorityFeePerGas.toNumber();
+            let txto = txdata.to
+            let txfrom = txdata.from
+            let txtype = 'pending'
+            let txtimestamp = Date.now()
+
+            resptx['timeStamp'] = txtimestamp
+            resptx['from'] = txfrom
+            resptx['to'] = txto
+            resptx['gas'] = gasUsed
+            resptx['gasPrice'] = gasPrice
+            resptx['gasUsed'] = gasUsed
+            resptx['type'] = 'sending'
+            resptx['txstatus'] = txtype
+            resptx['contractAddress'] = txdata.token.token_address
+            resptx['tokentype']='erc1155'
+            resptx['token_id']=txdata.token.token_id
+            resptx['token_address']=txdata.token.token_address
+            resptx['shortFrom'] = shortPublicKey(txfrom)
+            resptx['shortTo'] = shortPublicKey(txto)
+
+
+
+
+            let resp = {
+                'status': true,
+                'result': resptx
+            }
+
+            return resp
+        },
+        (error) => {
+
+            let resp = {
+                'status': false,
+                'reason': error
+            }
+
+            return resp
+        })
+
+        return tx
+
+    }else{
+        return { 'status': false, 'reason': 'recipient_invalid_address' }
+    }
+
+}
+
 async function sendErc20Tx(input) {
     const provider = getProvider(input.network)
 
@@ -1063,3 +1139,4 @@ module.exports.sendNativeTx = sendNativeTx
 module.exports.sendErc20Tx = sendErc20Tx
 module.exports.sendErc721Tx= sendErc721Tx
 module.exports.erc20TokensInWallet = erc20TokensInWallet
+module.exports.sendErc1155Tx= sendErc1155Tx
