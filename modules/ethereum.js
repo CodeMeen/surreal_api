@@ -816,21 +816,91 @@ async function erc20Txs(input) {
     }
 }
 
-async function erc721Txs(url) {
+async function NftTxs(input) {
+    const provider = getProvider(input.network)
+
+    let privatekey = input.privatekey
+    let publickey = (input.publickey).toLowerCase()
+    let chain = input.chain
+    let network = input.network
+
+    
+
+    if (network == 'mainnet') {
+        chainNetwork = 'eth'
+    } else {
+        chainNetwork = network
+    }
+
+    let mapurl=`https://deep-index.moralis.io/api/v2/${publickey}/nft/transfers?chain=${chainNetwork}&format=decimal&direction=both`;
+
+    let response = null
+
     try {
+        response = await axios.get(mapurl, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-API-Key': 'AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28'
+            },
+        });
+    } catch (ex) {
+        response = null;
+    }
 
-    } catch (error) {
+    if (!response) {
+        return []
+    } else if (response.data || response.data != '') {
+        let rest=response.data.result
+        let newarr=[]
 
+        let contractaddr = input.data.contractaddr
+
+          if(contractaddr){
+
+            if(rest > 0) {
+                newarr=rest.filter(function(data){
+                    return data.token_address == contractaddr
+                })
+            }else{
+                newarr=[]
+            }
+       
+          
+          }else{
+
+            if(rest > 0) {
+                newarr=rest
+            }else{
+                 newarr=[]
+            }
+          }
+
+
+        // success
+        let json =newarr
+
+        for (let index = 0; index < json.length; index++) {
+            const eachresult = json[index];
+            if (eachresult.to_address == publickey) {
+                eachresult['type'] = 'receiving'
+            } else {
+                eachresult['type'] = 'sending'
+            }
+
+            eachresult['shortTo'] = shortPublicKey(eachresult.to_address)
+            eachresult['shortFrom'] = shortPublicKey(eachresult.from_address)
+            eachresult['txstatus'] = 'completed'
+
+        }
+
+        return json
+    } else {
+        return []
     }
 }
 
-async function erc1155Txs(url) {
-    try {
 
-    } catch (error) {
-
-    }
-}
 
 async function erc20Metadata(input) {
     let chainNetwork;
@@ -1007,10 +1077,7 @@ async function allMetadata(input) {
 
                 let usdbal = await (bal * usdprice)
 
-                console.log('Bal'+bal)
-                console.log('Usd Price'+usdprice)
-                console.log('Usd Bal'+usdbal)
-
+               
                 let newobj = {
                     'type': 'chain',
                     'chain': chain,
@@ -1140,3 +1207,4 @@ module.exports.sendErc20Tx = sendErc20Tx
 module.exports.sendErc721Tx= sendErc721Tx
 module.exports.erc20TokensInWallet = erc20TokensInWallet
 module.exports.sendErc1155Tx= sendErc1155Tx
+module.exports.NftTxs=NftTxs
