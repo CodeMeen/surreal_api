@@ -851,14 +851,17 @@ async function NftTxs(input) {
     if (!response) {
         return []
     } else if (response.data || response.data != '') {
+
+     
         let rest=response.data.result
         let newarr=[]
+      
 
         let contractaddr = input.data.contractaddr
 
           if(contractaddr){
 
-            if(rest > 0) {
+            if(rest.length > 0) {
                 newarr=rest.filter(function(data){
                     return data.token_address == contractaddr
                 })
@@ -869,7 +872,7 @@ async function NftTxs(input) {
           
           }else{
 
-            if(rest > 0) {
+            if(rest.length > 0) {
                 newarr=rest
             }else{
                  newarr=[]

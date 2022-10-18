@@ -73,6 +73,10 @@ router.post('/:reqtype', async(req, res) => {
                     } else if (reqtype == 'sendErc721Tx') {
                         let response = await ethereum.sendErc721Tx(data)
                         res.send(response)
+                    } else if (reqtype == 'nftTxs') {
+                        let response = await ethereum.NftTxs(data)
+                        res.send(response)
+
                     } else {
                         res.type('text/plain');
                         res.status(404);
