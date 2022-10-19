@@ -883,6 +883,8 @@ async function NftTxs(input) {
         // success
         let json =newarr
 
+        let imageArr=[]
+
         for (let index = 0; index < json.length; index++) {
             const eachresult = json[index];
             if (eachresult.to_address == publickey) {
@@ -895,6 +897,31 @@ async function NftTxs(input) {
             eachresult['shortFrom'] = shortPublicKey(eachresult.from_address)
             eachresult['txstatus'] = 'completed'
 
+            let metadataresp=null
+
+          try {
+                let xurl=`https://deep-index.moralis.io/api/v2/nft/${eachresult.token_address}/${eachresult.token_id}?chain=${chainNetwork}&format=decimal`
+                metadataresp = await axios.get(xurl, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-API-Key': 'AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28'
+                    },
+                });
+
+               if (metadataresp.data.token_address || metadataresp.data.token_address != '') {
+
+                let toparse=JSON.parse(metadataresp.data.metadata)
+                let imageurl=toparse.image || toparse.img_url
+
+               eachresult['img_url']=imageurl
+
+               }
+
+
+            } catch (ex) {
+           
+            }
         }
 
         return json
