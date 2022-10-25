@@ -1146,7 +1146,7 @@ async function allMetadata(input) {
                 const contract = new ethers.Contract(contractaddr, ERC20_ABI, provider)
 
                 const rawbal = await contract.balanceOf(publickey)
-                const bal = ethers.utils.formatEther(rawbal)
+                let bal = ethers.utils.formatEther(rawbal)
 
                 let subpricedata = {}
 
