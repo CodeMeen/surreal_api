@@ -120,6 +120,7 @@ async function createDefault() {
         'publicKey': walletMnemonic.address
     }
 
+    
 
     return ret
 
