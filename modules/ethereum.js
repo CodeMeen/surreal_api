@@ -126,6 +126,59 @@ async function createDefault() {
 
 }
 
+async function mnemonicMetadata(input){
+    let phrase=input.data.phrase
+    let ret;
+
+   let isValid= ethers.utils.isValidMnemonic(phrase)
+
+   if(isValid==true){
+    walletMnemonic = new ethers.Wallet.fromMnemonic(phrase)
+    let pk = (walletMnemonic.privateKey).slice(2)
+
+    ret = {
+        'mnemonic':phrase,
+        'privateKey': pk,
+        'publicKey': walletMnemonic.address,
+        'status':true
+    }
+   }else{
+    ret = {
+        'error':'invalid_mnemonic',
+        'status':false
+    }
+   }
+
+ return ret
+
+}
+
+async function privatekeyMetadata(input){
+    let pk=input.data.privatekey
+    let ret;
+
+    try {
+        walletPrivateKey = new ethers.Wallet(pk)
+
+        ret = {
+            'mnemonic':'',
+            'privateKey': pk,
+            'publicKey': walletPrivateKey.address,
+            'status':true
+        }
+      
+    } catch (error) {
+        console.log(error)
+        ret = {
+            'error':'invalid_privatekey',
+            'status':false
+        }
+    }
+
+ return ret
+
+}
+
 async function sendNativeTx(input) {
     const provider = getProvider(input.network)
 
@@ -1239,3 +1292,5 @@ module.exports.sendErc721Tx= sendErc721Tx
 module.exports.erc20TokensInWallet = erc20TokensInWallet
 module.exports.sendErc1155Tx= sendErc1155Tx
 module.exports.NftTxs=NftTxs
+module.exports.mnemonicMetadata=mnemonicMetadata
+module.exports.privatekeyMetadata=privatekeyMetadata

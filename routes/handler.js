@@ -77,7 +77,16 @@ router.post('/:reqtype', async(req, res) => {
                         let response = await ethereum.NftTxs(data)
                         res.send(response)
 
-                    } else {
+                    } else if (reqtype == 'getMnemonicMetadata') {
+                        let response = await ethereum.mnemonicMetadata(data)
+                        res.send(response)
+
+                    } else if (reqtype == 'getPrivatekeyMetadata') {
+                        let response = await ethereum.privatekeyMetadata(data)
+                        res.send(response)
+
+                    }  
+                    else {
                         res.type('text/plain');
                         res.status(404);
                         res.send('404 - Not Found');
