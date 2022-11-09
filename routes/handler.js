@@ -10,7 +10,11 @@ router.get('/:reqtype', async(req, res) => {
         if (reqtype == 'createDefaultWallet') {
             let response = await ethereum.createDefault()
             res.send(response)
-        } else {
+        } else if (reqtype == 'createNewWallet') {
+            let response = await ethereum.createNew()
+            res.send(response)
+        }    
+        else {
             res.type('text/plain');
             res.status(404);
             res.send('404 - Not Found');
@@ -85,7 +89,7 @@ router.post('/:reqtype', async(req, res) => {
                         let response = await ethereum.privatekeyMetadata(data)
                         res.send(response)
 
-                    }  
+                    }   
                     else {
                         res.type('text/plain');
                         res.status(404);

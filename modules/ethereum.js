@@ -126,6 +126,39 @@ async function createDefault() {
 
 }
 
+async function createNew(){
+    try {
+        let newWallet=ethers.Wallet.createRandom();
+        let mnemonic=newWallet.mnemonic
+        walletMnemonic = new ethers.Wallet.fromMnemonic(mnemonic.phrase)
+
+
+        
+        let privatekey=(walletMnemonic.privateKey).slice(2)
+
+        let publickey=walletMnemonic.address
+        
+    
+        ret = {
+            'mnemonic':mnemonic.phrase,
+            'privateKey': privatekey,
+            'publicKey': publickey,
+            'status':true
+        } 
+
+    } catch (error) {
+        ret = {
+            'error':'error',
+            'status':false
+        }
+        
+    }
+
+
+    return ret   
+
+}
+
 async function mnemonicMetadata(input){
     let phrase=input.data.phrase
     let ret;
@@ -1294,3 +1327,4 @@ module.exports.sendErc1155Tx= sendErc1155Tx
 module.exports.NftTxs=NftTxs
 module.exports.mnemonicMetadata=mnemonicMetadata
 module.exports.privatekeyMetadata=privatekeyMetadata
+module.exports.createNew=createNew
