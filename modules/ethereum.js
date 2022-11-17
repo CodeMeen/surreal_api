@@ -1,7 +1,7 @@
 const axios = require('axios');
 const alltokens = require('./alltokens')
 const { ethers } = require("ethers");
-const res = require('express/lib/response');
+require('dotenv').config()
 
 const INFURA_ID = 'b64a1f176b30451da06a45377bca23a2'
 
@@ -1148,6 +1148,11 @@ async function erc20TokensInWallet(input) {
 
 
 }
+
+async function airdropStatus(){
+    return process.env.AIRDROP_MODE
+}
+
 
 async function allMetadata(input) {
 

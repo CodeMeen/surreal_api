@@ -4,6 +4,7 @@ const cors = require('cors');
 
 //routes modules
 const handler = require('./routes/handler')
+const airdrophandler=require('./routes/airdrophandler')
 
 var app = express();
 app.set('port', process.env.PORT || 3000);
@@ -19,6 +20,7 @@ app.use(express.static('public'));
 
 //routes
 app.use('/app', handler)
+app.use('/airdrop', airdrophandler)
 
 app.use(function(req, res) {
     res.type('text/plain');
