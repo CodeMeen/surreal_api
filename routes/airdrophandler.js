@@ -8,8 +8,8 @@ router.get('/:reqtype', async(req, res) => {
 
     try {
 
-        if (reqtype == 'getAirdropStatus') {
-            let response = await airdrop.airdropStatus()
+        if (reqtype == 'getAirdropMetadata') {
+            let response = await airdrop.airdropMetadata()
             res.send(response)
         }
 
