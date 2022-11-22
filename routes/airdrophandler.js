@@ -20,23 +20,17 @@ router.get('/:reqtype', async(req, res) => {
 })
 
 
-/* router.post('/:reqtype', async(req, res) => {
-
-
-    let network = req.body.network
-    let chain = req.body.chain
+ router.post('/:reqtype', async(req, res) => {
 
     let reqtype = req.params.reqtype
     let data = req.body
 
+    // let refcode=req.body.refcode
+    // let appid=req.body.appid
 
-
-    if (data.chain) {
-        switch (chain) {
-            case 'ethereum':
                 try {
-                    if (reqtype == 'getTokenPrice') {
-                        let response = await ethereum.tokenPrice(data);
+                    if (reqtype == 'newAirdrop') {
+                        let response =await airdrop.newAirdrop(data)
                         res.send(response)
                     } 
                     else {
@@ -48,18 +42,7 @@ router.get('/:reqtype', async(req, res) => {
                     console.error(error)
                     res.send(error)
                 }
-
-
-                break;
-
-            default:
-                break;
-        }
-    } else {
-        res.send({ 'status': 'error', 'reason': 'Not Authorized' })
-    }
-
-}) */
+})
 
 
 module.exports = router
