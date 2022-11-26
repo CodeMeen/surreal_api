@@ -22,6 +22,7 @@ router.get('/:reqtype', async(req, res) => {
 
     } catch (error) {
         console.error(error)
+        res.status(500);
         res.send(error)
     }
 })

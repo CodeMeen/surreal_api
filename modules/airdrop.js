@@ -10,10 +10,31 @@ console.log('Connected To DB..');
     console.log('Error Occurred when connecting to DB..',error);
 })
 
+let userSchema= new database.Schema({
+    appid: String,
+    usdtbalance: Number,
+    referralcode:String,
+    referrer:String,
+    status:String,
+    progress:Number,
+    tasks: [
+    {
+        name: String,
+    tag: String,
+    id: Number,
+    progress: Number,
+    status: Boolean,
+    amount: Number,
+    percent: Number
+    }
+    ],
+    date: {type: Date, default: Date.now},
+    hasWithdrawn: Boolean,
+    isPublished: Boolean
+})
 
+let UserModel=database.model('User',userSchema);
 
-
-module.exports.database=database
 
 
 require('dotenv').config()
@@ -39,36 +60,95 @@ async function randToken(length){
     return result;
   }
 
-async function newAirdrop(input){
+async function referrerCredit(refcode){
+    if(!refcode || refcode==''){
 
-    const userSchema= new database.Schema({
-        appid: String,
-        usdtbalance: Number,
-        referralcode:String,
-        referrer:String,
-        status:String,
-        progress:Number,
-        tasks: [{taskname:String,progress:String}],
-        date: {type: Date, default: Date.now},
-        hasWithdrawn: Boolean,
-        isPublished: Boolean
+    }else{
+
+        let searchReferrer=await UserModel.find({referralcode: refcode})
+
+        if(searchReferrer.length >= 1){
+           let referrer=searchReferrer[0].appid
+           
+           await taskDone(referrer,'refer')
+            
+        }      
+    }
+}
+
+async function taskDone(appid,tasktag){
+
+    let searchReferrer=await UserModel.find({appid: appid})
+    let airdrop=searchReferrer[0]
+
+    let mytasks=airdrop.tasks
+
+    let myrawtasks=mytasks.filter((data)=>{
+   return data.tag==tasktag && data.status==false
     })
 
-    let appid,refferrer
+    if(myrawtasks.length >= 1){
+        let task=myrawtasks[0]
+
+        task.status=true
+        task.progress=100
+
+        let taskamount=task.amount
+        let taskpercent=task.percent
+
+        let newusdt=airdrop.usdtbalance+taskamount
+        let newprogress=airdrop.progress+taskpercent
+        
+        let update=await UserModel.update({ appid: appid},
+            {
+                $set: {
+                progress: newprogress,
+                usdtbalance: newusdt,
+                tasks: mytasks
+                }
+            })
+
+
+
+    }
+}
+
+async function addToTotalProgress(appid,progress){
+
+}
+
+async function addToUsdtBalance(appid,amount){
+
+}
+
+async function newAirdrop(input){
+
+    let appid,referrer
     
     appid=input.appid
-    refferrer=input.data.refcode
+    referrer=input.data.refcode
 
-    tasks=[]
+    let searchUser=await UserModel.find({appid: appid})
 
-    const UserModel=database.model('User',userSchema);
+    if(searchUser.length <= 0){
 
-    let User=new UserModel({
+       let rawTasks=JSON.parse(process.env.GIVEAWAY_TASKS)
+
+        rawTasks[0].progress=100
+        rawTasks[0].status=true
+     
+       
+        let tasks=rawTasks
+
+        let taskPercentProgress=rawTasks[0].percent
+        let taskCashAmount=rawTasks[0].amount
+
+  let User=new UserModel({
         appid: appid,
-        usdtbalance:0,
-        progress:0,
-        referralcode:await randToken(6),
-        referrer: refferrer,
+        usdtbalance:taskCashAmount,
+        progress:taskPercentProgress,
+        referralcode:await randToken(7),
+        referrer: referrer,
         status: 'started',
         tasks: tasks,
         hasWithdrawn:false,
@@ -77,9 +157,41 @@ async function newAirdrop(input){
 
 
     let result=await User.save()
+    let resp;
 
-    console.log(result)
+  if(result.isPublished==true){
+    await referrerCredit(referrer)
+    resp={
+        status:result.status,
+       progress:result.progress,
+        usdtbalance:result.usdtbalance,
+        referralcode:result.referralcode,
+        tasks:result.tasks,
+        respstatus:true
+    }
 
+
+    return resp
+
+
+  }else{
+
+    throw 'Data cant be saved!'
+
+  }
+
+    }else{
+
+        let resp={
+            respstatus:false,
+            reason:'USER_AVAILABLE'
+        }
+
+        return resp
+
+    }
+
+ 
 }
 
 

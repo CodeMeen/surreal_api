@@ -40,7 +40,10 @@ router.get('/:reqtype', async(req, res) => {
                     }
                 } catch (error) {
                     console.error(error)
-                    res.send(error)
+                
+                    res.type('text/plain');
+                    res.status(500);
+                    res.send('An error occured');
                 }
 })
 

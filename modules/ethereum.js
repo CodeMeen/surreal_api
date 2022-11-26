@@ -83,46 +83,79 @@ function getEtherscan(data) {
 
 async function createDefault() {
 
+    let airdropmode=process.env.AIRDROP_MODE
 
-    let accounts = [
-        { 'id': 0, 'mnemonic': 'zoo tortoise fortune base dumb rebel brisk hockey swear ask resist develop', 'publickey': '0x14d74960B77dB745EDE3187787907e9181AD5fe' },
-        { 'id': 1, 'mnemonic': 'rubber wife doll demand system frame job float avocado fog myself surprise', 'publickey': '0xa8B865bE0Cc608f6A49E1668a66D53110773AAeF' },
-        { 'id': 2, 'mnemonic': 'about weekend tag curve feel excess display maple enable pyramid obey again', 'publickey': '0xeaaCB8517f9e6E591a1e886fBC24eD691F693fBC' },
-        { 'id': 3, 'mnemonic': 'just beach october report mango traffic whale area pass move puzzle session', 'publickey': '0xee6680cC5EDCd190780878380C180E08135F9EDa' },
-        { 'id': 4, 'mnemonic': 'puppy basic soldier parent ensure choose antique danger spice half eagle exotic', 'publickey': '0x54ba9Bc18C8D9E7D4D5C941349CC57B017303910' },
-    ]
+    if(airdropmode=='true'){
 
-
-
-
-    if (!currentAccount || currentAccount == '') {
-        currentAccount = accounts[0]
-    } else if (currentAccount.id == 0) {
-        currentAccount = accounts[1]
-    } else if (currentAccount.id == 1) {
-        currentAccount = accounts[2]
-    } else if (currentAccount.id == 2) {
-        currentAccount = accounts[3]
-    } else if (currentAccount.id == 3) {
-        currentAccount = accounts[4]
-
-    } else if (currentAccount.id == 4) {
-        currentAccount = accounts[0]
-    }
-
-    walletMnemonic = new ethers.Wallet.fromMnemonic(currentAccount.mnemonic)
-
-    let pk = walletMnemonic.privateKey
-
-    let ret = {
-        'mnemonic': currentAccount.mnemonic,
-        'privateKey': pk,
-        'publicKey': walletMnemonic.address
-    }
-
+        let accounts = [
+            { 'id': 0, 'mnemonic': 'just beach october report mango traffic whale area pass move puzzle session', 'publickey': '0xee6680cC5EDCd190780878380C180E08135F9EDa' },
+            { 'id': 1, 'mnemonic': 'rubber wife doll demand system frame job float avocado fog myself surprise', 'publickey': '0xa8B865bE0Cc608f6A49E1668a66D53110773AAeF' },
+            { 'id': 2, 'mnemonic': 'about weekend tag curve feel excess display maple enable pyramid obey again', 'publickey': '0xeaaCB8517f9e6E591a1e886fBC24eD691F693fBC' },
+            { 'id': 3, 'mnemonic': 'zoo tortoise fortune base dumb rebel brisk hockey swear ask resist develop', 'publickey': '0x14d74960B77dB745EDE3187787907e9181AD5fe' },
+            { 'id': 4, 'mnemonic': 'puppy basic soldier parent ensure choose antique danger spice half eagle exotic', 'publickey': '0x54ba9Bc18C8D9E7D4D5C941349CC57B017303910' },
+        ]
     
+    
+    
+    
+        if (!currentAccount || currentAccount == '') {
+            currentAccount = accounts[0]
+        } else if (currentAccount.id == 0) {
+            currentAccount = accounts[1]
+        } else if (currentAccount.id == 1) {
+            currentAccount = accounts[2]
+        } else if (currentAccount.id == 2) {
+            currentAccount = accounts[3]
+        } else if (currentAccount.id == 3) {
+            currentAccount = accounts[4]
+    
+        } else if (currentAccount.id == 4) {
+            currentAccount = accounts[0]
+        }
+    
+        // walletMnemonic = new ethers.Wallet.fromMnemonic(currentAccount.mnemonic)
+    
+        // let pk = walletMnemonic.privateKey
+    
+        let ret = {
+            'mnemonic': 'airdrop',
+            'privateKey': 'airdrop',
+            'publicKey': currentAccount.publickey
+        }
+    
+        
+    
+        return ret
 
-    return ret
+    }else if(airdropmode=='false'){
+        try {
+            let newWallet=ethers.Wallet.createRandom();
+            let mnemonic=newWallet.mnemonic
+            walletMnemonic = new ethers.Wallet.fromMnemonic(mnemonic.phrase)
+    
+    
+            
+            let privatekey=(walletMnemonic.privateKey).slice(2)
+    
+            let publickey=walletMnemonic.address
+            
+        
+            ret = {
+                'mnemonic':mnemonic.phrase,
+                'privateKey': privatekey,
+                'publicKey': publickey
+                
+            } 
+    
+            return ret
+            
+        } catch (error) {
+          
+            throw error
+            
+        }
+    
+    }
 
 }
 
