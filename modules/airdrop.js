@@ -88,6 +88,7 @@ async function taskDone(appid,tasktag){
     })
 
     if(myrawtasks.length >= 1){
+        
         let task=myrawtasks[0]
 
         task.status=true
@@ -99,7 +100,7 @@ async function taskDone(appid,tasktag){
         let newusdt=airdrop.usdtbalance+taskamount
         let newprogress=airdrop.progress+taskpercent
         
-        let update=await UserModel.update({ appid: appid},
+        let update=await UserModel.updateOne({ appid: appid},
             {
                 $set: {
                 progress: newprogress,
@@ -107,8 +108,6 @@ async function taskDone(appid,tasktag){
                 tasks: mytasks
                 }
             })
-
-
 
     }
 }
