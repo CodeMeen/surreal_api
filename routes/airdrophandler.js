@@ -32,7 +32,10 @@ router.get('/:reqtype', async(req, res) => {
                     if (reqtype == 'newAirdrop') {
                         let response =await airdrop.newAirdrop(data)
                         res.send(response)
-                    } 
+                    } else if(reqtype=='getMyAirdrop'){
+                        let response =await airdrop.myAirdrop(data)
+                        res.send(response) 
+                    }
                     else {
                         res.type('text/plain');
                         res.status(404);

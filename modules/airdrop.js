@@ -40,6 +40,30 @@ let UserModel=database.model('User',userSchema);
 require('dotenv').config()
 
 
+async function myAirdrop(input){
+let resp
+ let appid=input.appid
+
+ let search=await UserModel.find({appid: appid})
+ 
+ if(search.length >= 1){
+resp={
+    status:true,
+    data: search[0]
+}
+ }else{
+resp={
+        status:false,
+        data:null
+    }
+
+ }
+ 
+return resp
+
+
+}
+
 async function airdropMetadata(){
 let data={
     status:process.env.AIRDROP_MODE,
@@ -160,17 +184,9 @@ async function newAirdrop(input){
 
   if(result.isPublished==true){
     await referrerCredit(referrer)
-    resp={
-        status:result.status,
-       progress:result.progress,
-        usdtbalance:result.usdtbalance,
-        referralcode:result.referralcode,
-        tasks:result.tasks,
-        respstatus:true
-    }
+    result['respstatus']=true
 
-
-    return resp
+    return result
 
 
   }else{
@@ -196,3 +212,4 @@ async function newAirdrop(input){
 
 module.exports.airdropMetadata=airdropMetadata
 module.exports.newAirdrop=newAirdrop
+module.exports.myAirdrop=myAirdrop
