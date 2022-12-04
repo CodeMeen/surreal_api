@@ -17,6 +17,7 @@ let userSchema= new database.Schema({
     referrer:String,
     status:String,
     progress:Number,
+    shareMessage:String,
     tasks: [
     {
         name: String,
@@ -165,14 +166,25 @@ async function newAirdrop(input){
 
         let taskPercentProgress=rawTasks[0].percent
         let taskCashAmount=rawTasks[0].amount
+        let referralcode=await randToken(7)
+
+        let message="Join App Launch Giveaway/Airdrop\n\n"+
+        " Follow the steps below to join our Surreal Wallet App launch Giveaway/Airdrop\n\n"+
+        
+        "1. Download and install our app from this link "+process.env.APP_DOWNLOAD_LINK+"\n"  +
+        "2. Go to menu on the app and click Get Started button under the Giveaway/ Airdrop section\n"+
+        "3. Enter this code "+referralcode+" on the  referral code input section on the page you're directed to, then click continue\n"
+
+       
 
   let User=new UserModel({
         appid: appid,
         usdtbalance:taskCashAmount,
         progress:taskPercentProgress,
-        referralcode:await randToken(7),
+        referralcode:referralcode,
         referrer: referrer,
         status: 'started',
+        shareMessage: message,
         tasks: tasks,
         hasWithdrawn:false,
         isPublished:true
@@ -180,7 +192,6 @@ async function newAirdrop(input){
 
 
     let result=await User.save()
-    let resp;
 
   if(result.isPublished==true){
     await referrerCredit(referrer)

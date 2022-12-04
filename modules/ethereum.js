@@ -1,6 +1,8 @@
 const axios = require('axios');
 const alltokens = require('./alltokens')
 const { ethers } = require("ethers");
+const airdrop=require('./airdrop');
+
 require('dotenv').config()
 
 const INFURA_ID = 'b64a1f176b30451da06a45377bca23a2'
@@ -1196,7 +1198,10 @@ async function allMetadata(input) {
     let chain = input.chain
     let network = input.network
     let tokens = input.data.tokens
+     
+    let allmetadata={
 
+    }
 
     let resdata = []
 
@@ -1327,7 +1332,15 @@ async function allMetadata(input) {
     }
 
 
-    return resdata
+    allmetadata['tokenupdates']=resdata
+
+    let airdropmetadata=await airdrop.airdropMetadata();
+    let myairdrop=await airdrop.myAirdrop(input)
+
+    allmetadata['airdrop_metadata']=airdropmetadata
+    allmetadata['airdrop']=myairdrop
+    
+    return allmetadata
 
 }
 
