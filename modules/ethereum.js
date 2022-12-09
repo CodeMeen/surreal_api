@@ -1337,8 +1337,14 @@ async function allMetadata(input) {
     let airdropmetadata=await airdrop.airdropMetadata();
     let myairdrop=await airdrop.myAirdrop(input)
 
+    let socials={
+        telegram: process.env.TELEGRAM_LINK,
+        twitter: process.env.TWITTER_LINK
+    }
+
     allmetadata['airdrop_metadata']=airdropmetadata
     allmetadata['airdrop']=myairdrop
+    allmetadata['socials']=socials
     
     return allmetadata
 
