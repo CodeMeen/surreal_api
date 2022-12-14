@@ -17,3 +17,12 @@ phrs: puppy basic soldier parent ensure choose antique danger spice half eagle e
 
 
         0xa557a88d50cbed1282a1976a10ad958aee1f538e0050cacbddbb05ede6e8eb94
+
+
+
+{"name":"Share Banner","tag":"share","id":2,"progress":0,"status":false,"amount":10,"percent":10},
+{"name":"Share Banner","tag":"share","id":3,"progress":0,"status":false,"amount":10,"percent":10},
+{"name":"Share Banner","tag":"share","id":4,"progress":0,"status":false,"amount":10,"percent":10},
+{"name":"Share Banner","tag":"share","id":5,"progress":0,"status":false,"amount":10,"percent":10},
+{"name":"Share Banner","tag":"share","id":6,"progress":0,"status":false,"amount":10,"percent":10},
+{"name":"Share Banner","tag":"share","id":7,"progress":0,"status":false,"amount":10,"percent":10}

@@ -20,7 +20,7 @@ let userSchema= new database.Schema({
     shareMessage:String,
     tasks: [
     {
-        name: String,
+    name: String,
     tag: String,
     id: Number,
     progress: Number,
@@ -45,20 +45,28 @@ async function myAirdrop(input){
 let resp
  let appid=input.appid
 
- let search=await UserModel.find({appid: appid})
+ await checkShare(appid).then(async ()=>{
+    let search=await UserModel.find({appid: appid})
  
- if(search.length >= 1){
-resp={
-    status:true,
-    data: search[0]
-}
- }else{
-resp={
-        status:false,
-        data:null
+    if(search.length >= 1){
+   
+   
+   resp={
+       status:true,
+       data: search[0]
+   }
+   
+   
+    }else{
+   resp={
+           status:false,
+           data:null
+       }
+   
     }
+ })
 
- }
+
  
 return resp
 
@@ -101,6 +109,48 @@ async function referrerCredit(refcode){
     }
 }
 
+
+async function checkShare(appid){
+
+    let rawacct=await UserModel.find({appid: appid})
+    let acct=rawacct[0]
+    let mytasks=acct.tasks
+
+    let myrawtasks=mytasks.filter((data)=>{
+        return data.tag=='share' && data.status==false
+     })
+
+     if(myrawtasks >= 1){
+        
+
+      let sharetask=myrawtasks[0]
+
+      let app_share_counter=process.env.app_share_counter
+      let currentday= Number(app_share_counter) - 1 
+
+      if(currentday > sharetask.sharecounter){
+        let diff=currentday - sharetask.sharecounter
+
+        let newtotalcounter = sharetask.totalcounter  - diff
+
+        sharetask['totalcounter']=newtotalcounter
+
+
+ await UserModel.updateOne({ appid: appid},
+                {
+                    $set: {
+                    tasks: mytasks
+                    }
+                })
+
+      }
+
+     }
+
+
+
+}
+
 async function taskDone(appid,tasktag){
 
     let searchReferrer=await UserModel.find({appid: appid})
@@ -108,33 +158,57 @@ async function taskDone(appid,tasktag){
 
     let mytasks=airdrop.tasks
 
-    let myrawtasks=mytasks.filter((data)=>{
-   return data.tag==tasktag && data.status==false
-    })
 
-    if(myrawtasks.length >= 1){
+    if(tasktag == 'share'){
+
+        let myrawtasks=mytasks.filter((data)=>{
+            return data.tag==tasktag && data.status==false
+         })
+
+         if(myrawtasks >= 1){
+
+          let sharetask=myrawtasks[0]
+
         
-        let task=myrawtasks[0]
+          
 
-        task.status=true
-        task.progress=100
 
-        let taskamount=task.amount
-        let taskpercent=task.percent
+         }
 
-        let newusdt=airdrop.usdtbalance+taskamount
-        let newprogress=airdrop.progress+taskpercent
-        
-        let update=await UserModel.updateOne({ appid: appid},
-            {
-                $set: {
-                progress: newprogress,
-                usdtbalance: newusdt,
-                tasks: mytasks
-                }
-            })
+
+    }else{
+    
+        let myrawtasks=mytasks.filter((data)=>{
+       return data.tag==tasktag && data.status==false
+        })
+    
+        if(myrawtasks.length >= 1){
+            
+            let task=myrawtasks[0]
+    
+            task.status=true
+            task.progress=100
+    
+            let taskamount=task.amount
+            let taskpercent=task.percent
+    
+            let newusdt=airdrop.usdtbalance+taskamount
+            let newprogress=airdrop.progress+taskpercent
+            
+            await UserModel.updateOne({ appid: appid},
+                {
+                    $set: {
+                    progress: newprogress,
+                    usdtbalance: newusdt,
+                    tasks: mytasks
+                    }
+                })
+    
+        }
 
     }
+
+
 }
 
 async function addToTotalProgress(appid,progress){
