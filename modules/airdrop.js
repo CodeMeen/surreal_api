@@ -136,12 +136,17 @@ async function checkShare(appid){
             
     
           let sharetask=myrawtasks[0]
-          let hidden_sharecounter=sharetask.hidden_sharecounter
+    
 
-          if(hidden_sharecounter >= 0){
-            
+          let app_sharecounter=process.env.SHARE_COUNTER
+
+          if(app_sharecounter > sharetask.sharecounter){
+
+            if(app_sharecounter > sharetask.hidden_sharecounter){
+                sharetask['hidden_sharecounter']=app_sharecounter
+            }
+
           }
-
 
 
           /*
