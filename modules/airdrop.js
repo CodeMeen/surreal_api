@@ -32,7 +32,8 @@ let userSchema= new database.Schema({
     amountmade: Number,
     sharecounter: Number,
     totalcounter:Number,
-    counter_from_server:Number
+    counter_from_server:Number,
+    hidden_sharecounter:Number
     }
     ],
     date: {type: Date, default: Date.now},
@@ -135,6 +136,15 @@ async function checkShare(appid){
             
     
           let sharetask=myrawtasks[0]
+          let hidden_sharecounter=sharetask.hidden_sharecounter
+
+          if(hidden_sharecounter >= 0){
+            
+          }
+
+
+
+          /*
     
           let app_share_counter=process.env.SHARE_COUNTER
     
@@ -143,7 +153,10 @@ async function checkShare(appid){
     
         sharetask['counter_from_server']=app_share_counter
     
-        let subbz=process.env.COUNTER - sharetask.totalcounter
+        let subbz=process.env.COUNTER - process.env.SHARE_COUNTER
+
+        console.log('Subbz',subbz)
+        console.log('CurrentDay',currentday)
 
           if(currentday > subbz){
             let diff=currentday - sharetask.sharecounter
@@ -153,6 +166,8 @@ async function checkShare(appid){
             sharetask['totalcounter']=newtotalcounter
     
           }
+
+          */
     
           await UserModel.updateOne({ appid: appid},
             {

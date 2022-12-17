@@ -1205,6 +1205,14 @@ async function allMetadata(input) {
 
     let resdata = []
 
+    let nativetoken=tokens.filter((eachtoken)=>{
+        return eachtoken.type=='coin'
+     })
+
+    let erctokens=tokens.filter((eachtoken)=>{
+       return eachtoken.type =='ERC20'
+    })
+
 
 
 
