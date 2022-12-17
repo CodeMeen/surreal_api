@@ -37,7 +37,13 @@ router.post('/:reqtype', async(req, res) => {
     let data = req.body
 
 
+if(data || data!=''){
 
+}else{
+    res.type('text/plain');
+    res.status(404);
+    res.send('404 - Not Found');  
+}
     if (data.chain) {
         switch (chain) {
             case 'ethereum':
@@ -97,8 +103,10 @@ router.post('/:reqtype', async(req, res) => {
                         res.send('404 - Not Found');
                     }
                 } catch (error) {
-                    console.error(error)
-                    res.send(error)
+                    console.log(error)
+                    res.type('text/plain');
+                    res.status(500);
+                    res.send('An error occurred');
                 }
 
 
@@ -108,14 +116,10 @@ router.post('/:reqtype', async(req, res) => {
                 break;
         }
     } else {
-        res.send({ 'status': 'error', 'reason': 'Not Authorized' })
+        res.type('text/plain');
+        res.status(404);
+        res.send('404 - Not Found');
     }
-
-
-
-
-
-
 
 })
 

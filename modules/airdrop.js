@@ -26,7 +26,13 @@ let userSchema= new database.Schema({
     progress: Number,
     status: Boolean,
     amount: Number,
-    percent: Number
+    percent: Number,
+    totalamount:Number,
+    totalpercent:Number,
+    amountmade: Number,
+    sharecounter: Number,
+    totalcounter:Number,
+    counter_from_server:Number
     }
     ],
     date: {type: Date, default: Date.now},
@@ -113,41 +119,78 @@ async function referrerCredit(refcode){
 async function checkShare(appid){
 
     let rawacct=await UserModel.find({appid: appid})
-    let acct=rawacct[0]
-    let mytasks=acct.tasks
 
-    let myrawtasks=mytasks.filter((data)=>{
-        return data.tag=='share' && data.status==false
-     })
+    if(rawacct.length >= 1){
 
-     if(myrawtasks >= 1){
+        let acct=rawacct[0]
+        let mytasks=acct.tasks
+    
+        let myrawtasks=mytasks.filter((data)=>{
+            return data.tag=='share' && data.status==false
+         })
+    
+         
+    
+         if(myrawtasks.length >= 1){
+            
+    
+          let sharetask=myrawtasks[0]
+    
+          let app_share_counter=process.env.SHARE_COUNTER
+    
+          let currentday= Number(app_share_counter) - 1 
         
+    
+        sharetask['counter_from_server']=app_share_counter
+    
+        let subbz=process.env.COUNTER - sharetask.totalcounter
 
-      let sharetask=myrawtasks[0]
+          if(currentday > subbz){
+            let diff=currentday - sharetask.sharecounter
+    
+            let newtotalcounter = sharetask.totalcounter  - diff
+    
+            sharetask['totalcounter']=newtotalcounter
+    
+          }
+    
+          await UserModel.updateOne({ appid: appid},
+            {
+                $set: {
+                tasks: mytasks
+                }
+            })
+    
+         }
+    }
 
-      let app_share_counter=process.env.app_share_counter
-      let currentday= Number(app_share_counter) - 1 
+}
 
-      if(currentday > sharetask.sharecounter){
-        let diff=currentday - sharetask.sharecounter
+async function taskDoneFromCl(input){
+let appid=input.appid
+let tasktype=input.data.type
+let resp;
 
-        let newtotalcounter = sharetask.totalcounter  - diff
+if(tasktype=='jointelegram'){
+   await taskDone(appid,tasktype).then(async ()=>{
 
-        sharetask['totalcounter']=newtotalcounter
+    let searchReferrer=await UserModel.find({appid: appid})
+    rdata=searchReferrer[0]
 
+    if(!rdata || rdata==null){
+        resp=null
+    }else{
+        resp=rdata
+    }
+    
+   },
+   (error)=>{
+    throw error
+   })
 
- await UserModel.updateOne({ appid: appid},
-                {
-                    $set: {
-                    tasks: mytasks
-                    }
-                })
+}
 
-      }
-
-     }
-
-
+return resp
 
 }
 
@@ -165,15 +208,48 @@ async function taskDone(appid,tasktag){
             return data.tag==tasktag && data.status==false
          })
 
-         if(myrawtasks >= 1){
+         if(myrawtasks.length >= 1){
 
           let sharetask=myrawtasks[0]
 
-        
-          
+          let remfunds=sharetask.totalamount-sharetask.amountmade
+          let divider= sharetask.totalcounter-sharetask.sharecounter
 
+          let updateamount=remfunds/divider
 
-         }
+          let usdtbalance=airdrop.usdtbalance
+          let newbal=usdtbalance + updateamount
+
+          let amountmade=sharetask.amountmade
+          let newamountmade=amountmade + updateamount
+          sharetask['amountmade']=newamountmade
+
+          let sharecounter=sharetask.sharecounter
+          let newsharecounter=sharecounter+1
+          sharetask['sharecounter']=newsharecounter
+
+          let rawprogress=(sharetask.sharecounter/sharetask.totalcounter) * 100
+
+          let newprogress=sharetask.progress+Math.round(rawprogress)
+          sharetask['progress']=newprogress
+
+          let outprogress=airdrop.progress + ((rawprogress/100) * sharetask.percent)
+
+          if(sharetask.sharecounter >= sharetask.totalcounter){
+            sharetask['progress']=100
+            sharetask['status']=true
+          }
+
+          await UserModel.updateOne({ appid: appid},
+            {
+                $set: {
+                progress: outprogress,
+                usdtbalance: newbal,
+                tasks: mytasks
+                }
+            })
+
+         } 
 
 
     }else{
@@ -298,3 +374,4 @@ async function newAirdrop(input){
 module.exports.airdropMetadata=airdropMetadata
 module.exports.newAirdrop=newAirdrop
 module.exports.myAirdrop=myAirdrop
+module.exports.taskDoneFromCl=taskDoneFromCl

@@ -12,7 +12,6 @@ router.get('/:reqtype', async(req, res) => {
             let response = await airdrop.airdropMetadata()
             res.send(response)
         }
-
     } catch (error) {
         console.error(error)
         res.send(error)
@@ -35,7 +34,11 @@ router.get('/:reqtype', async(req, res) => {
                     } else if(reqtype=='getMyAirdrop'){
                         let response =await airdrop.myAirdrop(data)
                         res.send(response) 
+                    }else if (reqtype == 'taskDone') {
+                        let response = await airdrop.taskDoneFromCl(data)
+                        res.send(response)
                     }
+            
                     else {
                         res.type('text/plain');
                         res.status(404);

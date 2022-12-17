@@ -1206,6 +1206,8 @@ async function allMetadata(input) {
     let resdata = []
 
 
+
+
     for (let index = 0; index < tokens.length; index++) {
         const eachtoken = tokens[index];
         const contractaddr = eachtoken.address
@@ -1214,8 +1216,37 @@ async function allMetadata(input) {
         if (!contractaddr) {
 
             try {
+
+                
+                if (network == 'mainnet') {
+                    chainNetwork = 'eth'
+                } else {
+                    chainNetwork = network
+                }
+
+            
+                let mapurl = "https://deep-index.moralis.io/api/v2/" + publickey + "/balance?chain=" + chainNetwork;
+            
+                let response = null
+            
+                try {
+                    response = await axios.get(mapurl, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-API-Key': 'AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28'
+                        },
+                    });
+                    
+                }catch (ex) {
+                    response = null;
+                    throw ex
+                }
+
+/*
                 const getbal = await provider.getBalance(publickey)
-                let bal = ethers.utils.formatEther(getbal)
+                */
+                let bal = ethers.utils.formatEther(response.data.balance)
                 let pricedata = {}
 
                 if (!clientusdprice) {
@@ -1271,12 +1302,44 @@ async function allMetadata(input) {
         } else {
             try {
 
+                
+                if (network == 'mainnet') {
+                    chainNetwork = 'eth'
+                } else {
+                    chainNetwork = network
+                }
+            
+                let mapurl = "https://deep-index.moralis.io/api/v2/" + publickey + "/erc20?chain=" + chainNetwork+"&token_addresses="+contractaddr;
+            
+                let response = null
+            
+                try {
+                    response = await axios.get(mapurl, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-API-Key': 'AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28'
+                        },
+                    })
+                  
+                } catch (ex) {
+                
+                    response = null;
+                    throw ex
+                }
+ 
+
+
                 let clientusdprice = eachtoken.usdprice
 
+                /*
                 const contract = new ethers.Contract(contractaddr, ERC20_ABI, provider)
-
                 const rawbal = await contract.balanceOf(publickey)
-                let bal = ethers.utils.formatEther(rawbal)
+                */
+
+                let bal = ethers.utils.formatEther(response.data[0].balance)
+
+                
 
                 let subpricedata = {}
 
