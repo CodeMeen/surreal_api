@@ -5,7 +5,11 @@ const cors = require('cors');
 const https = require("https");
 const fs = require("fs");
 
-//routes modules
+
+// Init Database
+
+
+  //routes modules
 const handler = require('./routes/handler')
 const airdrophandler=require('./routes/airdrophandler')
 
@@ -51,6 +55,13 @@ app.listen(app.get('port'), function() {
         app.get('port') + '; press Ctrl-C to terminate.');
 });
 
+
+
+
+/*
+
 https.createServer(options, app).listen(8081, () => {
     console.log(`HTTPS server started on port 8081`);
   });
+
+  */
