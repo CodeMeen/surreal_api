@@ -35,7 +35,10 @@ let userSchema = new database.Schema({
       counter_from_server: Number,
       hidden_sharecounter: Number,
       can_share: Boolean,
-      share_day: Number
+      share_day: Number,
+      outstanding_amount: Number,
+      outstanding_days: Number,
+      outstanding_progress: Number
     },
   ],
   date: { type: Date, default: Date.now },
@@ -68,7 +71,10 @@ let settingsSchema = new database.Schema({
       counter_from_server: Number,
       hidden_sharecounter: Number,
       can_share: Boolean,
-      share_day: Number
+      share_day: Number,
+      outstanding_amount: Number,
+      outstanding_days: Number,
+      outstanding_progress: Number
     },
   ],
   app_download_link: String,
@@ -110,6 +116,8 @@ async function settingsInit(){
   let search = await settingsModel.find({ update_name: "first_update" });
 
   if (search.length >= 1) {
+/*
+    
      let currentday=search[0].today
      let rawTasks=await getSettings('giveaway_tasks');
      rawTasks[4].share_day=todaysday
@@ -129,6 +137,8 @@ async function settingsInit(){
       );
   
      }
+
+     */
   
   } else {
     let Settings = new settingsModel({
@@ -160,7 +170,7 @@ async function settingsInit(){
           id: 1,
           progress: 0,
           status: false,
-          amount: 20,
+          amount: 15,
           percent: 15,
         },
         {
@@ -169,7 +179,7 @@ async function settingsInit(){
           id: 2,
           progress: 0,
           status: false,
-          amount: 20,
+          amount: 15,
           percent: 15,
         },
         {
@@ -178,8 +188,8 @@ async function settingsInit(){
           id: 1,
           progress: 0,
           status: false,
-          amount: 50,
-          totalamount: 50,
+          amount: 70,
+          totalamount: 70,
           percent: 50,
           amountmade: 0,
           sharecounter: 0,
@@ -187,7 +197,10 @@ async function settingsInit(){
           counter_from_server: 0,
           hidden_sharecounter: 0,
           can_share: true,
-          share_day: todaysday
+          share_day: todaysday,
+          outstanding_days: 0,
+          outstanding_amount: 0,
+          outstanding_progress: 0
         },
       ],
       app_download_link: "https://surrealwallet.com/download/mobile",
