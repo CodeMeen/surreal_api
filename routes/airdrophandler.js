@@ -1,15 +1,19 @@
 const express = require('express');
 const airdrop = require('../modules/airdrop')
+const dateincrease = require('../modules/date_increase')
 const router = express.Router();
 
 
-router.get('/:reqtype', async(req, res) => {
+router.get('/:reqtype/:num', async(req, res) => {
     let reqtype = req.params.reqtype
-
+    let reqnum = Number(req.params.num)
     try {
 
         if (reqtype == 'getAirdropMetadata') {
             let response = await airdrop.airdropMetadata()
+            res.send(response)
+        }else if (reqtype == 'manualAdd') {
+            let response = await dateincrease.manualAdd(reqnum)
             res.send(response)
         }
     } catch (error) {

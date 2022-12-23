@@ -126,29 +126,9 @@ async function checkShare(appid) {
     });
 
     if (myrawtasks.length >= 1) {
-      
+
       let sharetask = myrawtasks[0];
 
-      let app_current_counter =  await database.getSettings('share_counter');
-      let app_total_counter= await database.getSettings('counter')
-
-      let totalamount=sharetask.totalamount
-      let eachtaskamount=totalamount/app_total_counter
-
-      let eachprogress=Math.round(100/app_total_counter)
-
-      let outstanding_days=app_current_counter-(sharetask.hidden_sharecounter+1)
-      let outstanding_amount=outstanding_days*eachtaskamount
-      let outstanding_progress=outstanding_days*eachprogress
-
-
-
-      if(outstanding_days >= 1){
-        sharetask["hidden_sharecounter"] = app_current_counter
-        sharetask["outstanding_days"]=outstanding_days
-        sharetask["outstanding_amount"]=outstanding_amount
-        sharetask["outstanding_progress"]=outstanding_progress
-      }
 
       let todaysday= await database.getSettings('today');
 
@@ -205,101 +185,84 @@ async function taskDone(appid, tasktag) {
   let mytasks = airdrop.tasks;
 
   if (tasktag == "share") {
-    let myrawtasks = mytasks.filter((data) => {
+    let myrawtasks = mytasks.filter((data) => { 
       return data.tag == tasktag && data.status == false;
     });
 
+    let sharetask = myrawtasks[0];
+
     if (myrawtasks.length >= 1) {
-      let sharetask = myrawtasks[0];
 
-      let app_current_counter =  await database.getSettings('share_counter');
-      let app_total_counter= await database.getSettings('counter')
+       let app_current_counter =  await database.getSettings('share_counter');
+        let app_total_counter= await database.getSettings('counter') ;
 
-      let totalamount=sharetask.totalamount
-      let eachtaskamount=Math.round(totalamount/app_total_counter)
-
+      if (app_current_counter < 6) {
       
-        let amountmade = sharetask.amountmade; 
-        let newamountmade = amountmade + eachtaskamount + sharetask.outstanding_amount;
-        sharetask["amountmade"] = newamountmade;
-
-        let usdtbalance = airdrop.usdtbalance;
-        let newbal = usdtbalance + eachtaskamount + sharetask.outstanding_amount;
-
+        let totalamount=sharetask.totalamount
+        let eachtaskamount=Math.round(totalamount/app_total_counter)
   
-        let eachprogress=Math.round(100/app_total_counter)
-        let newprogress=sharetask.progress + eachprogress + sharetask.outstanding_progress;
-        sharetask["progress"] = newprogress
-
-        let outprogress = airdrop.progress + Math.round(newprogress/2)
+        
+          let amountmade = sharetask.amountmade; 
+          let newamountmade = amountmade + eachtaskamount
+          sharetask["amountmade"] = newamountmade;
   
+          let usdtbalance = airdrop.usdtbalance;
+          let newbal = usdtbalance + eachtaskamount
   
+    
+          let eachprogress=Math.round(100/app_total_counter)
+          let newprogress=sharetask.progress + eachprogress
+          sharetask["progress"] = newprogress
   
-        let sharecounter = sharetask.sharecounter;
-        let newsharecounter = sharecounter + 1 + sharetask.outstanding_days;
-        sharetask["sharecounter"] = newsharecounter;
+    
+          let sharecounter = sharetask.sharecounter;
+          let newsharecounter = sharecounter + 1
+          sharetask["sharecounter"] = newsharecounter;
+          sharetask["can_share"]=false
 
-        let hidden_sharecounter = sharetask.hidden_sharecounter;
-        let newhidden_sharecounter = hidden_sharecounter + sharetask.outstanding_days;
-        sharetask["hidden_sharecounter"] = newhidden_sharecounter;
+          await database.UserModel.updateOne(
+            { appid: appid },
+            {
+              $set: {
+                usdtbalance: newbal,
+                tasks: mytasks,
+              },
+            }
+          )
 
-        sharetask["outstanding_days"]=0
-        sharetask["outstanding_amount"]=0
-        sharetask["outstanding_progress"]=0
-
-        if (sharetask.sharecounter >= app_total_counter) {
-           sharetask["progress"] = 100;
-           sharetask["status"] = true;
-         }
-
-         sharetask["can_share"]=false
-
-        await database.UserModel.updateOne(
-          { appid: appid },
-          {
-            $set: {
-              progress: outprogress,
-              usdtbalance: newbal,
-              tasks: mytasks,
-            },
-          }
-        )
-
-/*
-      let remfunds = sharetask.totalamount - sharetask.amountmade;
-      let correctcounter=sharetask.totalcounter - sharetask.hidden_sharecounter
-      let divider = correctcounter - sharetask.sharecounter;
-
-      let updateamount = Math.round(remfunds / divider);
-
-      let usdtbalance = airdrop.usdtbalance;
-      let newbal = usdtbalance + updateamount;
-
-      let amountmade = sharetask.amountmade;
-      let newamountmade = amountmade + updateamount;
-      sharetask["amountmade"] = newamountmade;
-
-      let sharecounter = sharetask.sharecounter;
-      let newsharecounter = sharecounter + 1;
-      sharetask["sharecounter"] = newsharecounter;
-
-      let rawprogress = (sharetask.sharecounter / correctcounter) * 100;
-
-      let newprogress = sharetask.progress + Math.round(rawprogress);
-      sharetask["progress"] = newprogress;
-
-      let outprogress =
-        airdrop.progress + Math.round((rawprogress / 100) * sharetask.percent);
-
-      if (sharetask.sharecounter >= correctcounter) {
-       // sharetask["progress"] = 100;
-       // sharetask["status"] = true;
       }
+ 
 
-      sharetask["can_share"]=false
+        if (app_current_counter >= 6) {
+          let amountmade = sharetask.amountmade; 
+          let totalamount=sharetask.totalamount;
 
-      
-*/
+          let remnant=totalamount-amountmade
+          let newtotal=airdrop.usdtbalance + remnant
+          let newamountmade=amountmade + remnant
+          
+
+          sharetask["progress"] = 100;
+          sharetask["status"] = true;
+          sharetask["sharecounter"] = app_total_counter;
+          sharetask['amountmade']=newamountmade
+          sharetask["can_share"]=true
+
+          let newpercent=sharetask.percent + airdrop.progress
+
+          await database.UserModel.updateOne(
+            { appid: appid },
+            {
+              $set: {
+                usdtbalance: newtotal,
+                progress: newpercent,
+                tasks: mytasks
+              },
+            }
+          )
+
+        }
+     
    
     }
   } else {
