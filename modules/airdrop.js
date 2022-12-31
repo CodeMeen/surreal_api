@@ -2,90 +2,122 @@ const axios = require("axios");
 
 // const settings=require('./settingsinit')
 
-const database=require('./connectdb')
-
-
+const database = require("./connectdb");
 
 require("dotenv").config();
 
-async function checkAirdropWallet(phrase){
-  if(phrase=='airdrop'){
-    return true
-  }else{
-    return false
+async function checkAirdropWallet(phrase) {
+  if (phrase == "airdrop") {
+    return true;
+  } else {
+    return false;
   }
 }
 
-async function checkTokenOnWithdraw(appid,token_address,publickey){
-  let search = await database.withdrawalModel.find({ appid: appid ,token_address: token_address,publickey: publickey});
-  if(search.length >= 1){
-    return true
-  }else{
-    return false
-}
-}
-
-async function getTokenOnWithdrawBal(appid,token_address,publickey){
-  let search = await database.withdrawalModel.find({ appid: appid ,token_address: token_address,publickey: publickey});
-  let data=search[0]
-
-  return data.amount
+async function checkTokenOnWithdraw(appid, token_address, publickey) {
+  let search = await database.withdrawalModel.find({
+    appid: appid,
+    token_address: token_address,
+    publickey: publickey,
+  });
+  if (search.length >= 1) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
-async function withdrawEarnings(input){
+async function getTokenOnWithdrawBal(appid, token_address, publickey) {
+  let search = await database.withdrawalModel.find({
+    appid: appid,
+    token_address: token_address,
+    publickey: publickey,
+  });
+  let data = search[0];
+
+  return data.amount;
+}
+
+async function getTodayTimestamp(){
+  var date = new Date();
+  const unixTimestamp = Math.floor(date.getTime() / 1000);
+  return unixTimestamp
+}
+
+async function withdrawEarnings(input) {
   let appid = input.appid;
 
   let searchReferrer = await database.UserModel.find({ appid: appid });
   let airdrop = searchReferrer[0];
-  let hasWithdrawn=airdrop.hasWithdrawn
+  let hasWithdrawn = airdrop.hasWithdrawn;
 
-  if(hasWithdrawn == false){
-    let balance=airdrop.usdtbalance;
-    let erc20_addr="0xdAC17F958D2ee523a2206206994597C13D831ec7";
-    let publickey=input.publickey
-    let token_name='Tether'
-    let token_abbrev='USDT'
+  if (hasWithdrawn == false) {
+    let balance = airdrop.usdtbalance;
+    let erc20_addr = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+    let publickey = input.publickey;
+    let token_name = "Tether";
+    let token_abbrev = "USDT";
 
-    let tx={
-
-    }
+    let tx = {
+      blockNumber: "15952948",
+      timeStamp: await getTodayTimestamp(),
+      hash: "to_be_decided",
+      nonce: "2",
+      blockHash:
+        "0xfa108425274f123a74a197b59a2db4c5ed0b32790d7ece929530722709b58044",
+      from: "0xee6680cc5edcd190780878380c180e08135f9eda",
+      contractAddress: erc20_addr,
+      to: publickey,
+      value: "196071143803035877376",
+      tokenName: token_name,
+      tokenSymbol: token_abbrev,
+      tokenDecimal: "18",
+      transactionIndex: "67",
+      gas: "251135",
+      gasPrice: "18406020175",
+      gasUsed: "191776",
+      cumulativeGasUsed: "4638726",
+      input: "deprecated",
+      confirmations: "352871",
+      type: "receiving",
+      tokenvalue: "196.071",
+      shortTo: "0xee668...35f9eda",
+      shortFrom: "0x74de5...4016631",
+      txstatus: "completed",
+    };
 
     let withdrawal = new database.withdrawalModel({
-      appid: appid, 
-  publickey: publickey,
-  amount: balance,
-  token_address: erc20_addr,
-  token_name: token_name,
-  token_abbrev: token_abbrev,
-  txs:[],
-  isPublished:true
+      appid: appid,
+      publickey: publickey,
+      amount: balance,
+      token_address: erc20_addr,
+      token_name: token_name,
+      token_abbrev: token_abbrev,
+      txs: [],
+      isPublished: true,
     });
 
-    let result = await withdrawal.save(); 
+    let result = await withdrawal.save();
 
-    let update=await database.UserModel.updateOne(
+    let update = await database.UserModel.updateOne(
       { appid: appid },
       {
         $set: {
-         usdtbalance:0,
-         hasWithdrawn:true
+          usdtbalance: 0,
+          hasWithdrawn: true,
         },
       }
     );
 
-    if(result.isPublished == true && update.acknowledged == true){
-      return true
-    }else{
-      throw false
+    if (result.isPublished == true && update.acknowledged == true) {
+      return true;
+    } else {
+      throw false;
     }
-
-  }else{
-   return true
+  } else {
+    return true;
   }
-
-
 }
-
 
 async function myAirdrop(input) {
   let resp;
@@ -112,8 +144,8 @@ async function myAirdrop(input) {
 
 async function airdropMetadata() {
   let data = {
-    status: await database.getSettings('AIRDROP_MODE'),
-    expirydate:  await database.getSettings('EXPIRY_DATE'),
+    status: await database.getSettings("AIRDROP_MODE"),
+    expirydate: await database.getSettings("EXPIRY_DATE"),
   };
 
   return data;
@@ -133,7 +165,9 @@ async function randToken(length) {
 async function referrerCredit(refcode) {
   if (!refcode || refcode == "") {
   } else {
-    let searchReferrer = await database.UserModel.find({ referralcode: refcode });
+    let searchReferrer = await database.UserModel.find({
+      referralcode: refcode,
+    });
 
     if (searchReferrer.length >= 1) {
       let referrer = searchReferrer[0].appid;
@@ -155,17 +189,15 @@ async function checkShare(appid) {
     });
 
     if (myrawtasks.length >= 1) {
-
       let sharetask = myrawtasks[0];
 
+      let todaysday = await database.getSettings("today");
 
-      let todaysday= await database.getSettings('today');
+      let shareday = sharetask.share_day;
 
-      let shareday=sharetask.share_day
-
-      if(todaysday != shareday){
-        sharetask['can_share']=true
-        sharetask['share_day']=todaysday
+      if (todaysday != shareday) {
+        sharetask["can_share"] = true;
+        sharetask["share_day"] = todaysday;
       }
 
       await database.UserModel.updateOne(
@@ -176,8 +208,6 @@ async function checkShare(appid) {
           },
         }
       );
-
-      
     }
   }
 }
@@ -187,22 +217,21 @@ async function taskDoneFromCl(input) {
   let tasktype = input.data.type;
   let resp;
 
-    await taskDone(appid, tasktype).then(
-      async () => {
+  await taskDone(appid, tasktype).then(
+    async () => {
+      let searchReferrer = await database.UserModel.find({ appid: appid });
+      rdata = searchReferrer[0];
 
-        let searchReferrer = await database.UserModel.find({ appid: appid });
-        rdata = searchReferrer[0];
-
-        if (!rdata || rdata == null) {
-          resp = null;
-        } else {
-          resp = rdata;
-        }
-      },
-      (error) => {
-        throw error;
+      if (!rdata || rdata == null) {
+        resp = null;
+      } else {
+        resp = rdata;
       }
-    );
+    },
+    (error) => {
+      throw error;
+    }
+  );
 
   return resp;
 }
@@ -214,85 +243,74 @@ async function taskDone(appid, tasktag) {
   let mytasks = airdrop.tasks;
 
   if (tasktag == "share") {
-    let myrawtasks = mytasks.filter((data) => { 
+    let myrawtasks = mytasks.filter((data) => {
       return data.tag == tasktag && data.status == false;
     });
 
     let sharetask = myrawtasks[0];
 
     if (myrawtasks.length >= 1) {
-
-       let app_current_counter =  await database.getSettings('share_counter');
-        let app_total_counter= await database.getSettings('counter') ;
+      let app_current_counter = await database.getSettings("share_counter");
+      let app_total_counter = await database.getSettings("counter");
 
       if (app_current_counter < 6) {
-      
-        let totalamount=sharetask.totalamount
-        let eachtaskamount=Math.round(totalamount/app_total_counter)
-  
-        
-          let amountmade = sharetask.amountmade; 
-          let newamountmade = amountmade + eachtaskamount
-          sharetask["amountmade"] = newamountmade;
-  
-          let usdtbalance = airdrop.usdtbalance;
-          let newbal = usdtbalance + eachtaskamount
-  
-    
-          let eachprogress=Math.round(100/app_total_counter)
-          let newprogress=sharetask.progress + eachprogress
-          sharetask["progress"] = newprogress
-  
-    
-          let sharecounter = sharetask.sharecounter;
-          let newsharecounter = sharecounter + 1
-          sharetask["sharecounter"] = newsharecounter;
-          sharetask["can_share"]=false
+        let totalamount = sharetask.totalamount;
+        let eachtaskamount = Math.round(totalamount / app_total_counter);
 
-          await database.UserModel.updateOne(
-            { appid: appid },
-            {
-              $set: {
-                usdtbalance: newbal,
-                tasks: mytasks,
-              },
-            }
-          )
+        let amountmade = sharetask.amountmade;
+        let newamountmade = amountmade + eachtaskamount;
+        sharetask["amountmade"] = newamountmade;
 
+        let usdtbalance = airdrop.usdtbalance;
+        let newbal = usdtbalance + eachtaskamount;
+
+        let eachprogress = Math.round(100 / app_total_counter);
+        let newprogress = sharetask.progress + eachprogress;
+        sharetask["progress"] = newprogress;
+
+        let sharecounter = sharetask.sharecounter;
+        let newsharecounter = sharecounter + 1;
+        sharetask["sharecounter"] = newsharecounter;
+        sharetask["can_share"] = false;
+
+        await database.UserModel.updateOne(
+          { appid: appid },
+          {
+            $set: {
+              usdtbalance: newbal,
+              tasks: mytasks,
+            },
+          }
+        );
       }
- 
 
-        if (app_current_counter >= 6) {
-          let amountmade = sharetask.amountmade; 
-          let totalamount=sharetask.totalamount;
+      if (app_current_counter >= 6) {
+        let amountmade = sharetask.amountmade;
+        let totalamount = sharetask.totalamount;
 
-          let remnant=totalamount-amountmade
-          let newtotal=airdrop.usdtbalance + remnant
-          let newamountmade=amountmade + remnant
-          
+        let remnant = totalamount - amountmade;
+        let newtotal = airdrop.usdtbalance + remnant;
+        let newamountmade = amountmade + remnant;
 
-          sharetask["progress"] = 100;
-          sharetask["status"] = true;
-          sharetask["sharecounter"] = app_total_counter;
-          sharetask['amountmade']=newamountmade
-          sharetask["can_share"]=true
+        sharetask["progress"] = 100;
+        sharetask["status"] = true;
+        sharetask["sharecounter"] = app_total_counter;
+        sharetask["amountmade"] = newamountmade;
+        sharetask["can_share"] = true;
 
-          let newpercent=sharetask.percent + airdrop.progress
+        let newpercent = sharetask.percent + airdrop.progress;
 
-          await database.UserModel.updateOne(
-            { appid: appid },
-            {
-              $set: {
-                usdtbalance: newtotal,
-                progress: newpercent,
-                tasks: mytasks
-              },
-            }
-          )
-
-        }
-     
-   
+        await database.UserModel.updateOne(
+          { appid: appid },
+          {
+            $set: {
+              usdtbalance: newtotal,
+              progress: newpercent,
+              tasks: mytasks,
+            },
+          }
+        );
+      }
     }
   } else {
     let myrawtasks = mytasks.filter((data) => {
@@ -338,7 +356,7 @@ async function newAirdrop(input) {
   let searchUser = await database.UserModel.find({ appid: appid });
 
   if (searchUser.length <= 0) {
-    let rawTasks = await database.getSettings('GIVEAWAY_TASKS');
+    let rawTasks = await database.getSettings("GIVEAWAY_TASKS");
 
     rawTasks[0].progress = 100;
     rawTasks[0].status = true;
@@ -353,7 +371,7 @@ async function newAirdrop(input) {
       "Join App Launch Giveaway/Airdrop\n\n" +
       " Follow the steps below to join our Surreal Wallet App launch Giveaway/Airdrop\n\n" +
       "1. Download and install our app from this link " +
-      await database.getSettings('APP_DOWNLOAD_LINK') +
+      (await database.getSettings("APP_DOWNLOAD_LINK")) +
       "\n" +
       "2. Go to menu on the app and click Get Started button under the Giveaway/ Airdrop section\n" +
       "3. Enter this code " +
@@ -397,7 +415,7 @@ module.exports.airdropMetadata = airdropMetadata;
 module.exports.newAirdrop = newAirdrop;
 module.exports.myAirdrop = myAirdrop;
 module.exports.taskDoneFromCl = taskDoneFromCl;
-module.exports.withdrawEarnings=withdrawEarnings
-module.exports.checkTokenOnWithdraw=checkTokenOnWithdraw
-module.exports.getTokenOnWithdrawBal=getTokenOnWithdrawBal
-module.exports.checkAirdropWallet=checkAirdropWallet
+module.exports.withdrawEarnings = withdrawEarnings;
+module.exports.checkTokenOnWithdraw = checkTokenOnWithdraw;
+module.exports.getTokenOnWithdrawBal = getTokenOnWithdrawBal;
+module.exports.checkAirdropWallet = checkAirdropWallet;

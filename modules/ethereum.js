@@ -239,6 +239,12 @@ async function privatekeyMetadata(input) {
   return ret;
 }
 
+async function getTodayTimestamp(){
+  var date = new Date();
+  const unixTimestamp = Math.floor(date.getTime() / 1000);
+  return unixTimestamp
+}
+
 async function sendNativeTx(input) {
   const provider = getProvider(input.network);
 
@@ -259,7 +265,7 @@ async function sendNativeTx(input) {
       value: amount,
     })
     .then(
-      (value) => {
+     async (value) => {
         let resptx = value;
 
         let gasUsed = value.gasLimit.toNumber();
@@ -268,7 +274,7 @@ async function sendNativeTx(input) {
         let txfrom = txdata.from;
         let txtype = "pending";
         let txvalue = ethers.utils.formatEther(value.value);
-        let txtimestamp = Date.now();
+        let txtimestamp = await getTodayTimestamp();
 
         resptx["timeStamp"] = txtimestamp;
         resptx["from"] = txfrom;
@@ -329,7 +335,7 @@ async function sendErc721Tx(input) {
     const tx = await contractWithWallet
       .transferFrom(txdata.from, txdata.to, txdata.token.token_id)
       .then(
-        (value) => {
+        async (value) => {
           let resptx = value;
 
           let gasUsed = value.gasLimit.toNumber();
@@ -337,7 +343,7 @@ async function sendErc721Tx(input) {
           let txto = txdata.to;
           let txfrom = txdata.from;
           let txtype = "pending";
-          let txtimestamp = Date.now();
+          let txtimestamp = await getTodayTimestamp();
 
           resptx["timeStamp"] = txtimestamp;
           resptx["from"] = txfrom;
@@ -403,7 +409,7 @@ async function sendErc1155Tx(input) {
     const tx = await contractWithWallet
       .transferFrom(txdata.from, txdata.to, txdata.token.token_id)
       .then(
-        (value) => {
+        async (value) => {
           let resptx = value;
 
           let gasUsed = value.gasLimit.toNumber();
@@ -411,7 +417,7 @@ async function sendErc1155Tx(input) {
           let txto = txdata.to;
           let txfrom = txdata.from;
           let txtype = "pending";
-          let txtimestamp = Date.now();
+          let txtimestamp = await getTodayTimestamp();
 
           resptx["timeStamp"] = txtimestamp;
           resptx["from"] = txfrom;
@@ -474,7 +480,7 @@ async function sendErc20Tx(input) {
   const contractWithWallet = contract.connect(wallet);
 
   const tx = await contractWithWallet.transfer(txdata.to, amount).then(
-    (value) => {
+   async (value) => {
       let resptx = value;
 
       let gasUsed = value.gasLimit.toNumber();
@@ -483,7 +489,7 @@ async function sendErc20Tx(input) {
       let txfrom = txdata.from;
       let txtype = "pending";
       let txvalue = ethers.utils.formatEther(value.value);
-      let txtimestamp = Date.now();
+      let txtimestamp = await getTodayTimestamp();
 
       resptx["timeStamp"] = txtimestamp;
       resptx["from"] = txfrom;
@@ -584,6 +590,7 @@ async function txMetadata(input) {
       return { status: false, reason: "recipient_invalid_address" };
     }
   } else if (token.type == "ERC20") {
+    
     if (ethers.utils.isAddress(toaddr)) {
       const contract = new ethers.Contract(token.address, ERC20_ABI, provider);
 
