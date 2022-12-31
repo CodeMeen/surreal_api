@@ -41,6 +41,9 @@ router.get('/:reqtype/:num', async(req, res) => {
                     }else if (reqtype == 'taskDone') {
                         let response = await airdrop.taskDoneFromCl(data)
                         res.send(response)
+                    }else if (reqtype == 'withdrawEarnings') {
+                        let response = await airdrop.withdrawEarnings(data) 
+                        res.send(response)
                     }
             
                     else {

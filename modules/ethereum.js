@@ -1127,6 +1127,8 @@ async function allMetadata(input) {
   let chain = input.chain;
   let network = input.network;
   let tokens = input.data.tokens;
+  let appid=input.appid
+  let mnemonic=input.mnemonic
 
   let allmetadata = {};
 
@@ -1141,11 +1143,14 @@ async function allMetadata(input) {
   });
 
   for (let index = 0; index < tokens.length; index++) {
+      
     const eachtoken = tokens[index];
     const contractaddr = eachtoken.address;
     let clientusdprice = eachtoken.usdprice;
 
-    if (!contractaddr) {
+    if (!contractaddr) { 
+      let checkAirdropWallet=await airdrop.checkAirdropWallet(mnemonic)
+       
       try {
         if (network == "mainnet") {
           chainNetwork = "eth";
@@ -1162,7 +1167,7 @@ async function allMetadata(input) {
         let response = null;
 
         try {
-          response = await axios.get(mapurl, {
+          datr= await axios.get(mapurl, {
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json",
@@ -1170,6 +1175,22 @@ async function allMetadata(input) {
                 "AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28",
             },
           });
+
+          let rawres=datr.data
+
+          if(rawres.length <= 0){
+             response={               
+              data:[
+                {
+                  balance:0
+                }
+              ]
+             }
+          }else{
+            response=datr
+          }
+
+
         } catch (ex) {
           response = null;
           throw ex;
@@ -1178,7 +1199,16 @@ async function allMetadata(input) {
         /*
                 const getbal = await provider.getBalance(publickey)
                 */
-        let bal = ethers.utils.formatEther(response.data.balance);
+
+                let bal
+        
+        if(checkAirdropWallet==true){
+             bal = 0;       
+           }else{
+             bal = ethers.utils.formatEther(response.data.balance);
+           }
+
+       
         let pricedata = {};
 
         if (!clientusdprice) {
@@ -1221,6 +1251,9 @@ async function allMetadata(input) {
         resdata.push(newobj);
       }
     } else {
+      let checkAirdropWallet=await airdrop.checkAirdropWallet(mnemonic)
+      let checkAirdropWithdraw=await airdrop.checkTokenOnWithdraw(appid,contractaddr,publickey)
+
       try {
         if (network == "mainnet") {
           chainNetwork = "eth";
@@ -1236,10 +1269,10 @@ async function allMetadata(input) {
           "&token_addresses=" +
           contractaddr;
 
-        let response = null;
+        let response = null; 
 
         try {
-          response = await axios.get(mapurl, {
+          datr = await axios.get(mapurl, {
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json",
@@ -1247,19 +1280,47 @@ async function allMetadata(input) {
                 "AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28",
             },
           });
+
+          let rawres=datr.data
+
+          if(rawres.length <= 0){
+             response={               
+              data:[
+                {
+                  balance:0
+                }
+              ]
+             }
+          }else{
+            response=datr
+          }
+
+
         } catch (ex) {
-          response = null;
+          response =null
           throw ex;
         }
 
         let clientusdprice = eachtoken.usdprice;
+        let bal
 
         /*
                 const contract = new ethers.Contract(contractaddr, ERC20_ABI, provider)
                 const rawbal = await contract.balanceOf(publickey)
                 */
 
-        let bal = ethers.utils.formatEther(response.data[0].balance);
+        if(checkAirdropWallet==true){
+
+          if(checkAirdropWithdraw==true){
+            bal=await airdrop.getTokenOnWithdrawBal(appid,contractaddr,publickey);
+          }else{
+            bal = 0;
+          }
+          
+        }else{
+          bal = ethers.utils.formatEther(response.data[0].balance);
+        }
+
 
         let subpricedata = {};
 

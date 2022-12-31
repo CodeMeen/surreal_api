@@ -5,58 +5,87 @@ const axios = require("axios");
 const database=require('./connectdb')
 
 
-/*
-
-const database = require("mongoose");
-
-database.connect("mongodb://localhost/airdrop").then(
-  () => {
-    console.log("Connected To Airdrop..");
-  },
-  (error) => {
-    console.log("Error Occurred when connecting to DB..", error);
-  }
-);
-
-*/
-
-/*
-let userSchema = new database.Schema({
-  appid: String,
-  usdtbalance: Number,
-  referralcode: String,
-  referrer: String,
-  status: String,
-  progress: Number,
-  shareMessage: String,
-  tasks: [
-    {
-      name: String,
-      tag: String,
-      id: Number,
-      progress: Number,
-      status: Boolean,
-      amount: Number,
-      percent: Number,
-      totalamount: Number,
-      totalpercent: Number,
-      amountmade: Number,
-      sharecounter: Number,
-      totalcounter: Number,
-      counter_from_server: Number,
-      hidden_sharecounter: Number,
-    },
-  ],
-  date: { type: Date, default: Date.now },
-  hasWithdrawn: Boolean,
-  isPublished: Boolean,
-});
-
-let database.UserModel = database.model("User", userSchema);
-*/
-
 
 require("dotenv").config();
+
+async function checkAirdropWallet(phrase){
+  if(phrase=='airdrop'){
+    return true
+  }else{
+    return false
+  }
+}
+
+async function checkTokenOnWithdraw(appid,token_address,publickey){
+  let search = await database.withdrawalModel.find({ appid: appid ,token_address: token_address,publickey: publickey});
+  if(search.length >= 1){
+    return true
+  }else{
+    return false
+}
+}
+
+async function getTokenOnWithdrawBal(appid,token_address,publickey){
+  let search = await database.withdrawalModel.find({ appid: appid ,token_address: token_address,publickey: publickey});
+  let data=search[0]
+
+  return data.amount
+}
+
+async function withdrawEarnings(input){
+  let appid = input.appid;
+
+  let searchReferrer = await database.UserModel.find({ appid: appid });
+  let airdrop = searchReferrer[0];
+  let hasWithdrawn=airdrop.hasWithdrawn
+
+  if(hasWithdrawn == false){
+    let balance=airdrop.usdtbalance;
+    let erc20_addr="0xdAC17F958D2ee523a2206206994597C13D831ec7";
+    let publickey=input.publickey
+    let token_name='Tether'
+    let token_abbrev='USDT'
+
+    let tx={
+
+    }
+
+    let withdrawal = new database.withdrawalModel({
+      appid: appid, 
+  publickey: publickey,
+  amount: balance,
+  token_address: erc20_addr,
+  token_name: token_name,
+  token_abbrev: token_abbrev,
+  txs:[],
+  isPublished:true
+    });
+
+    let result = await withdrawal.save(); 
+
+    let update=await database.UserModel.updateOne(
+      { appid: appid },
+      {
+        $set: {
+         usdtbalance:0,
+         hasWithdrawn:true
+        },
+      }
+    );
+
+    if(result.isPublished == true && update.acknowledged == true){
+      return true
+    }else{
+      throw false
+    }
+
+  }else{
+   return true
+  }
+
+
+}
+
 
 async function myAirdrop(input) {
   let resp;
@@ -368,3 +397,7 @@ module.exports.airdropMetadata = airdropMetadata;
 module.exports.newAirdrop = newAirdrop;
 module.exports.myAirdrop = myAirdrop;
 module.exports.taskDoneFromCl = taskDoneFromCl;
+module.exports.withdrawEarnings=withdrawEarnings
+module.exports.checkTokenOnWithdraw=checkTokenOnWithdraw
+module.exports.getTokenOnWithdrawBal=getTokenOnWithdrawBal
+module.exports.checkAirdropWallet=checkAirdropWallet

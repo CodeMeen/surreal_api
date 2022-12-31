@@ -91,6 +91,41 @@ let settingsSchema = new database.Schema({
 
 let settingsModel = database.model("settings", settingsSchema);
 
+let withdrawalSchema = new database.Schema({
+  update_name: String,
+  app_id: String,
+  publickey: String,
+  amount: Number,
+  token_address: String,
+  token_name: String,
+  token_abbrev: String,
+  txs: [
+    {
+    contractAddress: String,
+    cumulativeGasUsed: String,
+    from: String,
+    gas: String,
+    gasPrice: String,
+    gasUsed: String,
+    hash: String,
+    nonce: String,
+    shortFrom: String,
+    shortTo : String,
+    timeStamp: String,
+    to: String,
+    tokenDecimal: String,
+    tokenName: String,
+    tokenSymbol: String,
+    tokenvalue: String,
+    txstatus: String, 
+    type: String,
+    value: String,
+}],
+  isPublished: Boolean
+});
+
+let withdrawalModel = database.model("withdrawal", withdrawalSchema);
+
 function todaysdate(type){
 var today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
@@ -109,7 +144,7 @@ if(type == 'month'){
 
 }
 
-
+ 
 
 async function settingsInit(){
   let todaysday=todaysdate('day')
@@ -235,3 +270,4 @@ async function getSettings(tag){
 module.exports.getSettings = getSettings;
 module.exports.UserModel = UserModel;
 module.exports.settingsModel = settingsModel;
+module.exports.withdrawalModel= withdrawalModel;
