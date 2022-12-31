@@ -1164,6 +1164,8 @@ async function allMetadata(input) {
           "/balance?chain=" +
           chainNetwork;
 
+  
+
         let response = null;
 
         try {
@@ -1176,15 +1178,16 @@ async function allMetadata(input) {
             },
           });
 
+
           let rawres=datr.data
 
-          if(rawres.length <= 0){
+          if(!rawres.balance){
              response={               
-              data:[
+              data:
                 {
                   balance:0
                 }
-              ]
+              
              }
           }else{
             response=datr
@@ -1282,7 +1285,8 @@ async function allMetadata(input) {
           });
 
           let rawres=datr.data
-
+         
+         
           if(rawres.length <= 0){
              response={               
               data:[
