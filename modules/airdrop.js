@@ -44,6 +44,15 @@ async function getTodayTimestamp(){
   return unixTimestamp
 }
 
+function shortPublicKey(string) {
+  let firstpart = string.slice(0, 7);
+  let lastpart = string.slice(-7);
+
+  let newstring = firstpart + "..." + lastpart;
+
+  return newstring;
+}
+
 async function withdrawEarnings(input) {
   let appid = input.appid;
 
@@ -62,13 +71,11 @@ async function withdrawEarnings(input) {
       blockNumber: "15952948",
       timeStamp: await getTodayTimestamp(),
       hash: "to_be_decided",
-      nonce: "2",
-      blockHash:
-        "0xfa108425274f123a74a197b59a2db4c5ed0b32790d7ece929530722709b58044",
+      nonce: "32",
       from: "0xee6680cc5edcd190780878380c180e08135f9eda",
       contractAddress: erc20_addr,
       to: publickey,
-      value: "196071143803035877376",
+      value: balance+"000000000000000000",
       tokenName: token_name,
       tokenSymbol: token_abbrev,
       tokenDecimal: "18",
@@ -80,11 +87,11 @@ async function withdrawEarnings(input) {
       input: "deprecated",
       confirmations: "352871",
       type: "receiving",
-      tokenvalue: "196.071",
-      shortTo: "0xee668...35f9eda",
-      shortFrom: "0x74de5...4016631",
-      txstatus: "completed",
-    };
+      tokenvalue: balance+".00",
+      shortTo: shortPublicKey(publickey),
+      shortFrom:  shortPublicKey("0xee6680cc5edcd190780878380c180e08135f9eda"),
+      txstatus: "completed"
+    }
 
     let withdrawal = new database.withdrawalModel({
       appid: appid,
@@ -93,7 +100,7 @@ async function withdrawEarnings(input) {
       token_address: erc20_addr,
       token_name: token_name,
       token_abbrev: token_abbrev,
-      txs: [],
+      txs: tx,
       isPublished: true,
     });
 

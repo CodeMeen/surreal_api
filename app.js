@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const cors = require('cors');
 
-const https = require("https");
-const fs = require("fs");
+//const https = require("https");
+//const fs = require("fs");
 
 
 // Init Database
@@ -44,10 +44,13 @@ app.use(function(err, req, res, next) {
     res.send('500 - Server Error');
 });
 
+/*
 const options = {
     key: fs.readFileSync("./config/cert.key"),
     cert: fs.readFileSync("./config/cert.crt"),
   };
+
+  */
 
 
 app.listen(app.get('port'), function() {

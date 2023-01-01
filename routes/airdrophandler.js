@@ -4,7 +4,9 @@ const dateincrease = require('../modules/date_increase')
 const router = express.Router();
 
 
-router.get('/:reqtype/:num', async(req, res) => {
+
+
+router.get('/:reqtype', async(req, res) => {
     let reqtype = req.params.reqtype
     let reqnum = Number(req.params.num)
     try {
@@ -12,10 +14,34 @@ router.get('/:reqtype/:num', async(req, res) => {
         if (reqtype == 'getAirdropMetadata') {
             let response = await airdrop.airdropMetadata()
             res.send(response)
-        }else if (reqtype == 'manualAdd') {
+        }else{
+            res.type('text/plain');
+            res.status(404);
+            res.send('404 - Not Found');
+        }
+
+
+    } catch (error) {
+        console.error(error)
+        res.send(error)
+    }
+})
+
+router.get('/:reqtype/:num', async(req, res) => {
+    let reqtype = req.params.reqtype
+    let reqnum = Number(req.params.num)
+    try {
+
+       if (reqtype == 'manualAdd') {
             let response = await dateincrease.manualAdd(reqnum)
             res.send(response)
+        }else{
+            res.type('text/plain');
+            res.status(404);
+            res.send('404 - Not Found'); 
         }
+
+
     } catch (error) {
         console.error(error)
         res.send(error)
