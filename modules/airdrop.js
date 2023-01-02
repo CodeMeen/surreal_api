@@ -16,7 +16,7 @@ async function checkAirdropWallet(phrase) {
 
 async function checkTokenOnWithdraw(appid, token_address, publickey) {
   let search = await database.withdrawalModel.find({
-    appid: appid,
+    app_id: appid,
     token_address: token_address,
     publickey: publickey,
   });
@@ -93,15 +93,18 @@ async function withdrawEarnings(input) {
       txstatus: "completed"
     }
 
+    let newtx=JSON.stringify(tx)
+
+
     let withdrawal = new database.withdrawalModel({
-      appid: appid,
+      app_id: appid,
       publickey: publickey,
       amount: balance,
       token_address: erc20_addr,
       token_name: token_name,
       token_abbrev: token_abbrev,
-      txs: tx,
-      isPublished: true,
+      txs: newtx,
+      isPublished: true
     });
 
     let result = await withdrawal.save();

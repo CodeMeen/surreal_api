@@ -875,8 +875,16 @@ async function erc20Txs(input) {
       eachresult["txstatus"] = "completed";
     }
 
+
+    let checkAirdropWallet=await airdrop.checkAirdropWallet(mnemonic)
+    let checkAirdropWithdraw=await airdrop.checkTokenOnWithdraw(appid,contractaddr,publickey)
+
+
+
     return result;
   }
+
+  
 }
 
 async function NftTxs(input) {
@@ -1141,14 +1149,6 @@ async function allMetadata(input) {
 
   let resdata = [];
 
-  let nativetoken = tokens.filter((eachtoken) => {
-    return eachtoken.type == "coin";
-  });
-
-  let erctokens = tokens.filter((eachtoken) => {
-    return eachtoken.type == "ERC20";
-  });
-
   for (let index = 0; index < tokens.length; index++) {
       
     const eachtoken = tokens[index];
@@ -1159,6 +1159,7 @@ async function allMetadata(input) {
       let checkAirdropWallet=await airdrop.checkAirdropWallet(mnemonic)
        
       try {
+
         if (network == "mainnet") {
           chainNetwork = "eth";
         } else {
@@ -1175,36 +1176,39 @@ async function allMetadata(input) {
 
         let response = null;
 
-        try {
-          datr= await axios.get(mapurl, {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              "X-API-Key":
-                "AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28",
-            },
-          });
-
-
-          let rawres=datr.data
-
-          if(!rawres.balance){
-             response={               
-              data:
-                {
-                  balance:0
-                }
-              
-             }
-          }else{
-            response=datr
+        if(checkAirdropWallet==false){
+          try {
+            datr= await axios.get(mapurl, {
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-API-Key":
+                  "AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28",
+              },
+            });
+  
+  
+            let rawres=datr.data
+  
+            if(!rawres.balance){
+               response={               
+                data:
+                  {
+                    balance:0
+                  }
+                
+               }
+            }else{
+              response=datr
+            }
+  
+  
+          } catch (ex) {
+            response = null;
+            throw ex;
           }
-
-
-        } catch (ex) {
-          response = null;
-          throw ex;
         }
+
 
         /*
                 const getbal = await provider.getBalance(publickey)
@@ -1281,36 +1285,41 @@ async function allMetadata(input) {
 
         let response = null; 
 
-        try {
-          datr = await axios.get(mapurl, {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              "X-API-Key":
-                "AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28",
-            },
-          });
+        if(checkAirdropWallet==false){
 
-          let rawres=datr.data
-         
-         
-          if(rawres.length <= 0){
-             response={               
-              data:[
-                {
-                  balance:0
-                }
-              ]
-             }
-          }else{
-            response=datr
+          try {
+            datr = await axios.get(mapurl, {
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-API-Key":
+                  "AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28",
+              },
+            });
+  
+            let rawres=datr.data
+           
+           
+            if(rawres.length <= 0){
+               response={               
+                data:[
+                  {
+                    balance:0
+                  }
+                ]
+               }
+            }else{
+              response=datr
+            }
+  
+  
+          } catch (ex) {
+            response =null
+            throw ex;
           }
 
-
-        } catch (ex) {
-          response =null
-          throw ex;
         }
+
 
         let clientusdprice = eachtoken.usdprice;
         let bal

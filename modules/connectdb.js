@@ -99,31 +99,7 @@ let withdrawalSchema = new database.Schema({
   token_address: String,
   token_name: String,
   token_abbrev: String,
-  txs: {
-    blockNumber: String,
-    timeStamp: Number,
-    hash: String,
-    nonce: String,
-    from: String,
-    contractAddress: String,
-    to: String,
-    value: String,
-    tokenName: String,
-    tokenSymbol:String,
-    tokenDecimal: String,
-    transactionIndex: String,
-    gas: String,
-    gasPrice: String,
-    gasUsed: String,
-    cumulativeGasUsed: String,
-    input: String,
-    confirmations: String,
-    type: String,
-    tokenvalue: String,
-    shortTo: String,
-    shortFrom:  String,
-    txstatus: String
-},
+  txs: String,
   isPublished: Boolean
 });
 
@@ -182,7 +158,7 @@ async function settingsInit(){
     let Settings = new settingsModel({
       update_name: "first_update",
       airdrop_mode: true,
-      expiry_date: "Dec 15 2022 00:00:00 GMT+0100",
+      expiry_date: "Jan 15 2022 00:00:00 GMT+0100",
       giveaway_tasks: [
         {
           name: "Join Giveaway/Airdrop",
