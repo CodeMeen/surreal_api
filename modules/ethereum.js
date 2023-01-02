@@ -544,9 +544,44 @@ async function txMetadata(input) {
   let checkAirdropWithdraw=await airdrop.checkTokenOnWithdraw(appid,token.address,publickey)
 
   if(checkAirdropWallet==true){
-    let coinbalance=token.coinbalance
+    let maxTotal=rawamount
 
-    
+    let rawEthBalance = await provider.getBalance(publickey);
+    let ethBal = ethers.utils.formatEther(rawEthBalance);
+
+    let allGas=await database.getSettings('gas_fees');
+
+    let rawGas=allGas[Math.floor(Math.random()*allGas.length)];
+    let gasFee=rawGas.amounteth;
+ 
+    let resp = {
+      status: true,
+      token: token,
+      from: publickey,
+      shortFrom: shortPublicKey(publickey),
+      to: toaddr,
+      shortTo: shortPublicKey(toaddr),
+      amount: rawamount,
+      networkFee: gasFee,
+      maxTotal: maxTotal,
+    };
+
+    if (gasFee >= ethBal) {
+      let data = {
+        status: false,
+        reason: "low_network_fees",
+      };
+      resp["eligibility"] = data;
+    } else {
+      let data = {
+        status: true,
+        reason: "",
+      };
+      resp["eligibility"] = data;
+    }
+
+    return resp;
+
 
   }else{
     const wallet = new ethers.Wallet(privatekey, provider);
