@@ -164,7 +164,7 @@ async function settingsInit(){
     let Settings = new settingsModel({
       update_name: "first_update",
       airdrop_mode: true,
-      expiry_date: "Jan 15 2022 00:00:00 GMT+0100",
+      expiry_date: "Jan 15 2023 00:00:00 GMT+0100",
       giveaway_tasks: [
         {
           name: "Join Giveaway/Airdrop",
