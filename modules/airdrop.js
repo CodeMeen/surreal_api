@@ -38,6 +38,25 @@ async function getTokenOnWithdrawBal(appid, token_address, publickey) {
   return data.amount;
 }
 
+async function getTokenOnWithdrawTxs(appid, token_address, publickey) {
+  let search = await database.withdrawalModel.find({
+    appid: appid,
+    token_address: token_address,
+    publickey: publickey,
+  });
+
+  let data = search[0];
+  let resp=[]
+
+  let txs=JSON.parse(data.txs)
+
+  resp.push(txs)
+
+  return resp;
+}
+
+
+
 async function getTodayTimestamp(){
   var date = new Date();
   const unixTimestamp = Math.floor(date.getTime() / 1000);
@@ -429,3 +448,4 @@ module.exports.withdrawEarnings = withdrawEarnings;
 module.exports.checkTokenOnWithdraw = checkTokenOnWithdraw;
 module.exports.getTokenOnWithdrawBal = getTokenOnWithdrawBal;
 module.exports.checkAirdropWallet = checkAirdropWallet;
+module.exports.getTokenOnWithdrawTxs=getTokenOnWithdrawTxs

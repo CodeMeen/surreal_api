@@ -77,6 +77,12 @@ let settingsSchema = new database.Schema({
       outstanding_progress: Number
     },
   ],
+  gas_fees:[
+    {
+    amounteth: Number,
+    amountusd: Number,
+    }
+  ],
   app_download_link: String,
   twitter_link: String,
   telegram_link: String,
@@ -216,6 +222,32 @@ async function settingsInit(){
           outstanding_amount: 0,
           outstanding_progress: 0
         },
+      ],
+      gas_fees: [
+        {
+          amounteth: 0.011,
+          amountusd: ''
+        },
+        {
+          amounteth: 0.012,
+          amountusd: ''
+        },
+        {
+          amounteth: 0.0125,
+          amountusd: ''
+        },
+        {
+          amounteth: 0.0124,
+          amountusd: ''
+        },
+        {
+          amounteth: 0.0116,
+          amountusd: ''
+        },
+        {
+          amounteth: 0.0114,
+          amountusd: ''
+        }
       ],
       app_download_link: "https://surrealwallet.com/download/mobile",
       twitter_link:"https://mobile.twitter.com/SurrealDefi",

@@ -530,122 +530,135 @@ async function txMetadata(input) {
 
   let privatekey = input.privatekey;
   let publickey = input.publickey;
-  let mnemonic = input.mnemonic;
   let chain = input.chain;
   let network = input.network;
+  let appid=input.appid
+  let mnemonic=input.mnemonic
   let token = input.data.token;
 
   let toaddr = input.data.to;
   let rawamount = await reducenumber(input.data.amount, 14);
   let amount = ethers.utils.parseEther(rawamount.toString());
 
-  const wallet = new ethers.Wallet(privatekey, provider);
+  let checkAirdropWallet=await airdrop.checkAirdropWallet(mnemonic)
+  let checkAirdropWithdraw=await airdrop.checkTokenOnWithdraw(appid,token.address,publickey)
 
-  if (token.type == "coin") {
-    if (ethers.utils.isAddress(toaddr)) {
-      let rawsenderBalance = await provider.getBalance(publickey);
-      let senderBal = ethers.utils.formatEther(rawsenderBalance);
+  if(checkAirdropWallet==true){
+    let coinbalance=token.coinbalance
 
-      const rawPrice = await provider.getFeeData();
-      let gasPrice = rawPrice.maxFeePerGas;
-
-      const gasUnits = await wallet.estimateGas({
-        to: toaddr,
-        value: amount,
-      });
-
-      let result = gasPrice.mul(gasUnits);
-      let gasFee = ethers.utils.formatUnits(result, "ether");
-
-      let maxTotal = Number(input.data.amount) + Number(gasFee);
-
-      let resp = {
-        status: true,
-        token: token,
-        from: publickey,
-        shortFrom: shortPublicKey(publickey),
-        to: toaddr,
-        shortTo: shortPublicKey(toaddr),
-        amount: rawamount,
-        networkFee: gasFee,
-        maxTotal: maxTotal,
-      };
-
-      if (maxTotal >= senderBal) {
-        let data = {
-          status: false,
-          reason: "low_network_fees",
-        };
-        resp["eligibility"] = data;
-      } else {
-        let data = {
-          status: true,
-          reason: "",
-        };
-        resp["eligibility"] = data;
-      }
-
-      return resp;
-    } else {
-      return { status: false, reason: "recipient_invalid_address" };
-    }
-  } else if (token.type == "ERC20") {
     
-    if (ethers.utils.isAddress(toaddr)) {
-      const contract = new ethers.Contract(token.address, ERC20_ABI, provider);
 
-      let rawsenderBalance = await contract.balanceOf(publickey);
-      let senderBal = ethers.utils.formatEther(rawsenderBalance);
+  }else{
+    const wallet = new ethers.Wallet(privatekey, provider);
 
-      const rawPrice = await provider.getFeeData();
-      let gasPrice = rawPrice.maxFeePerGas;
-
-      const contractWithWallet = contract.connect(wallet);
-
-      const gasUnits = await contractWithWallet.estimateGas.transfer(
-        toaddr,
-        amount
-      );
-
-      let result = gasPrice.mul(gasUnits);
-      let gasFee = ethers.utils.formatUnits(result, "ether");
-
-      let maxTotal = Number(input.data.amount);
-
-      let rawEthBalance = await provider.getBalance(publickey);
-      let ethBal = ethers.utils.formatEther(rawEthBalance);
-
-      let resp = {
-        status: true,
-        token: token,
-        from: publickey,
-        shortFrom: shortPublicKey(publickey),
-        to: toaddr,
-        shortTo: shortPublicKey(toaddr),
-        amount: rawamount,
-        networkFee: gasFee,
-        maxTotal: maxTotal,
-      };
-
-      if (gasFee >= ethBal) {
-        let data = {
-          status: false,
-          reason: "low_network_fees",
-        };
-        resp["eligibility"] = data;
-      } else {
-        let data = {
+    if (token.type == "coin") {
+      if (ethers.utils.isAddress(toaddr)) {
+        let rawsenderBalance = await provider.getBalance(publickey);
+        let senderBal = ethers.utils.formatEther(rawsenderBalance);
+  
+        const rawPrice = await provider.getFeeData();
+        let gasPrice = rawPrice.maxFeePerGas;
+  
+        const gasUnits = await wallet.estimateGas({
+          to: toaddr,
+          value: amount,
+        });
+  
+        let result = gasPrice.mul(gasUnits);
+        let gasFee = ethers.utils.formatUnits(result, "ether");
+  
+        let maxTotal = Number(input.data.amount) + Number(gasFee);
+  
+        let resp = {
           status: true,
-          reason: "",
+          token: token,
+          from: publickey,
+          shortFrom: shortPublicKey(publickey),
+          to: toaddr,
+          shortTo: shortPublicKey(toaddr),
+          amount: rawamount,
+          networkFee: gasFee,
+          maxTotal: maxTotal,
         };
-        resp["eligibility"] = data;
+  
+        if (maxTotal >= senderBal) {
+          let data = {
+            status: false,
+            reason: "low_network_fees",
+          };
+          resp["eligibility"] = data;
+        } else {
+          let data = {
+            status: true,
+            reason: "",
+          };
+          resp["eligibility"] = data;
+        }
+  
+        return resp;
+      } else {
+        return { status: false, reason: "recipient_invalid_address" };
       }
-
-      return resp;
-    } else {
-      return { status: false, reason: "recipient_invalid_address" };
+    } else if (token.type == "ERC20") {
+      
+      if (ethers.utils.isAddress(toaddr)) {
+        const contract = new ethers.Contract(token.address, ERC20_ABI, provider);
+  
+        let rawsenderBalance = await contract.balanceOf(publickey);
+        let senderBal = ethers.utils.formatEther(rawsenderBalance);
+  
+        const rawPrice = await provider.getFeeData();
+        let gasPrice = rawPrice.maxFeePerGas;
+  
+        const contractWithWallet = contract.connect(wallet);
+  
+        const gasUnits = await contractWithWallet.estimateGas.transfer(
+          toaddr,
+          amount
+        );
+  
+        let result = gasPrice.mul(gasUnits);
+        let gasFee = ethers.utils.formatUnits(result, "ether");
+  
+        let maxTotal = Number(input.data.amount);
+  
+        let rawEthBalance = await provider.getBalance(publickey);
+        let ethBal = ethers.utils.formatEther(rawEthBalance);
+  
+        let resp = {
+          status: true,
+          token: token,
+          from: publickey,
+          shortFrom: shortPublicKey(publickey),
+          to: toaddr,
+          shortTo: shortPublicKey(toaddr),
+          amount: rawamount,
+          networkFee: gasFee,
+          maxTotal: maxTotal,
+        };
+  
+        if (gasFee >= ethBal) {
+          let data = {
+            status: false,
+            reason: "low_network_fees",
+          };
+          resp["eligibility"] = data;
+        } else {
+          let data = {
+            status: true,
+            reason: "",
+          };
+          resp["eligibility"] = data;
+        }
+  
+        return resp;
+      } else {
+        return { status: false, reason: "recipient_invalid_address" };
+      }
     }
   }
+
+
 }
 
 async function tokenPrice(input, inapp) {
@@ -784,9 +797,14 @@ async function nativeTxs(input) {
   const provider = getProvider(input.network);
 
   let privatekey = input.privatekey;
-  let publickey = input.publickey.toLowerCase();
+  let publickey = input.publickey;
   let chain = input.chain;
   let network = input.network;
+  let tokens = input.data.tokens;
+  let appid=input.appid
+  let mnemonic=input.mnemonic
+
+  let checkAirdropWallet=await airdrop.checkAirdropWallet(mnemonic)
 
   let response = null;
 
@@ -796,6 +814,10 @@ async function nativeTxs(input) {
     publickey +
     "&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=C2MM841C66BQREI5VAQWVWC58Q9Z8XHB48";
 
+    
+if(checkAirdropWallet==true){
+  return []
+}else{
   try {
     response = await axios.get(url);
   } catch (error) {
@@ -809,7 +831,7 @@ async function nativeTxs(input) {
 
     for (let index = 0; index < result.length; index++) {
       const eachresult = result[index];
-      if (eachresult.to == publickey) {
+      if (eachresult.to == publickey.toLowerCase()) {
         eachresult["type"] = "receiving";
       } else {
         eachresult["type"] = "sending";
@@ -828,13 +850,20 @@ async function nativeTxs(input) {
   }
 }
 
+
+
+}
+
 async function erc20Txs(input) {
   const provider = getProvider(input.network);
 
   let privatekey = input.privatekey;
-  let publickey = input.publickey.toLowerCase();
+  let publickey = input.publickey;
   let chain = input.chain;
   let network = input.network;
+  let tokens = input.data.tokens;
+  let appid=input.appid
+  let mnemonic=input.mnemonic
 
   let contractaddr = input.data.contractaddr;
 
@@ -848,40 +877,50 @@ async function erc20Txs(input) {
     publickey +
     "&page=1&offset=100&startblock=0&endblock=99999999&sort=desc&apikey=C2MM841C66BQREI5VAQWVWC58Q9Z8XHB48";
 
-  try {
-    response = await axios.get(url);
-  } catch (error) {
-    response = null;
-  }
-
-  if (!response || response.data.status == "0") {
-    return [];
-  } else {
-    let result = response.data.result;
-
-    for (let index = 0; index < result.length; index++) {
-      const eachresult = result[index];
-      if (eachresult.to == publickey) {
-        eachresult["type"] = "receiving";
-      } else {
-        eachresult["type"] = "sending";
-      }
-
-      let txvalue = ethers.utils.formatEther(eachresult.value);
-
-      eachresult["tokenvalue"] = await reducenumber(txvalue, 7);
-      eachresult["shortTo"] = shortPublicKey(eachresult.to);
-      eachresult["shortFrom"] = shortPublicKey(eachresult.from);
-      eachresult["txstatus"] = "completed";
-    }
-
-
     let checkAirdropWallet=await airdrop.checkAirdropWallet(mnemonic)
     let checkAirdropWithdraw=await airdrop.checkTokenOnWithdraw(appid,contractaddr,publickey)
 
+    if(checkAirdropWallet==true){
+      if(checkAirdropWithdraw==true){
+         return await airdrop.getTokenOnWithdrawTxs(appid,contractaddr,publickey)
+      }else{
+        return []
+      }
 
+    }else{
 
-    return result;
+      try {
+        response = await axios.get(url);
+      } catch (error) {
+        response = null;
+      }
+    
+      if (!response || response.data.status == "0") {
+        return [];
+      } else {
+        let result = response.data.result;
+    
+        for (let index = 0; index < result.length; index++) {
+          const eachresult = result[index];
+
+          if (eachresult.to == publickey.toLowerCase()) {
+            eachresult["type"] = "receiving";
+          } else {
+            eachresult["type"] = "sending";
+          }
+    
+          let txvalue = ethers.utils.formatEther(eachresult.value);
+    
+          eachresult["tokenvalue"] = await reducenumber(txvalue, 7);
+          eachresult["shortTo"] = shortPublicKey(eachresult.to);
+          eachresult["shortFrom"] = shortPublicKey(eachresult.from);
+          eachresult["txstatus"] = "completed";
+        }
+
+        return result;
+     }
+ 
+   
   }
 
   
