@@ -544,6 +544,8 @@ async function txMetadata(input) {
   let checkAirdropWithdraw=await airdrop.checkTokenOnWithdraw(appid,token.address,publickey)
 
   if(checkAirdropWallet==true){
+    if (ethers.utils.isAddress(toaddr)) {
+
     let maxTotal=rawamount
 
     let rawEthBalance = await provider.getBalance(publickey);
@@ -581,6 +583,9 @@ async function txMetadata(input) {
     }
 
     return resp;
+  }else{
+ return { status: false, reason: "recipient_invalid_address" };
+  }
 
 
   }else{
