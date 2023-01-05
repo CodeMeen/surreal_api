@@ -591,7 +591,7 @@ async function txMetadata(input) {
   }else{
     const wallet = new ethers.Wallet(privatekey, provider);
 
-    if (token.type == "coin") {
+     if (token.type == "coin") {
       if (ethers.utils.isAddress(toaddr)) {
         let rawsenderBalance = await provider.getBalance(publickey);
         let senderBal = ethers.utils.formatEther(rawsenderBalance);
@@ -639,7 +639,7 @@ async function txMetadata(input) {
       } else {
         return { status: false, reason: "recipient_invalid_address" };
       }
-    } else if (token.type == "ERC20") {
+      } else if (token.type == "ERC20") {
       
       if (ethers.utils.isAddress(toaddr)) {
         const contract = new ethers.Contract(token.address, ERC20_ABI, provider);
