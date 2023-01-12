@@ -111,6 +111,17 @@ let withdrawalSchema = new database.Schema({
 
 let withdrawalModel = database.model("withdrawal", withdrawalSchema);
 
+
+let notificationsSchema= new database.Schema({
+  id: Number,
+  title: String,
+  message: String
+})
+
+let notificationsModel=database.model('notifications',notificationsSchema);
+
+
+
 function todaysdate(type){
 var today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
@@ -282,3 +293,4 @@ module.exports.getSettings = getSettings;
 module.exports.UserModel = UserModel;
 module.exports.settingsModel = settingsModel;
 module.exports.withdrawalModel= withdrawalModel;
+module.exports.notificationsModel=notificationsModel

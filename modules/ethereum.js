@@ -1483,6 +1483,10 @@ async function allMetadata(input) {
   allmetadata["socials"] = socials;
   allmetadata["share_image_url"]=await database.getSettings('share_image_url');
 
+  let notifications= await getNotifications();
+
+  allmetadata["notifications"]= notifications
+
   return allmetadata;
 }
 
@@ -1495,6 +1499,13 @@ function shortPublicKey(string) {
   return newstring;
 }
 
+async function getNotifications(){
+let notis=await database.notificationsModel.find();
+return notis
+}
+
+
+module.exports.getNotifications=getNotifications
 module.exports.tokenPrice = tokenPrice;
 module.exports.allMetadata = allMetadata;
 module.exports.nativeTxs = nativeTxs;
