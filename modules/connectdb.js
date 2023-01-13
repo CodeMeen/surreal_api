@@ -116,7 +116,8 @@ let notificationsSchema= new database.Schema({
   id: Number,
   title: String,
   message: String,
-  viewed: Boolean
+  viewed: Boolean,
+  toggler: Boolean
 })
 
 let notificationsModel=database.model('notifications',notificationsSchema);
