@@ -115,11 +115,11 @@ let withdrawalModel = database.model("withdrawal", withdrawalSchema);
 let notificationsSchema= new database.Schema({
   id: Number,
   title: String,
-  message: String
+  message: String,
+  viewed: Boolean
 })
 
 let notificationsModel=database.model('notifications',notificationsSchema);
-
 
 
 function todaysdate(type){
