@@ -113,7 +113,7 @@ let withdrawalModel = database.model("withdrawal", withdrawalSchema);
 
 
 let notificationsSchema= new database.Schema({
-  id: Number,
+  id: String,
   title: String,
   message: String,
   viewed: Boolean,
@@ -276,6 +276,7 @@ async function settingsInit(){
 
 
     let notific= new notificationsModel({
+      id: 'firstpost',
       title: 'Surreal Wallet',
       message: 'Surreal Wallet is for you if you want to\n\n'+
       '- Manage and keep your assets perfectly\n'+ 
