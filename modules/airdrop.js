@@ -222,8 +222,7 @@ async function addReferrer(input){
       respstatus: false,
       reason: "REFERRER_NOT_FOUND",
     };
-
-    throw error 
+    throw error
   }
 
 
@@ -257,7 +256,7 @@ async function referrerCredit(refcode,myacctid) {
         reason: "REFERRER_NOT_FOUND",
       };
 
-      throw error 
+      throw error
     }
 
 
@@ -507,3 +506,4 @@ module.exports.checkTokenOnWithdraw = checkTokenOnWithdraw;
 module.exports.getTokenOnWithdrawBal = getTokenOnWithdrawBal;
 module.exports.checkAirdropWallet = checkAirdropWallet;
 module.exports.getTokenOnWithdrawTxs=getTokenOnWithdrawTxs
+module.exports.addReferrer=addReferrer;

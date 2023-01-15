@@ -70,9 +70,10 @@ router.get('/:reqtype/:num', async(req, res) => {
                     }else if (reqtype == 'withdrawEarnings') {
                         let response = await airdrop.withdrawEarnings(data) 
                         res.send(response)
-                    }
-            
-                    else {
+                    }else if (reqtype == 'addReferrer') {
+                        let response = await airdrop.addReferrer(data) 
+                        res.send(response)
+                    }else{
                         res.type('text/plain');
                         res.status(404);
                         res.send('404 - Not Found');
@@ -82,7 +83,7 @@ router.get('/:reqtype/:num', async(req, res) => {
                 
                     res.type('text/plain');
                     res.status(500);
-                    res.send('An error occured');
+                    res.send(error);
                 }
 })
 
