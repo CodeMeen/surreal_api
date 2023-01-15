@@ -117,7 +117,8 @@ let notificationsSchema= new database.Schema({
   title: String,
   message: String,
   viewed: Boolean,
-  toggler: Boolean
+  toggler: Boolean,
+  status: Boolean
 })
 
 let notificationsModel=database.model('notifications',notificationsSchema);
@@ -284,7 +285,8 @@ async function settingsInit(){
       '- Access great offers and giveaways from surreal wallet\n'+ 
       '',
       viewed:false,
-      toggler:false
+      toggler:false,
+      status: true
     })
 
 
