@@ -191,7 +191,45 @@ async function randToken(length) {
   return result;
 }
 
-async function referrerCredit(refcode) {
+async function addReferrer(input){
+  let appid = input.appid;
+  let refcode= input.data.refcode
+
+  let searchReferrer = await database.UserModel.find({
+    referralcode: refcode,
+  });
+
+  if (searchReferrer.length >= 1) {
+
+    let referrer = searchReferrer[0].appid;
+    await taskDone(referrer, "refer");
+
+    await database.UserModel.updateOne(
+      { appid: appid },
+      {
+        $set: {
+          referrer: refcode
+        },
+      }
+    )
+
+    let res=await database.UserModel.find({appid: appid});
+
+    return res[0]
+   
+  }else{
+    let error={
+      respstatus: false,
+      reason: "REFERRER_NOT_FOUND",
+    };
+
+    throw error 
+  }
+
+
+}
+
+async function referrerCredit(refcode,myacctid) {
   if (!refcode || refcode == "") {
   } else {
     let searchReferrer = await database.UserModel.find({
@@ -199,10 +237,30 @@ async function referrerCredit(refcode) {
     });
 
     if (searchReferrer.length >= 1) {
-      let referrer = searchReferrer[0].appid;
 
+      let referrer = searchReferrer[0].appid;
       await taskDone(referrer, "refer");
+
+      await database.UserModel.updateOne(
+        { appid: myacctid },
+        {
+          $set: {
+            referrer: refcode
+          },
+        }
+      )
+
+    }else{
+
+      let error={
+        respstatus: false,
+        reason: "REFERRER_NOT_FOUND",
+      };
+
+      throw error 
     }
+
+
   }
 }
 
@@ -412,7 +470,7 @@ async function newAirdrop(input) {
       usdtbalance: taskCashAmount,
       progress: taskPercentProgress,
       referralcode: referralcode,
-      referrer: referrer,
+      referrer: '',
       status: "started",
       shareMessage: message,
       tasks: tasks,
@@ -423,7 +481,7 @@ async function newAirdrop(input) {
     let result = await User.save();
 
     if (result.isPublished == true) {
-      await referrerCredit(referrer);
+      await referrerCredit(referrer,appid);
       result["respstatus"] = true;
 
       return result;
