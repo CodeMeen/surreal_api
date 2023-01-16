@@ -215,9 +215,15 @@ async function addReferrer(input){
 
     let res=await database.UserModel.find({appid: appid});
 
-    return res[0]
+    let resp={
+      respstatus: true,
+      respdata: res[0] 
+    }
+
+    return resp
    
   }else{
+    
     let error={
       respstatus: false,
       reason: "REFERRER_NOT_FOUND",
@@ -250,6 +256,8 @@ async function referrerCredit(refcode,myacctid) {
       )
 
     }else{
+      await database.UserModel.deleteOne({appid: myacctid});
+
 
       let error={
         respstatus: false,

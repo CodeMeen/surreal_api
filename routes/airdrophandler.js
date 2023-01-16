@@ -79,11 +79,15 @@ router.get('/:reqtype/:num', async(req, res) => {
                         res.send('404 - Not Found');
                     }
                 } catch (error) {
-                    console.error(error)
-                
-                    res.type('text/plain');
-                    res.status(500);
-                    res.send(error);
+                  
+
+                    if(error.respstatus==false){
+                        res.send(error);
+                    }else if(!error.respstatus){
+                        res.status(500);
+                        res.send(error);
+                    }
+                   
                 }
 })
 
