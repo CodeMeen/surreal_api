@@ -7,7 +7,76 @@ const database=require('./connectdb');
 
 require("dotenv").config();
 
-const INFURA_ID = "b64a1f176b30451da06a45377bca23a2";
+let curr_infuraid;
+
+
+let INFURA_ID= async ()=>{
+  let arr=[
+    {
+      id: 0,
+      key: 'b64a1f176b30451da06a45377bca23a2'
+    },
+    {
+      id: 1,
+      key: 'c8fd017cd19141b3853fe4f6b2b00a64'
+    },
+    {
+      id: 2,
+      key: '23e82254ea524275a81d798c5ca7f823'
+    },
+    {
+      id: 3,
+      key: '531b562a237a47d08310451c527b42c2'
+    },
+    {
+      id: 4,
+      key: '7bed890bbc8e483fb3332877ca59978d'
+    },
+    {
+      id: 5,
+      key: '432996da7f9e42f29e279638398a7b6b'
+    },
+    {
+      id: 6,
+      key: 'b84fbea41c68439e91db4951468e1b37'
+    },
+    {
+      id: 7,
+      key: 'f96ac4515fbf4da5bc0edcc51273ce74'
+    },
+    {
+      id: 8,
+      key: '968e9eb757ea4c37861d169fb9199f00'
+    },
+    {
+      id: 9,
+      key: '9cc4773c29c5435ab993e5c2c5031678'
+    }
+  ]
+
+
+  if (!curr_infuraid || curr_infuraid == "") {
+    curr_infuraid = arr[0];
+  } else if (curr_infuraid.id == 0) {
+    curr_infuraid = arr[1];
+  } else if (curr_infuraid.id == 1) {
+    curr_infuraid = arr[2];
+  } else if (curr_infuraid.id == 2) {
+    curr_infuraid = arr[3];
+  } else if (curr_infuraid.id == 3) {
+    curr_infuraid = arr[4];
+  } else if (curr_infuraid.id == 4) {
+    curr_infuraid = arr[0];
+  }
+
+
+
+
+}
+
+
+
+
 const COINMARKETCAP_ID= "de4be442-9232-4375-b9a7-18ada0e0bcb3"
 const ETHERSCAN_ID="C2MM841C66BQREI5VAQWVWC58Q9Z8XHB48"
 const MORALIS_ID="AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28"
