@@ -10,7 +10,7 @@ require("dotenv").config();
 let curr_infuraid;
 
 
-let INFURA_ID= async ()=>{
+let INFURA_ID=  ()=>{
   let arr=[
     {
       id: 0,
@@ -66,11 +66,23 @@ let INFURA_ID= async ()=>{
   } else if (curr_infuraid.id == 3) {
     curr_infuraid = arr[4];
   } else if (curr_infuraid.id == 4) {
+    curr_infuraid = arr[5];
+  }else if (curr_infuraid.id == 5) {
+    curr_infuraid = arr[6];
+  }else if (curr_infuraid.id == 6) {
+    curr_infuraid = arr[7];
+  }else if (curr_infuraid.id == 7) {
+    curr_infuraid = arr[8];
+  }else if (curr_infuraid.id == 8) {
+    curr_infuraid = arr[9];
+  }else if (curr_infuraid.id == 9) {
     curr_infuraid = arr[0];
   }
 
 
+  console.log('Using Id: ',curr_infuraid.id)
 
+  return curr_infuraid.key
 
 }
 
