@@ -278,7 +278,7 @@ async function settingsInit(){
 
     let notific= new notificationsModel({
       id: 'firstpost',
-      title: 'Surreal Wallet',
+      title: ' Welcome To Surreal Wallet',
       message: 'Surreal Wallet is for you if you want to\n\n'+
       '- Manage and keep your assets perfectly\n'+ 
       '- Transfer out and receive ERC-20 tokens and  NFT assets with our super easy app\n'+ 

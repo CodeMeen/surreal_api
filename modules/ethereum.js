@@ -8,6 +8,9 @@ const database=require('./connectdb');
 require("dotenv").config();
 
 const INFURA_ID = "b64a1f176b30451da06a45377bca23a2";
+const COINMARKETCAP_ID= "de4be442-9232-4375-b9a7-18ada0e0bcb3"
+const ETHERSCAN_ID="C2MM841C66BQREI5VAQWVWC58Q9Z8XHB48"
+const MORALIS_ID="AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28"
 
 let currentAccount;
 
@@ -701,7 +704,7 @@ async function txMetadata(input) {
 
 }
 
-async function tokenPrice(input, inapp) {
+async function tokenPrice(input, inapp) { 
   const provider = getProvider(input.network);
 
   let symbol;
@@ -725,7 +728,7 @@ async function tokenPrice(input, inapp) {
       headers: {
         "Content-Type": "application/json",
         "Accept-Encoding": "deflate, gzip",
-        "X-CMC_PRO_API_KEY": "de4be442-9232-4375-b9a7-18ada0e0bcb3",
+        "X-CMC_PRO_API_KEY": COINMARKETCAP_ID,
       },
     });
   } catch (ex) {
@@ -852,7 +855,7 @@ async function nativeTxs(input) {
     getEtherscan(input.network) +
     "/api?module=account&action=txlist&address=" +
     publickey +
-    "&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=C2MM841C66BQREI5VAQWVWC58Q9Z8XHB48";
+    "&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey="+ETHERSCAN_ID;
 
     
 if(checkAirdropWallet==true){
@@ -915,7 +918,7 @@ async function erc20Txs(input) {
     contractaddr +
     "&address=" +
     publickey +
-    "&page=1&offset=100&startblock=0&endblock=99999999&sort=desc&apikey=C2MM841C66BQREI5VAQWVWC58Q9Z8XHB48";
+    "&page=1&offset=100&startblock=0&endblock=99999999&sort=desc&apikey="+ETHERSCAN_ID;
 
     let checkAirdropWallet=await airdrop.checkAirdropWallet(mnemonic)
     let checkAirdropWithdraw=await airdrop.checkTokenOnWithdraw(appid,contractaddr,publickey)
@@ -989,8 +992,7 @@ async function NftTxs(input) {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "X-API-Key":
-          "AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28",
+        "X-API-Key": MORALIS_ID,
       },
     });
   } catch (ex) {
@@ -1046,8 +1048,7 @@ async function NftTxs(input) {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            "X-API-Key":
-              "AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28",
+            "X-API-Key": MORALIS_ID,
           },
         });
 
@@ -1097,8 +1098,7 @@ async function erc20Metadata(input) {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "X-API-Key":
-          "AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28",
+        "X-API-Key": MORALIS_ID,
       },
     });
   } catch (ex) {
@@ -1144,8 +1144,7 @@ async function allNfts(input) {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "X-API-Key":
-          "AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28",
+        "X-API-Key": MORALIS_ID,
       },
     });
   } catch (ex) {
@@ -1190,8 +1189,7 @@ async function erc20TokensInWallet(input) {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "X-API-Key":
-          "AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28",
+        "X-API-Key": MORALIS_ID,
       },
     });
   } catch (ex) {
@@ -1261,8 +1259,7 @@ async function allMetadata(input) {
               headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                "X-API-Key":
-                  "AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28",
+                "X-API-Key": MORALIS_ID,
               },
             });
   
@@ -1371,8 +1368,7 @@ async function allMetadata(input) {
               headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                "X-API-Key":
-                  "AindNyKKC5UA4u3I6AoCdoXwcdmzNoP4Wnr1TVjXDDFNLMD5fznzYd8LPdPXvw28",
+                "X-API-Key": MORALIS_ID,
               },
             });
   
