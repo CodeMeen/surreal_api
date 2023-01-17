@@ -262,7 +262,7 @@ async function settingsInit(){
           amountusd: ''
         }
       ],
-      app_download_link: "https://surrealwallet.com/download/mobile",
+      app_download_link: "https://surrealwallet.app/download",
       twitter_link:"https://mobile.twitter.com/SurrealDefi",
       telegram_link: "https://t.me/+VqZi7wRS_tA2N2Mx" ,
       share_image_url: 'http://172.20.10.2:3000/banner.png',

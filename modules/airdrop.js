@@ -464,7 +464,7 @@ async function newAirdrop(input) {
     let message =
       "Earn Up To $150 From App Launch Giveaway/Airdrop\n\n" +
       " Follow the steps below to join our Surreal Wallet App launch Giveaway/Airdrop\n\n" +
-      "1. Download and install our app from this link" +
+      "1. Download and install our app from this link " +
       (await database.getSettings("APP_DOWNLOAD_LINK")) +
       "\n\n" +
       "2. Go to menu on the app and click Get Started button under the Giveaway/ Airdrop section\n\n" +
