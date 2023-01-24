@@ -1,7 +1,7 @@
 
 const database = require("mongoose");
 
-database.connect("mongodb://localhost/surreal").then(
+database.connect("mongodb://surrealadmin:olufolami2015@localhost/surreal").then(
   () => {
     console.log("Connected To Surreal DB...");
   },
