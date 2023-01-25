@@ -119,6 +119,7 @@ if(data || data!=''){
     }
 
 }else{
+    console.log('data Not passed')
     res.type('text/plain');
     res.status(500);
     res.send('404 - Not Found');  
