@@ -39,11 +39,8 @@ router.post('/:reqtype', async(req, res) => {
 
 if(data || data!=''){
 
-}else{
-    res.type('text/plain');
-    res.status(404);
-    res.send('404 - Not Found');  
-}
+    console.log(data)
+
     if (data.chain) {
         switch (chain) {
             case 'ethereum':
@@ -120,6 +117,13 @@ if(data || data!=''){
         res.status(404);
         res.send('404 - Not Found');
     }
+
+}else{
+    res.type('text/plain');
+    res.status(500);
+    res.send('404 - Not Found');  
+}
+
 
 })
 

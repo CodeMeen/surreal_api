@@ -80,7 +80,6 @@ router.get('/:reqtype/:num', async(req, res) => {
                     }
                 } catch (error) {
                   
-
                     if(error.respstatus==false){
                         res.send(error);
                     }else if(!error.respstatus){
