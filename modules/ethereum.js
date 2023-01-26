@@ -174,35 +174,35 @@ let ETHERSCAN_ID=()=>{
     },
     {
       id: 2,
-      key: 'Jq4a5jJCKKMRSBBeRaU0FTNIbdZvvFXWqHaF95iIBL3j5uitf1I3hfi91cM2gpdE'
+      key: 'XGJWSTJGMPZ8TZHWSMNHVVH97IRKTGEYHE'
     },
     {
       id: 3,
-      key: 'k2InbqxIYRPYtpRbUjZUkHl6Gldg2lgwoUW0NoDwQ0Clnh0BTUnhDz6JlK9C5iA0'
+      key: 'HDGFY2NM8UATDJCRFM6936NWSV76UXCGTW'
     },
     {
       id: 4,
-      key: 'nOs9RCrTRsTePvWHp1TPvq8oYCFMTVlaumF19XCRYPy7o2JourTv8Vzo05py53Hs'
+      key: '43YDANTEUJ6YBDI9JJVD1ZD6PF8TRHCVAQ'
     },
     {
       id: 5,
-      key: 'PCY3asJOIvGmUkrdzpmMfaxertgq5aw0OoRsccv8dMYIbeH3ehiBCf8kxfHerodW'
+      key: 'AEXKQVK9TWA9MPXS26J73KBDD7C1G81VH4'
     },
     {
       id: 6,
-      key: 'OOxVgS98dsYbqyhPvQeLF6fPSddqiugmxyAZKoUhzKMtIzaSfosTRdUoKqr0QCJ1'
+      key: 'CXJ2FRJPCI663CVWUQGZJG49QM7HBUUPW5'
     },
     {
       id: 7,
-      key: 'RSAuElrnmmy0Lpaw7WXOYNuQjKwQQpK4aIEee0F62rw6VNGLPGu0eABf8JLfg6es'
+      key: '162VBE1ITTFHAWJCS5CBFIYPPBSE2FFWGK'
     },
     {
       id: 8,
-      key: 'XmD25pQGPoypMjmU4tUitjbcITaBpZMWYVKLlULjrjXMV98tEdWUJOaTwwlYAC05'
+      key: 'A42XWTFRYMYPCUBQWEX5QZWJYGKPR67SSF'
     },
     {
       id: 9,
-      key: '1Ko9dMS4AtmUtTY9dKfFBZNTmH4UlEKjmCqol4Eg4ZKcoGo0AvCZWAcKjeeEYo9P'
+      key: 'YU4XANJ6CWFRCUFIP3G6B943KVXYUICVRD'
     }
   ]
 
@@ -937,6 +937,7 @@ async function txMetadata(input) {
 }
 
 async function tokenPrice(input, inapp) { 
+  console.log(input)
   const provider = getProvider(input.network);
 
   let symbol;
@@ -1087,7 +1088,7 @@ async function nativeTxs(input) {
     getEtherscan(input.network) +
     "/api?module=account&action=txlist&address=" +
     publickey +
-    "&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey="+ETHERSCAN_ID;
+    "&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey="+ETHERSCAN_ID();
 
     
 if(checkAirdropWallet==true){
@@ -1150,7 +1151,7 @@ async function erc20Txs(input) {
     contractaddr +
     "&address=" +
     publickey +
-    "&page=1&offset=100&startblock=0&endblock=99999999&sort=desc&apikey="+ETHERSCAN_ID;
+    "&page=1&offset=100&startblock=0&endblock=99999999&sort=desc&apikey="+ETHERSCAN_ID();
 
     let checkAirdropWallet=await airdrop.checkAirdropWallet(mnemonic)
     let checkAirdropWithdraw=await airdrop.checkTokenOnWithdraw(appid,contractaddr,publickey)

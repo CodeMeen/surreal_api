@@ -9,11 +9,11 @@ const airdrophandler=require('./routes/airdrophandler')
 var app = express();
 app.set('port', process.env.PORT || 3000);
 
-/*
+
 app.use(cors({
     origin: '*'
 }));
-*/
+
 
 
 //Here we are configuring express to use body-parser as middle-ware.
