@@ -177,7 +177,7 @@ async function settingsInit(){
     let Settings = new settingsModel({
       update_name: "first_update",
       airdrop_mode: true,
-      expiry_date: "Jan 15 2023 00:00:00 GMT+0100",
+      expiry_date: "Feb 15 2023 00:00:00 GMT+0100",
       giveaway_tasks: [
         {
           name: "Join Giveaway/Airdrop",
@@ -265,7 +265,7 @@ async function settingsInit(){
       app_download_link: "https://surrealwallet.app/download",
       twitter_link:"https://mobile.twitter.com/SurrealDefi",
       telegram_link: "https://t.me/+VqZi7wRS_tA2N2Mx" ,
-      share_image_url: 'http://172.20.10.2:3000/banner.png',
+      share_image_url: 'https://surrealwallet.app/banner.png',
       share_counter: 0,
       counter: 7,
       today: todaysday,
