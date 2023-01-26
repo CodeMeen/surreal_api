@@ -21,7 +21,7 @@ router.get('/:reqtype', async(req, res) => {
         }
 
     } catch (error) {
-        console.error(error)
+
         res.status(500);
         res.send(error)
     }
@@ -38,8 +38,6 @@ router.post('/:reqtype', async(req, res) => {
 
 
 if(data || data!=''){
-
-    console.log(data)
 
     if (data.chain) {
         switch (chain) {
@@ -100,10 +98,9 @@ if(data || data!=''){
                         res.send('404 - Not Found');
                     }
                 } catch (error) {
-                    console.log(error)
                     res.type('text/plain');
                     res.status(500);
-                    res.send('An error occurred');
+                    res.send(error);
                 }
 
 
