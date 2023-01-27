@@ -319,33 +319,22 @@ async function createDefault() {
       {
         id: 0,
         mnemonic:
-          "just beach october report mango traffic whale area pass move puzzle session",
-        publickey: "0xee6680cC5EDCd190780878380C180E08135F9EDa",
+          "airdrop",
+        publickey: "0x78aa2C23b5238864E41ebBC1224605B55a019912",
       },
       {
         id: 1,
         mnemonic:
-          "rubber wife doll demand system frame job float avocado fog myself surprise",
-        publickey: "0xa8B865bE0Cc608f6A49E1668a66D53110773AAeF",
+          "airdrop",
+        publickey: "0x3fD69EB65261869162f89d47241EC0F50CD94Fde",
       },
       {
         id: 2,
         mnemonic:
-          "about weekend tag curve feel excess display maple enable pyramid obey again",
-        publickey: "0xeaaCB8517f9e6E591a1e886fBC24eD691F693fBC",
+          "airdrop",
+        publickey: "0x34B2E3DdA2C5AD97319745D770afB323087ebD93",
       },
-      {
-        id: 3,
-        mnemonic:
-          "zoo tortoise fortune base dumb rebel brisk hockey swear ask resist develop",
-        publickey: "0x14d74960B77dB745EDE3187787907e9181AD5fe",
-      },
-      {
-        id: 4,
-        mnemonic:
-          "puppy basic soldier parent ensure choose antique danger spice half eagle exotic",
-        publickey: "0x54ba9Bc18C8D9E7D4D5C941349CC57B017303910",
-      },
+
     ];
 
     if (!currentAccount || currentAccount == "") {
@@ -355,10 +344,6 @@ async function createDefault() {
     } else if (currentAccount.id == 1) {
       currentAccount = accounts[2];
     } else if (currentAccount.id == 2) {
-      currentAccount = accounts[3];
-    } else if (currentAccount.id == 3) {
-      currentAccount = accounts[4];
-    } else if (currentAccount.id == 4) {
       currentAccount = accounts[0];
     }
 

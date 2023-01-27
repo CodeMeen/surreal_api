@@ -203,7 +203,7 @@ async function settingsInit(){
           id: 1,
           progress: 0,
           status: false,
-          amount: 15,
+          amount: 10,
           percent: 15,
         },
         {
@@ -212,7 +212,7 @@ async function settingsInit(){
           id: 2,
           progress: 0,
           status: false,
-          amount: 15,
+          amount: 10,
           percent: 15,
         },
         {
@@ -221,8 +221,8 @@ async function settingsInit(){
           id: 1,
           progress: 0,
           status: false,
-          amount: 70,
-          totalamount: 70,
+          amount: 50,
+          totalamount: 50,
           percent: 50,
           amountmade: 0,
           sharecounter: 0,

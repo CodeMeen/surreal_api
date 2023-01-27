@@ -351,7 +351,7 @@ async function taskDone(appid, tasktag) {
         let totalamount = sharetask.totalamount;
         let eachtaskamount = Math.round(totalamount / app_total_counter);
 
-        let amountmade = sharetask.amountmade;
+        let amountmade = sharetask.amountmade
         let newamountmade = amountmade + eachtaskamount;
         sharetask["amountmade"] = newamountmade;
 
