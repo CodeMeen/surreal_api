@@ -238,7 +238,7 @@ let ETHERSCAN_ID=()=>{
 
 
 
-const COINMARKETCAP_ID= "de4be442-9232-4375-b9a7-18ada0e0bcb3"
+// const COINMARKETCAP_ID= "de4be442-9232-4375-b9a7-18ada0e0bcb3"
 
 
 
@@ -936,23 +936,38 @@ async function txMetadata(input) {
 
 }
 
-async function tokenPrice(input, inapp) { 
-  console.log(input)
-  const provider = getProvider(input.network);
-
-  let symbol;
+async function tokenPrice(input,inapp,chain) { 
+  let contractaddr, network;
 
   if (inapp == true) {
-    symbol = input;
+    contractaddr = input.address;
+   
+
+    if (chain== "mainnet") {
+      network='eth'
+    } else {
+     network = chain
+    }
+
+
+
   } else {
-    symbol = input.data.symbol;
+    contractaddr = input.data.address;
+    if (input.network== "mainnet") {
+      network='eth'
+    } else {
+     network = input.network
+    }
+
+
   }
+
+
 
   let mapurl = "";
 
   mapurl =
-    "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=" +
-    symbol;
+    'https://deep-index.moralis.io/api/v2/erc20/'+contractaddr+'/price?chain='+network;
 
   let response = null;
 
@@ -961,22 +976,72 @@ async function tokenPrice(input, inapp) {
       headers: {
         "Content-Type": "application/json",
         "Accept-Encoding": "deflate, gzip",
-        "X-CMC_PRO_API_KEY": COINMARKETCAP_ID,
+        "X-API-Key": MORALIS_ID(),
       },
     });
   } catch (ex) {
-    response = 0;
+    response = null;
+    throw ex
   }
 
   if (response) {
     // success
+
+
+
     const json = response.data;
-    let rawprice = json.data[symbol].quote.USD.price;
+    let rawprice = json.usdPrice
     let correctprice = await reducenumber(rawprice);
     let priceres = { price: correctprice };
 
     return priceres;
+    
   }
+}
+
+async function nativeEthPrice(chain){
+
+  let contractaddr = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' 
+  let network;
+  let mapurl = "";
+
+  if (chain== "mainnet") {
+    network='eth'
+  } else {
+   network = chain
+  }
+
+
+  mapurl =
+    'https://deep-index.moralis.io/api/v2/erc20/'+contractaddr+'/price?chain='+network;
+
+  let response = null;
+
+  try {
+    response = await axios.get(mapurl, {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Encoding": "deflate, gzip",
+        "X-API-Key": MORALIS_ID(),
+      },
+    });
+  } catch (ex) {
+    response = null;
+    throw ex
+  }
+
+  if (response) {
+    // success
+
+    const json = response.data;
+    let rawprice = json.usdPrice
+    let correctprice = await reducenumber(rawprice);
+    let priceres = { price: correctprice };
+
+    return priceres;
+    
+  }
+
 }
 
 /* function numberize(num, fixed) {
@@ -1039,12 +1104,20 @@ async function AllPrices(input) {
   let tokens = input.data.tokens;
 
   let resdata = [];
+  let newpricedata
 
   for (let index = 0; index < tokens.length; index++) {
     const eachtoken = tokens[index];
 
+
     try {
-      let newpricedata = await tokenPrice(eachtoken.symbol.toUpperCase(), true);
+      if(!eachtoken.address){
+        newpricedata = await nativeEthPrice(network);
+      }else{
+        newpricedata = await tokenPrice(eachtoken, true,network);
+      }
+
+     
       let usdprice = newpricedata.price;
 
       let newobj = {
@@ -1535,7 +1608,7 @@ async function allMetadata(input) {
         let pricedata = {};
 
         if (!clientusdprice) {
-          let newpricedata = await tokenPrice("ETH", true);
+          let newpricedata = await nativeEthPrice(chainNetwork);
           pricedata["price"] = newpricedata.price;
         } else {
           pricedata["price"] = clientusdprice;
@@ -1654,9 +1727,11 @@ async function allMetadata(input) {
 
         if (!clientusdprice) {
           let newpricedata = await tokenPrice(
-            eachtoken.symbol.toUpperCase(),
-            true
+            eachtoken,
+            true,
+            chainNetwork
           );
+
           subpricedata["price"] = newpricedata.price;
         } else {
           subpricedata["price"] = clientusdprice;
