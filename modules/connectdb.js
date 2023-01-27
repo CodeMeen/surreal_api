@@ -282,7 +282,7 @@ async function settingsInit(){
       message: 'Surreal Wallet is for you if you want to\n\n'+
       '- Manage and keep your assets perfectly\n'+ 
       '- Transfer out and receive ERC-20 tokens and  NFT assets with our super easy app\n'+ 
-      '- Access great offers and giveaways from surreal wallet\n'+ 
+      '- Access great offers and activities from surreal wallet\n'+ 
       '',
       viewed:false,
       toggler:false,
