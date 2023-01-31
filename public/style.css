@@ -1,0 +1,758 @@
+@font-face {
+    font-family: 'mntsreg';
+    src: url('./font/Montserrat-Regular.otf');
+}
+
+@font-face {
+    font-family: 'mntssemibold';
+    src: url('./font/Montserrat-SemiBold.otf');
+}
+
+@font-face {
+    font-family: 'tekomedium';
+    src: url('./font/Teko-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'carter';
+    src: url('./font/CarterOne-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'germania';
+    src: url('./font/GermaniaOne-Regular.ttf');
+}
+
+html{
+    overflow-x: hidden;   
+}
+
+body{
+    padding: 0px;
+    margin: 0px;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: mntsreg;
+}
+
+.header_pack{
+    position: fixed;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+    transition:0.2s;
+}
+
+.header_scrolled{
+    background:rgba(106, 13, 173,0.4);
+    
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(2.5px);
+            -webkit-backdrop-filter: blur(2.5px);
+           
+}
+
+.header{
+   width:80%;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.logopack{
+    display: flex;
+   float:left;
+   align-items: center;
+   gap:5px;
+}
+
+.logo{
+    height:60px;
+    width:60px;
+    background-image:url('./images/surreal_white.svg');
+    background-size:35px 35px;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.logotext{
+    font-family: germania;
+    font-size: 20px;
+    color:white;
+}
+
+.menupack{
+    display: flex;
+   float: right;
+   align-items: center;
+   gap:13px;
+}
+
+.footerpack{
+    display: flex;
+   float: right;
+   align-items: center;
+   gap:13px; 
+}
+
+.each_menupack{
+    padding:25px 0px;
+    font-family: mntssemibold;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.5s;
+    color:white;
+}
+
+.each_menupack:hover{
+    opacity: 0.4;
+}
+
+.firstbody{
+    height: auto;
+    width: 100%;
+    background: linear-gradient( to top right, rgb(106, 13, 173),rgb(106, 13, 173), rgb(154, 78, 174), rgb(154, 78, 174));
+    background-size: 300%;
+    position: relative;
+}
+
+.firstsec{
+    width:50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   padding: 180px 0px;
+}
+
+.bigtext{
+    font-size: 50px;
+    font-family: germania;
+    padding: 20px;
+    color:white;
+}
+
+.smalltext{
+    font-size: 17px;
+    font-family: mntssemibold;
+    padding: 20px;
+    color:white;
+}
+
+.downloadbtn{
+    background: #fff;
+    padding:10px 30px;
+    margin:10px 20px;
+    border-radius:30px;
+    font-family: mntssemibold;
+    color:rgb(106, 13, 173);
+    border:none;
+}
+
+.designarea{
+    width:800px;
+    height: 588px;
+    position: absolute;
+    top:67px;
+    right:0px;
+    background-image: url('./images/designone.svg');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.phoneimgone{
+    height:550px;
+    width:600px;
+    position: absolute;
+    z-index: 1;
+    top:85px;
+    right:75px;
+    background-image: url('./images/twoimg.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.phoneimgtwo{
+    height:550px;
+    width:600px;
+    position: absolute;
+    z-index: 2;
+    top:85px;
+    right:-70px;
+    background-image: url('./images/oneimg.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    rotate:25deg;
+}
+
+
+.imagepack{
+   position: relative; 
+   height:500px;
+}
+
+
+.imageone{
+    width:100%;
+    height:450px;
+    background-image: url('./images/oneimg.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    top:0;
+    left:-70px;
+}
+
+.imagetwo{
+    width:100%;
+    height:450px;
+    background-image: url('./images/twoimg.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    top:0;
+    right:-50px;
+    rotate: 20deg;
+}
+.eachstep{
+    text-align: left;
+    margin:40px 0px;
+}
+.secondbodypack{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.giveawaysteps{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.secondbody{
+  width:80%; 
+}
+
+.title{
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-family: germania;
+ font-size: 30px;
+ padding:20px 0px;
+}
+
+.eachf{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap:30px;
+    margin: 40px 0px;
+}
+
+.dctitle{
+    font-size: 35px;
+    margin:20px 0px;
+    font-family: mntssemibold;
+}
+
+.dctext{
+    padding: 20px 0px;
+    padding-top: 0px;
+    font-size: 18px;
+}
+
+.illus{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imgillus{
+    height:300px;
+    width:300px;
+ 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.secured{
+    background-image: url('./images/secured.svg');
+}
+
+.accessibility{
+    background-image: url('./images/accessibility.svg');
+}
+
+
+.swap{
+    background-image: url('./images/swap.svg');
+}
+
+.ftext{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.downloadbox{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 65%;
+    padding:0px 20px;
+}
+
+.storebox{
+    height: 50px ;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.playstore{
+    background-image: url('./images/googleplay.svg');
+}
+
+.appstore{
+    background-image: url('./images/applestore.svg');
+}
+
+.trubelow{
+    font-size: 14px;
+    color:white;
+    font-family: mntssemibold;
+    margin:10px 20px;
+}
+
+.thirdbodypack{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: linear-gradient( to top right, rgb(106, 13, 173),rgb(106, 13, 173), rgb(154, 78, 174), rgb(154, 78, 174));
+    background-size: 300%;
+}
+
+.thirdbody{
+  width:80%; 
+  padding: 70px 0px;
+}
+
+.threepart{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+}
+
+.steptext{
+    font-size:25px;
+    font-family:germania;
+    color:white;
+    margin:20px 0px;
+}
+
+.stepimg{
+    height: 200px;
+    width: 100%;
+    background-size:120% 120%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.download{
+    background-image: url('./images/download.svg');
+}
+
+.getstarted{
+    background-image: url('./images/getstarted.svg');
+}
+
+.storewallet{
+    background-image: url('./images/storewallet.svg');
+}
+
+.dbtnpack{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:20px 0px;
+}
+
+
+.fourthbodypack{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: #f2f2f2;
+}
+
+.fourthbody{
+  width:80%; 
+  padding: 30px 0px;
+  overflow: hidden;
+
+}
+
+.fourthbody .logo{
+    background-image: url('./images/surreal_appicon.svg') !important;
+}
+
+.fourthbody .logotext{
+    color:rgb(106, 13, 173);
+}
+
+
+.fourthbody .each_menupack{
+    color:#000;
+}
+.twitterpng{
+    height:28px;
+    width:28px;
+    margin-left: 60px;
+    cursor: pointer;
+}
+.telegrampng{
+    height:28px;
+    width:28px;
+    cursor: pointer;
+}
+
+.iconss{
+    font-size: 28px;
+}
+
+.mobilemenu{
+    float:right;
+    width:30px;
+}
+
+.mobilemenu .menuline{
+    height: 2px;
+    background:white;
+    margin:4px 0px;
+    border-radius: 20px;
+    float: right;
+}
+
+.long{
+    width: 70%;
+}
+
+.longer{
+    width: 100%;
+}
+
+
+.mobilemenu{
+    display: none;
+}
+
+a{
+    text-decoration: none;
+}
+
+.sidenav{
+    width:270px;
+    position: absolute;
+    top:67px;
+    z-index: 3;
+    right:0px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    transition: 0.2s ease-out;
+}
+
+
+
+.sidenav .each_menupack{
+    padding:20px 20px;
+    border-bottom:1px solid rgba(192,192,192,0.3);
+    color:#5d6969;
+}
+
+
+.closednav{
+    right:-272px;
+}
+
+.openednav{
+    right:0px;
+}
+
+
+.imageone{
+
+}
+
+
+
+
+
+
+
+@media only screen and (max-width: 1360px) {
+  .bigtext{
+    font-size: 40px;
+  }
+  }
+
+  @media only screen and (max-width: 1300px) {
+   .designarea{
+    width:650px;
+    height: 562px;
+    background-image: url('./images/designtwo.svg');
+   }
+
+   .downloadbox{
+    gap:20px;
+   }
+
+   .phoneimgone,.phoneimgtwo{
+    height: 500px;
+    top:110px
+   }
+
+
+   .phoneimgone{
+    right: -10px;
+   }
+
+   .phoneimgtwo{
+    right: -90px;
+    rotate: 20deg;
+   }
+
+}
+   @media only screen and (max-width: 1125px) {
+    .designarea{
+        width:550px;
+        height: 562px;
+        background-image: url('./images/designthree.svg');
+       }
+   }
+
+   @media only screen and (max-width: 990px) {
+    .designarea{
+        width:550px;
+        height: 562px;
+        background-image: url('./images/designfour.svg');
+       }
+
+       .phoneimgone,.phoneimgtwo{
+        height: 500px;
+       }
+    
+       .header{
+        width: 96%;
+       }
+
+
+   }
+
+   @media only screen and (max-width: 960px) {
+    .bigtext{
+        font-size: 30px;
+    }
+    .designarea{
+        width:560px;
+        height: 540px;
+        background-image: url('./images/designfive.svg');
+   }
+
+   .phoneimgone,.phoneimgtwo{
+    top:90px;
+   }
+.threepart{
+    grid-template-columns: 1fr 1fr ;
+}
+
+.secondbody{
+    width: 90%;
+}
+
+.thirdbody{
+    width: 90%;
+}
+
+.downloadbox{
+    width: 100%;
+}
+
+
+}
+
+@media only screen and (max-width: 850px) {
+    .mobilemenu{
+        display: block;
+    }
+    .phoneimgone,.phoneimgtwo{
+       height: 370px;
+       width: 100%;
+       right: 0px ;
+       top:470px
+       }
+
+       .phoneimgone{
+        right: 30px;
+       }
+
+       .phoneimgtwo{
+        right:-50px;
+       }
+
+
+       .designarea{
+        top:450px;
+        height:400px;
+        width: 100%;
+        background-image:url('./images/mobile_rec.svg');
+       background-size: cover
+       }
+
+       .firstsec{
+        padding: 70px 0px;
+
+        width: 100%;
+       }
+
+       .menupack{
+        display: none;
+       }
+       .firstsec_content{
+        width:80%;
+       }
+
+       .bigtext{
+        font-size: 50px;
+        text-align: center;
+       }
+
+       .smalltext{
+        font-size: 25px;
+        text-align: center;
+        padding:30px 10px;
+       }
+
+       .downloadbox{
+        width: 60%;
+        margin:0px auto
+       }
+
+       .secondbodypack{
+        margin-top: 500px;
+       }
+
+
+
+}
+
+@media only screen and (max-width: 800px) {
+    .threepart{
+        grid-template-columns: 1fr ;
+        gap:30px;
+    }
+
+    .eachf{
+        grid-template-columns: 1fr ;
+        gap:20px; 
+    }
+}
+
+
+@media only screen and (max-width: 600px) {
+  
+}
+
+
+@media only screen and (max-width: 650px) {
+
+    .bigtext{
+font-size: 35px;
+    }
+
+    .smalltext{
+        font-size: 18px;
+    }
+
+    .downloadbox{
+       width: 100%;
+    }
+
+    .designarea{
+        top:400px;
+    }
+
+    .phoneimgone,.phoneimgtwo{
+    
+        top:420px
+        }
+
+        .footerpack{
+            width:100%;
+            justify-content: center;
+            align-items: center;
+        }
+}
+
+@media only screen and (max-width: 480px) {
+    .phoneimgone,.phoneimgtwo{
+        height: 370px;
+        width: 100%;
+        right: 0px ;
+        top:450px;
+        }
+
+        .phoneimgone{
+            right: 50px;
+           }
+    
+           .phoneimgtwo{
+            right:-50px;
+           }
+
+        .bigtext{
+            font-size: 30px;
+        }
+
+        .dctitle{
+            font-size: 28px;
+        }
+
+       
+}
+
+@media only screen and (max-width: 450px) {
+    .designarea{
+        top:450px;
+    }
+
+    .designarea{
+        top:400px;
+
+        height: 450px;
+    }
+
+    .phoneimgone{
+        right: 70px;
+       }
+
+       .phoneimgtwo{
+        right:-50px;
+       }
+}
