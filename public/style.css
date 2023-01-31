@@ -167,6 +167,27 @@ body{
     background-repeat: no-repeat;
 }
 
+.one_step{
+    background-image: url('./images/one_step.png'); 
+}
+
+.two_step{
+    background-image: url('./images/two_step.png'); 
+}
+
+.three_step{
+    background-image: url('./images/three_step.png'); 
+    background-size: contain !important;
+    height:500px !important;
+}
+
+.moredet{
+    width: 100%; 
+    text-align: center;
+    padding: 40px 0px;
+    background: linear-gradient( to top right, rgb(106, 13, 173),rgb(106, 13, 173), rgb(154, 78, 174), rgb(154, 78, 174));
+    background-size: 300%;
+}
 .phoneimgone{
     height:550px;
     width:600px;
@@ -284,7 +305,7 @@ body{
  
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center center;
+    background-position: top center;
 }
 
 .secured{
