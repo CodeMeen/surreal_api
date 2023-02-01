@@ -49,6 +49,13 @@
     ></script>
 
     <script src="./js/page.js"></script>
+
+    <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+/>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
   </head>
 
   <body>
@@ -64,7 +71,7 @@
 
         <div class="menupack">
             <a href="./"> <div class="each_menupack">Home</div></a>
-            <a href="./"> <div class="each_menupack">Download</div></a>
+            <a href="./download"> <div class="each_menupack">Download</div></a>
             <a href="./giveaway"> <div class="each_menupack">Giveaway / Airdrop</div></a>
             <a href="./support">  <div class="each_menupack">Support</div></a>
             <a href="./tos">   <div class="each_menupack">Terms Of Service</div></a>
@@ -80,7 +87,7 @@
 
       <div class="sidenav closednav">
         <a href="./"> <div class="each_menupack">Home</div></a>
-        <a href="./"> <div class="each_menupack">Download</div> </a>
+        <a href="./download"> <div class="each_menupack">Download</div> </a>
         <a href="./giveaway"
           ><div class="each_menupack">Giveaway / Airdrop</div></a
         >
@@ -99,19 +106,76 @@
               Click your device store button below to download.  
             </div>
   
-            <div class="downloadbox" style="margin:10px auto;gap:14px">
-              <div class="storebox playstore"></div>
-              <div class="storebox appstore"></div>
+            <div class="downloadbox cdfg" style="margin:10px auto;gap: 14px;width:auto">
+              <a href="./surrealwallet" target="_blank">
+              <div class="storebox">
+                <div class="dtext">download for</div>
+
+                <div class="titpack">
+                  <div class="storeicon android"></div>
+                  <div class="storename">Android</div>
+                </div>
+              </div>
+            </a>
+
+
+              <div class="storebox">
+
+                <div class="dtext">download for</div>
+
+                <div class="titpack">
+                  <div class="storeicon apple"></div>
+                  <div class="storename">IOS</div>
+                </div>
+  
+
+              </div>
             </div>
           </div>
         </div>
 
       </div>
 
-    <div class="imagepack">
-        <div class="imageone"></div>
-        <div class="imagetwo"></div>
-    </div>
+
+      <div class="swiper">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+         <!-- Slides -->
+          <div class="swiper-slide">
+            <div class="scr sone"></div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="scr stwo"></div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="scr sthree"></div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="scr sfour"></div>
+          </div>
+
+
+          <div class="swiper-slide">
+            <div class="scr sfive"></div>
+          </div>
+         
+
+
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+      
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+      </div>
+
 
     <div class="fourthbodypack">
         <div class="fourthbody">
@@ -135,8 +199,54 @@
         </div>
       </div>
 
+
+      <div class="downloadoverlay">
+        <div class="downloadcard">
+        <div class="blkclick">Click the button below to download</div>
+        
+        </div>
+      </div>
+
     
 
   
   </body>
+
+  <script>
+    const swiper = new Swiper('.swiper', {
+
+
+      effect: "cards",
+      cardsEffect: {
+    },
+    autoplay: {
+    delay: 2000,
+  },
+      grabCursor: true,
+      
+  // Optional parameters
+  direction: 'horizontal',
+  loop: true,
+
+  // If we need pagination
+  pagination: {
+    el: '.swiper-pagination',
+  },
+
+  // Navigation arrows
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+
+  // And if we need scrollbar
+  /*
+  scrollbar: {
+    el: '.swiper-scrollbar',
+  }
+
+  */
+});
+
+  </script>
 </html>

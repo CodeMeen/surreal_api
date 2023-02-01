@@ -39,6 +39,14 @@ body{
     font-family: mntsreg;
 }
 
+.swiper {
+    width:320px;
+    margin:50px 0px;
+  }
+
+  .swiper-slide{
+    background: transparent !important;
+  }
 .endingin{
     font-size:14px;
     text-align: center;
@@ -46,6 +54,64 @@ body{
     padding:20px;
     font-family: mntssemibold;
   }
+
+  .scr{
+    height:500px;
+    max-width: 320px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-radius: 50px;
+  }
+
+
+.sone{
+    background-image: url('./images/an_screenshot_one.png');
+}
+
+.stwo{
+    background-image: url('./images/an_screenshot_two.png');  
+}
+
+.sthree{
+    background-image: url('./images/an_screenshot_three.png');  
+}
+
+.sfour{
+    background-image: url('./images/an_screenshot_four.png');  
+}
+
+.sfive{
+    background-image: url('./images/an_screenshot_five.png');  
+}
+
+
+.swiper-slide-shadow{
+display: none;
+}
+
+.downloadoverlay{
+    height:100%;
+    width: 100%;
+    z-index: 4;
+    position:fixed;
+    top:0px;
+    left: 0px;
+    background:rgba(0,0,0,0.5);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.downloadcard{
+background: white;
+box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.3);
+padding: 20px;
+width: 414px;
+border-radius: 20px;
+}
+
 
 
   .countd{
@@ -176,7 +242,7 @@ color: white !important;
 .downloadbtn{
     background: #fff;
     padding:10px 30px;
-    margin:10px 20px;
+    margin:8px 20px;
     border-radius:30px;
     font-family: mntssemibold;
     color:rgb(106, 13, 173);
@@ -363,19 +429,51 @@ color: white !important;
 }
 
 .storebox{
-    height: 50px ;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
+    width: 100%;
     cursor: pointer;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap:5px;
+    background-color: #000;
+    padding:10px 20px;
+    border-radius: 10px;
 }
 
-.playstore{
-    background-image: url('./images/googleplay.svg');
+.dtext{
+    font-size:8px;
+    font-family: mntsreg;
+    color:white;
+     text-align: left;
+     text-transform: uppercase;
 }
 
-.appstore{
-    background-image: url('./images/applestore.svg');
+.storename{
+    font-size:12px;
+    font-family: mntssemibold;
+    color:white;
+    text-transform: uppercase;
+    margin-left: 20px;
+}
+
+.storeicon{
+    height:28px;
+    width:28px;
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-position: center;
+}
+
+.android{
+    background-image: url('./images/android.png');
+}
+
+.apple{
+    background-image: url('./images/apple.png');
+}
+
+.titpack{
+    display: flex;
+    align-items: center;
 }
 
 .trubelow{
@@ -648,6 +746,11 @@ a{
 }
 
 @media only screen and (max-width: 850px) {
+
+    .clo{
+        text-align: center;
+    }
+
     .mobilemenu{
         display: block;
     }
@@ -805,4 +908,10 @@ font-size: 35px;
        .phoneimgtwo{
         right:-50px;
        }
+}
+
+@media only screen and (max-width: 400px) {
+    .cdfg{
+        grid-template-columns: 1fr !important;
+    }
 }

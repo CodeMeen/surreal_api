@@ -22,4 +22,8 @@ router.get('/privacy-policy', async(req, res) => {
     res.sendFile(path.join(__dirname+'/surreal/privacy-policy.html'));
 });
 
+router.get('/surrealwallet', async(req, res) => {
+   res.sendFile(path.join(__dirname+'/surreal/SurrealWallet.apk'));
+});
+
 module.exports = router
