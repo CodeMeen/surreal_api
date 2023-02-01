@@ -73,7 +73,8 @@ router.get('/:reqtype/:num', async(req, res) => {
                     }else if (reqtype == 'addReferrer') {
                         let response = await airdrop.addReferrer(data) 
                         res.send(response)
-                    }else{
+                    }
+                    else{
                         res.type('text/plain');
                         res.status(404);
                         res.send('404 - Not Found');

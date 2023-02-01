@@ -311,9 +311,33 @@ async function getSettings(tag){
 
 }
 
+async function updateSettings(data){
+
+  let res
+  if(!data.update_name || data.update_name==''){
+return 'Data Not Passed'
+  }else{
+   
+
+    res= await settingsModel.updateMany(
+      {  update_name: "first_update" },
+      {
+        $set: data,
+      }
+    );
+
+
+  }
+  
+
+  return res
+
+}
+
 
 module.exports.getSettings = getSettings;
 module.exports.UserModel = UserModel;
 module.exports.settingsModel = settingsModel;
 module.exports.withdrawalModel= withdrawalModel;
 module.exports.notificationsModel=notificationsModel
+module.exports.updateSettings=updateSettings

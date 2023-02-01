@@ -85,6 +85,11 @@ return 'three';
 
 }
 
+
+async function updateSettings(){
+
+}
+
 async function withdrawEarnings(input) {
   let appid = input.appid;
 

@@ -1,0 +1,23 @@
+{
+  "update_name":"first_update",
+  "airdrop_mode": true,
+  "expiry_date": "Feb 10 2023 00:00:00 GMT+0100",
+  "gas_fees": [
+    {
+      "amounteth": 0.0082,
+      "amountusd": ""
+    },
+    {
+      "amounteth": 0.0089,
+      "amountusd": ""
+    },
+    {
+      "amounteth": 0.0095,
+      "amountusd": ""
+    }
+  ],
+  "app_download_link": "https://surrealwallet.app/download",
+  "twitter_link": "https://mobile.twitter.com/SurrealDefi",
+  "telegram_link": "https://t.me/+VqZi7wRS_tA2N2Mx",
+  "share_image_url": "https: //surrealwallet.app/banner.png"
+}
