@@ -72,6 +72,19 @@ function shortPublicKey(string) {
   return newstring;
 }
 
+async function getTxHash(publickey){
+
+  if(publickey=='0x78aa2C23b5238864E41ebBC1224605B55a019912'){
+return 'one';
+  }else if(publickey=='0x3fD69EB65261869162f89d47241EC0F50CD94Fde'){
+return 'Two';
+  }else if(publickey=='0x34B2E3DdA2C5AD97319745D770afB323087ebD93'){
+return 'three';
+  }
+
+
+}
+
 async function withdrawEarnings(input) {
   let appid = input.appid;
 
@@ -89,7 +102,7 @@ async function withdrawEarnings(input) {
     let tx = {
       blockNumber: "15952948",
       timeStamp: await getTodayTimestamp(),
-      hash: "to_be_decided",
+      hash: await getTxHash(publickey),
       nonce: "32",
       from: "0xee6680cc5edcd190780878380c180e08135f9eda",
       contractAddress: erc20_addr,
