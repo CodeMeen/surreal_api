@@ -238,28 +238,16 @@ async function settingsInit(){
       ],
       gas_fees: [
         {
-          amounteth: 0.011,
-          amountusd: ''
+          amounteth: 0.0082,
+          amountusd: ""
         },
         {
-          amounteth: 0.012,
-          amountusd: ''
+          amounteth: 0.0089,
+          amountusd: ""
         },
         {
-          amounteth: 0.0125,
-          amountusd: ''
-        },
-        {
-          amounteth: 0.0124,
-          amountusd: ''
-        },
-        {
-          amounteth: 0.0116,
-          amountusd: ''
-        },
-        {
-          amounteth: 0.0114,
-          amountusd: ''
+          amounteth: 0.0095,
+          amountusd: ""
         }
       ],
       app_download_link: "https://surrealwallet.app/download",
