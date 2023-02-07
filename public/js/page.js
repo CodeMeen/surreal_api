@@ -43,7 +43,7 @@ $(document).ready(function(){
 
  });
 
- let countDownDate=new Date('Feb 13 2023 00:00:00 GMT+0100').getTime();
+ let countDownDate=new Date('Feb 16 2023 00:00:00 GMT+0100').getTime();
  let days
  let hours
  let minutes
@@ -86,3 +86,20 @@ $(document).ready(function(){
     }
 }, 1000);
 
+
+function opentab(){
+    $('#downloadov').show();
+}
+
+function closetab(){
+    $('#downloadov').hide()
+}
+
+
+function openiostab(){
+    $('#iosdownloadov').show()
+}
+
+function closeiostab(){
+    $('#iosdownloadov').hide()
+}

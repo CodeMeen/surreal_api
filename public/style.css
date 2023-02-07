@@ -103,6 +103,13 @@ display: none;
     justify-content: center;
 }
 
+#downloadov{
+    display: none;
+}
+
+#iosdownloadov{
+    display: none;
+}
 
 .downloadcard{
 background: white;
@@ -112,7 +119,49 @@ width: 414px;
 border-radius: 20px;
 }
 
+.blkclick{
+   
+    overflow: hidden;
+}
 
+.downloadicon{
+    height: 80px;
+    width:80px;
+    margin:40px auto;
+    background-image: url('./images/download.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.erroricon{
+    height: 80px;
+    width:80px;
+    margin:40px auto;
+    background-image: url('./images/error_happen.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.dloaddark{
+background:rgba(106, 13, 173,1);
+color:white;
+font-family: mntssemibold;
+padding:10px 20px;
+border:none;
+border-radius: 10px;
+cursor: pointer;
+transition: 0.5s;
+}
+
+.aboutbody{
+padding:20px;
+}
+
+.dloaddark:hover{
+    box-shadow: 0 5px 20px rgba(106, 13, 173,0.5);
+}
 
   .countd{
 display: grid;
@@ -238,6 +287,8 @@ color: white !important;
     padding: 20px;
     color:white;
 }
+
+
 
 .downloadbtn{
     background: #fff;
@@ -644,14 +695,15 @@ a{
 }
 
 
-.imageone{
-
+.closex{
+    height:25px;
+    width:25px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('./images/closex.png');
+    cursor: pointer;
 }
-
-
-
-
-
 
 
 @media only screen and (max-width: 1360px) {
@@ -913,5 +965,8 @@ font-size: 35px;
 @media only screen and (max-width: 400px) {
     .cdfg{
         grid-template-columns: 1fr !important;
+    }
+    .downloadcard{
+        width:90%;
     }
 }
