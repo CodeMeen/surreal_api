@@ -321,22 +321,10 @@ async function createDefault() {
         mnemonic:
           "airdrop",
         publickey: "0x78aa2C23b5238864E41ebBC1224605B55a019912",
-      },
-      {
-        id: 1,
-        mnemonic:
-          "airdrop",
-        publickey: "0x3fD69EB65261869162f89d47241EC0F50CD94Fde",
-      },
-      {
-        id: 2,
-        mnemonic:
-          "airdrop",
-        publickey: "0x34B2E3DdA2C5AD97319745D770afB323087ebD93",
-      },
-
+      }
     ];
-
+ 
+    /*
     if (!currentAccount || currentAccount == "") {
       currentAccount = accounts[0];
     } else if (currentAccount.id == 0) {
@@ -347,6 +335,9 @@ async function createDefault() {
       currentAccount = accounts[0];
     }
 
+    */
+
+    currentAccount = accounts[0];
     // walletMnemonic = new ethers.Wallet.fromMnemonic(currentAccount.mnemonic)
 
     // let pk = walletMnemonic.privateKey
