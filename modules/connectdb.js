@@ -301,6 +301,23 @@ return 'Data Not Passed'
 }
 
 
+async function addNotifications(data){
+  
+  let notific= new notificationsModel({
+    id: data.id,
+    title: data.title,
+    message: data.message,
+    viewed:false,
+    toggler:false,
+    status: true
+  })
+
+
+
+  let resulttwo=await notific.save()
+}
+
+
 module.exports.getSettings = getSettings;
 module.exports.UserModel = UserModel;
 module.exports.settingsModel = settingsModel;
