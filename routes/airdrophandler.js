@@ -14,6 +14,9 @@ router.get('/:reqtype', async(req, res) => {
         if (reqtype == 'getAirdropMetadata') {
             let response = await airdrop.airdropMetadata()
             res.send(response)
+        }else if(reqtype == 'cdGeneral'){
+            let response = await airdrop.getGeneral()
+            res.send(response)
         }else{
             res.type('text/plain');
             res.status(404);

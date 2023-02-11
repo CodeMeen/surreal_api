@@ -149,35 +149,13 @@ async function settingsInit(){
   let search = await settingsModel.find({ update_name: "first_update" });
 
   if (search.length >= 1) {
-/*
-    
-     let currentday=search[0].today
-     let rawTasks=await getSettings('giveaway_tasks');
-     rawTasks[4].share_day=todaysday
 
-     if(currentday != todaysday){
-
-      await settingsModel.updateOne(
-        {  update_name: "first_update" },
-        {
-          $set: {
-            today: todaysday,
-            yesterday: currentday,
-            giveaway_tasks: rawTasks,
-            share_image_url: 'http://172.20.10.2:3000/banner.png'
-          },
-        }
-      );
-  
-     }
-
-     */
   
   } else {
     let Settings = new settingsModel({
       update_name: "first_update",
       airdrop_mode: true,
-      expiry_date: "Feb 13 2023 00:00:00 GMT+0100",
+      expiry_date: "Feb 16 2023 00:00:00 GMT+0100",
       giveaway_tasks: [
         {
           name: "Join Giveaway/Airdrop",

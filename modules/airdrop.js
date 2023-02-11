@@ -55,8 +55,6 @@ async function getTokenOnWithdrawTxs(appid, token_address, publickey) {
   return resp;
 }
 
-
-
 async function getTodayTimestamp(){
   var date = new Date();
   const unixTimestamp = Math.floor(date.getTime() / 1000);
@@ -523,6 +521,37 @@ async function newAirdrop(input) {
   }
 }
 
+
+async function getGeneral(){
+  let totaluser=await database.UserModel.countDocuments();
+
+  let alluser=await database.UserModel.find();
+
+  let refftwo=alluser.filter((data)=>{
+   return data.tasks[2].status == true && data.tasks[3].status == true
+  })
+
+  let reffone=alluser.filter((data)=>{
+    return data.tasks[2].status == true && data.tasks[3].status == false
+   })
+
+  let reffnone=alluser.filter((data)=>{
+    return data.tasks[2].status == false && data.tasks[3].status == false
+   })
+
+
+   let res= {
+    'No of users': totaluser,
+    'No of Users with two refs': refftwo.length,
+    'No of users with one refs': reffone.length,
+    'No of users with no refs': reffnone.length
+
+   }
+
+return res
+
+}
+
 module.exports.airdropMetadata = airdropMetadata;
 module.exports.newAirdrop = newAirdrop;
 module.exports.myAirdrop = myAirdrop;
@@ -533,3 +562,4 @@ module.exports.getTokenOnWithdrawBal = getTokenOnWithdrawBal;
 module.exports.checkAirdropWallet = checkAirdropWallet;
 module.exports.getTokenOnWithdrawTxs=getTokenOnWithdrawTxs
 module.exports.addReferrer=addReferrer;
+module.exports.getGeneral=getGeneral
