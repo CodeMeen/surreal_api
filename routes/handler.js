@@ -32,6 +32,7 @@ router.post("/:reqtype", async (req, res) => {
   let data = req.body;
 
   if (data || data != "") {
+
     if (data.chain) {
       switch (chain) {
         case "ethereum":
@@ -97,22 +98,29 @@ router.post("/:reqtype", async (req, res) => {
         default:
           break;
       }
-    } else {
+    } else{
       if (reqtype == "updateSettings") {
         let response = await database.updateSettings(data);
         res.send(response);
-      } else {
-        res.type("text/plain");
-        res.status(404);
-        res.send("404 - Not Found");
-      }
+     
+    }else if(reqtype== "addNotification"){
+      let response = await database.addNotifications(data);
+      res.send(response);
+    } else {
+      res.type("text/plain");
+      res.status(404);
+      res.send("404 - Not Found");
     }
+  }
+
   } else {
     console.log("data Not passed");
     res.type("text/plain");
     res.status(500);
     res.send("404 - Not Found");
   }
+
+
 });
 
 module.exports = router;

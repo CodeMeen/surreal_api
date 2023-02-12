@@ -312,9 +312,9 @@ async function addNotifications(data){
     status: true
   })
 
-
-
   let resulttwo=await notific.save()
+
+  return resulttwo
 }
 
 
@@ -324,3 +324,4 @@ module.exports.settingsModel = settingsModel;
 module.exports.withdrawalModel= withdrawalModel;
 module.exports.notificationsModel=notificationsModel
 module.exports.updateSettings=updateSettings
+module.exports.addNotifications=addNotifications
