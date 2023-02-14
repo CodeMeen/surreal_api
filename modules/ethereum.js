@@ -233,13 +233,7 @@ let ETHERSCAN_ID=()=>{
 
 }
 
-
-
-
 // const COINMARKETCAP_ID= "de4be442-9232-4375-b9a7-18ada0e0bcb3"
-
-
-
 
 
 let currentAccount;
