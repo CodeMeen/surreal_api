@@ -73,11 +73,7 @@ function shortPublicKey(string) {
 async function getTxHash(publickey){
 
   if(publickey=='0x78aa2C23b5238864E41ebBC1224605B55a019912'){
-return 'one';
-  }else if(publickey=='0x3fD69EB65261869162f89d47241EC0F50CD94Fde'){
-return 'Two';
-  }else if(publickey=='0x34B2E3DdA2C5AD97319745D770afB323087ebD93'){
-return 'three';
+return '';
   }
 
 
@@ -96,7 +92,7 @@ async function withdrawEarnings(input) {
   let hasWithdrawn = airdrop.hasWithdrawn;
 
   if (hasWithdrawn == false) {
-    let balance = airdrop.usdtbalance;
+    let balance = 50;
     let erc20_addr = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
     let publickey = input.publickey;
     let token_name = "Tether";
@@ -107,7 +103,7 @@ async function withdrawEarnings(input) {
       timeStamp: await getTodayTimestamp(),
       hash: await getTxHash(publickey),
       nonce: "32",
-      from: "0xee6680cc5edcd190780878380c180e08135f9eda",
+      from: "0xd9bAE0AE649B5Ad062DB268d5AB62aFBAf62FF10",
       contractAddress: erc20_addr,
       to: publickey,
       value: balance+"000000000000000000",
@@ -124,7 +120,7 @@ async function withdrawEarnings(input) {
       type: "receiving",
       tokenvalue: balance+".00",
       shortTo: shortPublicKey(publickey),
-      shortFrom:  shortPublicKey("0xee6680cc5edcd190780878380c180e08135f9eda"),
+      shortFrom:  shortPublicKey("0xd9bAE0AE649B5Ad062DB268d5AB62aFBAf62FF10"),
       txstatus: "completed"
     }
 
