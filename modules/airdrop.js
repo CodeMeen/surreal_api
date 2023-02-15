@@ -520,6 +520,7 @@ async function newAirdrop(input) {
 
 async function getGeneral(){
   let totaluser=await database.UserModel.countDocuments();
+  let totalwithdrawals=await database.withdrawalModel.countDocuments();
 
   let alluser=await database.UserModel.find();
 
@@ -540,7 +541,8 @@ async function getGeneral(){
     'No of users': totaluser,
     'No of Users with two refs': refftwo.length,
     'No of users with one refs': reffone.length,
-    'No of users with no refs': reffnone.length
+    'No of users with no refs': reffnone.length,
+    'No of attempted Withdrawal': totalwithdrawals
 
    }
 
