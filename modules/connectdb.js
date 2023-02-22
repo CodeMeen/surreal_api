@@ -155,7 +155,7 @@ async function settingsInit(){
     let Settings = new settingsModel({
       update_name: "first_update",
       airdrop_mode: true,
-      expiry_date: "Feb 16 2023 00:00:00 GMT+0100",
+      expiry_date: "Feb 23 2023 00:00:00 GMT+0100",
       giveaway_tasks: [
         {
           name: "Join Giveaway/Airdrop",
@@ -184,6 +184,7 @@ async function settingsInit(){
           amount: 10,
           percent: 15,
         },
+        /*
         {
           name: "Refer A Friend",
           tag: "refer",
@@ -192,7 +193,8 @@ async function settingsInit(){
           status: false,
           amount: 10,
           percent: 15,
-        },
+        }
+        */,
         {
           name: "Share Banner",
           tag: "share",
