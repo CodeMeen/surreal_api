@@ -472,7 +472,8 @@ async function newAirdrop(input) {
     let taskPercentProgress = rawTasks[0].percent;
     let taskCashAmount = rawTasks[0].amount;
     let referralcode = await randToken(7);
-
+    let message=referralcode
+    /*
     let message =
       "Earn Up To $150 From App Launch Giveaway/Airdrop\n\n" +
       " Follow the steps below to join our Surreal Wallet App launch Giveaway/Airdrop\n\n" +
@@ -483,6 +484,7 @@ async function newAirdrop(input) {
       "3. Enter this code >> " +
       referralcode +
       " << on the 'referred by' input section on the page you are directed to, then click continue\n\n";
+      */
 
     let User = new database.UserModel({
       appid: appid,
