@@ -177,6 +177,7 @@ async function settingsInit(){
         },
         {
           name: "Refer A Friend",
+          tag: "refer",
           id: 1,
           progress: 0,
           status: false,

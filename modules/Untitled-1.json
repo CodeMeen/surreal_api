@@ -1,0 +1,26 @@
+{
+  "auth": { "signature": false, "lock": false },
+  "notification": { "transaction": true, "others": true },
+  "appId": "xdpzlvzjvbfbmc922h1x4n",
+  "airdrop_metadata": {
+    "airdrop_can_start": "true",
+    "airdrop_expiry_date": "Feb 23 2023 00:00:00 GMT+0100"
+  },
+  "app_notifications": [
+    {
+      "_id": "63f712db09ec292a97582c1b",
+      "id": "firstpost",
+      "title": " Welcome To Surreal Wallet",
+      "message": "Surreal Wallet is for you if you want to\n\n- Manage and keep your assets perfectly\n- Transfer out and receive ERC-20 tokens and  NFT assets with our super easy app\n- Access great offers and activities from surreal wallet\n",
+      "viewed": false,
+      "toggler": false,
+      "status": true,
+      "__v": 0
+    }
+  ],
+  "socials": {
+    "telegram": "https://t.me/+QaeMQc25AAUzYTYx",
+    "twitter": "https://mobile.twitter.com/SurrealDefi"
+  },
+  "share_image_url": "http://localhost:3000/banner.png"
+}

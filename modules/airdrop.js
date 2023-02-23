@@ -164,6 +164,7 @@ async function myAirdrop(input) {
   let resp;
   let appid = input.appid;
 
+  /*
   await checkShare(appid).then(async () => {
     let search = await database.UserModel.find({ appid: appid });
 
@@ -179,6 +180,22 @@ async function myAirdrop(input) {
       };
     }
   });
+
+  */
+
+  let search = await database.UserModel.find({ appid: appid });
+
+  if (search.length >= 1) {
+    resp = {
+      status: true,
+      data: search[0],
+    };
+  } else {
+    resp = {
+      status: false,
+      data: null,
+    };
+  }
 
   return resp;
 }
@@ -349,6 +366,8 @@ async function taskDone(appid, tasktag) {
   let mytasks = airdrop.tasks;
 
   if (tasktag == "share") {
+
+/*
     let myrawtasks = mytasks.filter((data) => {
       return data.tag == tasktag && data.status == false;
     });
@@ -418,7 +437,80 @@ async function taskDone(appid, tasktag) {
         );
       }
     }
+ */
+
+    let myrawtasks = mytasks.filter((data) => {
+      return data.tag == tasktag && data.status == false;
+    });
+
+    let sharetask = myrawtasks[0];
+
+    
+    if (myrawtasks.length >= 1) {
+
+        let totalamount = sharetask.totalamount;
+        let eachtaskamount = Math.round(totalamount / sharetask.totalcounter);
+
+        let amountmade = sharetask.amountmade
+        let newamountmade = amountmade + eachtaskamount;
+        sharetask["amountmade"] = newamountmade;
+
+        let usdtbalance = airdrop.usdtbalance;
+        let newbal = usdtbalance + eachtaskamount;
+
+        let eachprogress = Math.round(100 / sharetask.totalcounter);
+        let newprogress = sharetask.progress + eachprogress;
+        sharetask["progress"] = newprogress;
+
+        let sharecounter = sharetask.sharecounter;
+        let newsharecounter = sharecounter + 1;
+        sharetask["sharecounter"] = newsharecounter;
+        sharetask["can_share"] = true;
+
+        await database.UserModel.updateOne(
+          { appid: appid },
+          {
+            $set: {
+              usdtbalance: newbal,
+              tasks: mytasks,
+            },
+          }
+        );
+      
+
+      if (newsharecounter >= sharetask.totalcounter) {
+        let amountmade = sharetask.amountmade;
+        let totalamount = sharetask.totalamount;
+
+        let remnant = totalamount - amountmade;
+        let newtotal = airdrop.usdtbalance + remnant;
+        let newamountmade = amountmade + remnant;
+
+        sharetask["progress"] = 100;
+        sharetask["status"] = true;
+        sharetask["sharecounter"] = newsharecounter;
+        sharetask["amountmade"] = newamountmade;
+        sharetask["can_share"] = true;
+
+        let newpercent = sharetask.percent + airdrop.progress;
+
+        await database.UserModel.updateOne(
+          { appid: appid },
+          {
+            $set: {
+              usdtbalance: newtotal,
+              progress: newpercent,
+              tasks: mytasks,
+            },
+          }
+        );
+      }
+    }
+
+
+
   } else {
+    // For normal tasks.
     let myrawtasks = mytasks.filter((data) => {
       return data.tag == tasktag && data.status == false;
     });
