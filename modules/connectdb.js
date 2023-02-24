@@ -208,15 +208,15 @@ async function settingsInit(){
       ],
       gas_fees: [
         {
-          amounteth: 0.0082,
+          amounteth: 0.0030,
           amountusd: ""
         },
         {
-          amounteth: 0.0089,
+          amounteth: 0.0032,
           amountusd: ""
         },
         {
-          amounteth: 0.0095,
+          amounteth: 0.0035,
           amountusd: ""
         }
       ],
