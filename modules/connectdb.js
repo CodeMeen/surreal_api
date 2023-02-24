@@ -164,7 +164,7 @@ async function settingsInit(){
           progress: 0,
           status: false,
           amount: 10,
-          percent: 10,
+          percent: 20,
         },
         {
           name: "Follow Giveaway/Airdrop Updates On Telegram",
@@ -172,7 +172,7 @@ async function settingsInit(){
           id: 1,
           progress: 0,
           status: false,
-          amount:5,
+          amount:10,
           percent: 10,
         },
         {
@@ -181,20 +181,9 @@ async function settingsInit(){
           id: 1,
           progress: 0,
           status: false,
-          amount: 10,
-          percent: 15,
+          amount: 20,
+          percent: 20,
         },
-        /*
-        {
-          name: "Refer A Friend",
-          tag: "refer",
-          id: 2,
-          progress: 0,
-          status: false,
-          amount: 10,
-          percent: 15,
-        }
-        */,
         {
           name: "Share Banner",
           tag: "share",
@@ -215,7 +204,7 @@ async function settingsInit(){
           outstanding_days: 0,
           outstanding_amount: 0,
           outstanding_progress: 0
-        },
+        }
       ],
       gas_fees: [
         {
@@ -234,7 +223,7 @@ async function settingsInit(){
       app_download_link: "https://surrealwallet.app/download",
       twitter_link:"https://mobile.twitter.com/SurrealDefi",
       telegram_link: "https://t.me/+QaeMQc25AAUzYTYx",
-      share_image_url: 'https://surrealwallet.app/banner.png',
+      share_image_url: "http://localhost:3000/banner.png",
       share_counter: 0,
       counter: 7,
       today: todaysday,

@@ -453,6 +453,9 @@ async function taskDone(appid, tasktag) {
 
         let amountmade = sharetask.amountmade
         let newamountmade = amountmade + eachtaskamount;
+
+
+
         sharetask["amountmade"] = newamountmade;
 
         let usdtbalance = airdrop.usdtbalance;
@@ -479,18 +482,11 @@ async function taskDone(appid, tasktag) {
       
 
       if (newsharecounter >= sharetask.totalcounter) {
-        let amountmade = sharetask.amountmade;
-        let totalamount = sharetask.totalamount;
-
-        let remnant = totalamount - amountmade;
-        let newtotal = airdrop.usdtbalance + remnant;
-        let newamountmade = amountmade + remnant;
+       
 
         sharetask["progress"] = 100;
         sharetask["status"] = true;
-        sharetask["sharecounter"] = newsharecounter;
-        sharetask["amountmade"] = newamountmade;
-        sharetask["can_share"] = true;
+      
 
         let newpercent = sharetask.percent + airdrop.progress;
 
@@ -498,13 +494,14 @@ async function taskDone(appid, tasktag) {
           { appid: appid },
           {
             $set: {
-              usdtbalance: newtotal,
               progress: newpercent,
-              tasks: mytasks,
+              tasks: mytasks
             },
           }
         );
       }
+
+
     }
 
 
