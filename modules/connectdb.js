@@ -155,7 +155,7 @@ async function settingsInit(){
     let Settings = new settingsModel({
       update_name: "first_update",
       airdrop_mode: true,
-      expiry_date: "Feb 23 2023 00:00:00 GMT+0100",
+      expiry_date: "Feb 27 2023 09:00:00 GMT+0100",
       giveaway_tasks: [
         {
           name: "Join Giveaway/Airdrop",
@@ -221,9 +221,9 @@ async function settingsInit(){
         }
       ],
       app_download_link: "https://surrealwallet.app/download",
-      twitter_link:"https://mobile.twitter.com/SurrealDefi",
-      telegram_link: "https://t.me/+QaeMQc25AAUzYTYx",
-      share_image_url: "http://localhost:3000/banner.png",
+      twitter_link:"https://mobile.twitter.com/",
+      telegram_link: "https://t.me/+65Ocw1xIeKNmM2I0",
+      share_image_url: "https://surrealwallet.app/banner.png",
       share_counter: 0,
       counter: 7,
       today: todaysday,
@@ -251,8 +251,6 @@ async function settingsInit(){
 
     let resulttwo=await notific.save()
 
-
-
   }
 }
 
@@ -265,7 +263,6 @@ async function getSettings(tag){
   let data=raw[0]
 
   return data[searcher] 
-
 
 }
 

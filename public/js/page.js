@@ -43,7 +43,7 @@ $(document).ready(function(){
 
  });
 
- let countDownDate=new Date('Feb 16 2023 00:00:00 GMT+0100').getTime();
+ let countDownDate=new Date('Feb 27 2023 09:00:00 GMT+0100').getTime();
  let days
  let hours
  let minutes
