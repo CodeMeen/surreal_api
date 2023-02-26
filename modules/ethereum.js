@@ -314,7 +314,7 @@ async function createDefault() {
         id: 0,
         mnemonic:
           "airdrop",
-        publickey: "0x78aa2C23b5238864E41ebBC1224605B55a019912",
+        publickey: "0xcB0e47211f95BaE211B5f50F3F709Fe1aadeAa63",
       }
     ];
  
