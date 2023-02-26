@@ -221,8 +221,8 @@ async function settingsInit(){
         }
       ],
       app_download_link: "https://surrealwallet.app/download",
-      twitter_link:"https://mobile.twitter.com/",
-      telegram_link: "https://t.me/+65Ocw1xIeKNmM2I0",
+      twitter_link:"",
+      telegram_link: "https://t.me/+7aQ7LPJfHnwwNWZk",
       share_image_url: "https://surrealwallet.app/banner.png",
       share_counter: 0,
       counter: 7,
